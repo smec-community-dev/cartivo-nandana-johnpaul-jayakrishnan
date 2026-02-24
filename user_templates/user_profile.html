@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Cartivo Elite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .profile-card { transition: all 0.3s ease; }
+        .profile-card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body class="bg-[#fdfaff] text-slate-900">
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+                <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-bag-shopping text-white"></i>
+                </div>
+                <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-3 rounded-2xl bg-violet-50 text-violet-600 hover:bg-violet-100 transition">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full border-2 border-violet-200">
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="lg:w-1/4 space-y-4">
+                <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50">
+                    <div class="flex flex-col items-center text-center mb-8">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
+                            <button class="absolute bottom-4 right-0 bg-violet-600 text-white p-2 rounded-lg shadow-lg hover:scale-110 transition">
+                                <i class="fa-solid fa-camera text-xs"></i>
+                            </button>
+                        </div>
+                        <h2 class="text-xl font-extrabold">Alex Grayson</h2>
+                        <span class="text-xs font-bold text-violet-600 bg-violet-50 px-3 py-1 rounded-full uppercase tracking-wider mt-2">Elite Member</span>
+                    </div>
+
+                    <nav class="space-y-2">
+                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
+                            <i class="fa-solid fa-user-gear"></i> Personal Info
+                        </a>
+                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <i class="fa-solid fa-box"></i> My Orders
+                        </a>
+                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <i class="fa-solid fa-location-dot"></i> Addresses
+                        </a>
+                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <i class="fa-solid fa-credit-card"></i> Payment Methods
+                        </a>
+                        <hr class="my-4 border-gray-50">
+                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-rose-500 hover:bg-rose-50 font-semibold transition">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="lg:w-3/4 space-y-8">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Points</p>
+                            <p class="text-2xl font-black text-slate-800">2,450</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-violet-50 text-violet-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-shopping-bag"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Total Orders</p>
+                            <p class="text-2xl font-black text-slate-800">12</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Cartivo Credit</p>
+                            <p class="text-2xl font-black text-slate-800">₹499</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50">
+                    <div class="flex justify-between items-center mb-10">
+                        <h3 class="text-2xl font-extrabold text-slate-900">Personal Information</h3>
+                        <button class="text-sm font-bold text-violet-600 hover:underline">Edit Details</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Full Name</label>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">Alex Grayson</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Email Address</label>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">alex.grayson@example.com</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Phone Number</label>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">+91 98765 43210</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Gender</label>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">Male</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-slate-300">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-3xl">
+                            <i class="fa-solid fa-truck-fast text-violet-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold">Latest Order is on its way!</h4>
+                            <p class="text-slate-400 text-sm">Order #CRT-99201 • Expected Wednesday</p>
+                        </div>
+                    </div>
+                    <button class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-2xl font-bold transition shadow-lg shadow-violet-900/20">
+                        Track Shipment
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-12 text-center text-gray-400 text-xs">
+        &copy; 2026 Cartivo User Dashboard | Security Certified
+    </footer>
+
+</body>
+</html>
