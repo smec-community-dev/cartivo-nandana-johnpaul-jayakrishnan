@@ -43,6 +43,7 @@ def user_login(request):
 
 @login_required
 def user_profile(request):
+    user = request.user
     return render(request,'user_profile.html')
 
 def user_logout(request):
