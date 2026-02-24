@@ -51,7 +51,7 @@
         <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
             <div class="mb-10">
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Create Account</h1>
-                <p class="text-gray-500 text-sm">Already have an account? <a href="#" class="text-violet-600 font-bold hover:underline">Log in</a></p>
+                <p class="text-gray-500 text-sm">Already have an account? <a href="{% url 'login' %}" class="text-violet-600 font-bold hover:underline">Log in</a></p>
             </div>
 
             <form class="space-y-5" method="POST" action="{% url 'register' %}">
@@ -104,6 +104,21 @@
                     <p class="text-[10px] text-gray-400 ml-1 mt-1">Must be at least 8 characters long.</p>
                 </div>
 
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <div class="relative group">
+                        <div id="imagePreview" class="w-24 h-24 rounded-full bg-violet-50 border-2 border-dashed border-violet-200 flex items-center justify-center overflow-hidden transition-all group-hover:border-violet-400">
+                            <i class="fa-solid fa-camera text-2xl text-violet-300 transition-transform group-hover:scale-110"></i>
+                            <img id="chosenImage" class="hidden w-full h-full object-cover">
+                        </div>
+                        <button type="button" onclick="document.getElementById('profile_image').click()" 
+                                class="absolute bottom-0 right-0 bg-white shadow-lg border border-gray-100 text-violet-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-violet-600 hover:text-white transition-colors">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                        </button>
+                    </div>
+                    <input type="file" id="profile_image" name="profile_image" accept="image/*" class="hidden" onchange="previewFile()">
+                    <p class="text-[10px] font-bold text-violet-400 uppercase tracking-widest mt-2">Upload Profile Photo</p>
+                </div>
+
                 <div class="flex items-start gap-3 py-2">
                     <input type="checkbox" class="mt-1 w-4 h-4 rounded text-violet-600 focus:ring-violet-500 border-gray-300">
                     <label class="text-xs text-gray-500 leading-normal">
@@ -136,6 +151,25 @@
             </form>
         </div>
     </div>
+    
+    <script>
+    function previewFile() {
+        const preview = document.getElementById('chosenImage');
+        const icon = document.querySelector('#imagePreview i');
+        const file = document.getElementById('profile_image').files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+            preview.classList.remove('hidden');
+            icon.classList.add('hidden');
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 
 </body>
 </html>

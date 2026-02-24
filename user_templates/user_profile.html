@@ -51,22 +51,25 @@
                     </div>
 
                     <nav class="space-y-2">
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
-                            <i class="fa-solid fa-user-gear"></i> Personal Info
-                        </a>
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
-                            <i class="fa-solid fa-box"></i> My Orders
-                        </a>
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
-                            <i class="fa-solid fa-location-dot"></i> Addresses
-                        </a>
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
-                            <i class="fa-solid fa-credit-card"></i> Payment Methods
-                        </a>
-                        <hr class="my-4 border-gray-50">
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-rose-500 hover:bg-rose-50 font-semibold transition">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                        </a>
+                        <form>
+                           {% csrf_token %}
+                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
+                                <i class="fa-solid fa-user-gear"></i> Personal Info
+                            </a>
+                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-box"></i> My Orders
+                            </a>
+                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-location-dot"></i> Addresses
+                            </a>
+                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-credit-card"></i> Payment Methods
+                            </a>
+                            <hr class="my-4 border-gray-50">
+                            <a href="{% url 'logout' %}" class="flex items-center gap-4 p-4 rounded-2xl text-rose-500 hover:bg-rose-50 font-semibold transition">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                            </a>
+                        </form>
                     </nav>
                 </div>
             </div>
