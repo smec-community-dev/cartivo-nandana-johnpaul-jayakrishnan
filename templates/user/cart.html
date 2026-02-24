@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Cartivo Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Dropdown Animation from Home */
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: slideUp 0.2s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdfaff; }
+        ::-webkit-scrollbar-thumb { background: #ddd6fe; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#fdfaff] text-slate-900">
+
+    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
+        ⚡ Super Sale: Extra 20% Off | Code: <span class="text-amber-300 underline cursor-pointer">VIOLET20</span>
+    </div>
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
+                        <i class="fa-solid fa-bag-shopping text-white"></i>
+                    </div>
+                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                </a>
+
+                <div class="hidden lg:flex flex-1 max-w-lg mx-12">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search premium products..." 
+                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
+                        <button class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
+                            <i class="fa-solid fa-magnifying-glass px-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
+                                <span class="text-sm font-bold text-slate-800">Login <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                            </div>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
+                            <div class="p-4 border-b border-gray-50 bg-violet-50/30">
+                                <p class="text-xs text-gray-500 font-semibold">Welcome Back</p>
+                                <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In</button>
+                            </div>
+                            <div class="py-2">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold"><i class="fa-regular fa-user-circle w-5"></i> My Profile</a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition"><i class="fa-regular fa-heart w-5"></i> Wishlist</a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition"><i class="fa-solid fa-box w-5"></i> Orders</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center gap-3 bg-violet-600 p-2 pr-5 rounded-2xl shadow-lg shadow-violet-200 transition">
+                        <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <span id="nav-total" class="font-bold text-white text-sm tracking-tight">₹0</span>
+                        <span id="nav-count" class="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="mb-10">
+            <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                <a href="index.html" class="hover:text-violet-600">Home</a>
+                <span>/</span>
+                <span class="text-violet-600">Shopping Cart</span>
+            </nav>
+            <h1 class="text-4xl font-extrabold text-slate-900">Shopping <span class="text-violet-600">Cart</span></h1>
+            <p class="text-gray-500 mt-2 font-medium">You have <span id="item-count" class="text-violet-700 font-bold">2</span> items in your bag.</p>
+        </div>
+
+        <div class="flex flex-col lg:gap-12 lg:flex-row">
+            <div id="cart-items" class="lg:w-2/3 space-y-6">
+                
+                <div class="product-card bg-white p-6 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50 flex flex-col md:flex-row items-center gap-6 group" data-price="3499">
+                    <div class="w-32 h-40 bg-violet-50 rounded-[2rem] overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex-1 w-full">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-800">Crimson Runner 2.0</h3>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Size: UK 10 | Color: Red</p>
+                            </div>
+                            <button onclick="removeItem(this)" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:bg-rose-50 hover:text-rose-500 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center mt-8">
+                            <div class="flex items-center bg-violet-50 rounded-2xl p-1.5 border border-violet-100">
+                                <button onclick="updateQty(this, -1)" class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm active:scale-90"><i class="fa-solid fa-minus"></i></button>
+                                <span class="qty-val px-5 font-bold text-slate-800">1</span>
+                                <button onclick="updateQty(this, 1)" class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm active:scale-90"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900">₹<span class="item-total">3,499</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card bg-white p-6 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50 flex flex-col md:flex-row items-center gap-6 group" data-price="12999">
+                    <div class="w-32 h-40 bg-violet-50 rounded-[2rem] overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex-1 w-full">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-800">Classic Silver Watch</h3>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Standard Edition</p>
+                            </div>
+                            <button onclick="removeItem(this)" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:bg-rose-50 hover:text-rose-500 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center mt-8">
+                            <div class="flex items-center bg-violet-50 rounded-2xl p-1.5 border border-violet-100">
+                                <button onclick="updateQty(this, -1)" class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm active:scale-90"><i class="fa-solid fa-minus"></i></button>
+                                <span class="qty-val px-5 font-bold text-slate-800">1</span>
+                                <button onclick="updateQty(this, 1)" class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm active:scale-90"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900">₹<span class="item-total">12,999</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="index.html" class="inline-flex items-center gap-2 text-violet-600 font-bold hover:gap-4 transition-all px-4 py-2">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            <div class="lg:w-1/3">
+                <div class="bg-white p-8 rounded-[3rem] shadow-2xl shadow-violet-200/50 border border-violet-100 sticky top-28">
+                    <h2 class="text-2xl font-extrabold text-slate-900 mb-6">Order Summary</h2>
+                    
+                    <div class="mb-8">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block ml-1">Have a Coupon?</label>
+                        <div class="flex gap-2 p-1.5 bg-violet-50 rounded-2xl border border-violet-100">
+                            <input type="text" placeholder="VIOLET20" class="flex-1 bg-transparent px-4 outline-none text-sm font-bold uppercase placeholder:text-violet-200">
+                            <button class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs hover:bg-violet-700 transition shadow-lg">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-gray-500 font-medium">
+                            <span>Bag Total</span>
+                            <span id="bag-total" class="text-slate-900 font-bold">₹0</span>
+                        </div>
+                        <div class="flex justify-between text-rose-500 font-medium">
+                            <span>Bag Discount</span>
+                            <span id="bag-discount">-₹498</span>
+                        </div>
+                        <div class="flex justify-between text-gray-500 font-medium">
+                            <span>Delivery Fee</span>
+                            <span class="text-emerald-500 font-bold tracking-tighter uppercase text-xs">Free</span>
+                        </div>
+                        <div class="pt-6 border-t border-dashed border-gray-100 flex justify-between items-center">
+                            <span class="text-lg font-bold text-slate-900">Total Amount</span>
+                            <span id="final-amount" class="text-3xl font-black text-violet-700">₹0</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full violet-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95 mb-6">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function calculateTotals() {
+            let subtotal = 0;
+            const items = document.querySelectorAll('.product-card');
+            
+            items.forEach(item => {
+                const price = parseInt(item.getAttribute('data-price'));
+                const qty = parseInt(item.querySelector('.qty-val').innerText);
+                const itemTotal = price * qty;
+                item.querySelector('.item-total').innerText = itemTotal.toLocaleString();
+                subtotal += itemTotal;
+            });
+
+            const discount = subtotal > 0 ? 498 : 0;
+            const finalTotal = subtotal - discount;
+
+            // Update Sidebar
+            document.getElementById('bag-total').innerText = '₹' + subtotal.toLocaleString();
+            document.getElementById('final-amount').innerText = '₹' + (finalTotal > 0 ? finalTotal : 0).toLocaleString();
+            document.getElementById('item-count').innerText = items.length;
+            document.getElementById('bag-discount').innerText = '-₹' + discount;
+
+            // Update Navigation Header Counters
+            document.getElementById('nav-total').innerText = '₹' + (finalTotal > 0 ? finalTotal : 0).toLocaleString();
+            document.getElementById('nav-count').innerText = items.length;
+        }
+
+        function updateQty(btn, change) {
+            const qtySpan = btn.parentElement.querySelector('.qty-val');
+            let currentQty = parseInt(qtySpan.innerText);
+            if (currentQty + change > 0) {
+                qtySpan.innerText = currentQty + change;
+                calculateTotals();
+            }
+        }
+
+        function removeItem(btn) {
+            const card = btn.closest('.product-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                card.remove();
+                calculateTotals();
+                if (document.querySelectorAll('.product-card').length === 0) {
+                    document.getElementById('cart-items').innerHTML = `
+                        <div class="text-center py-20 bg-white rounded-[2.5rem] border-2 border-dashed border-violet-100">
+                            <i class="fa-solid fa-bag-shopping text-6xl text-violet-100 mb-4"></i>
+                            <h3 class="text-xl font-bold text-slate-800">Your bag is empty</h3>
+                            <a href="index.html" class="inline-block mt-4 bg-violet-600 text-white px-8 py-3 rounded-xl font-bold">Start Shopping</a>
+                        </div>
+                    `;
+                }
+            }, 400);
+        }
+
+        calculateTotals();
+    </script>
+</body>
+</html>

@@ -25,7 +25,7 @@ def user_register(request):
         data_user = User(username=username,email=email,phone_number=phone_number,password=make_password(password),profile_image=profile_image)
         data_user.save()
         return redirect("login") 
-    return render (request,"register_user.html")
+    return render (request,"user/register_user.html")
 
 def user_login(request):
     if request.method == "POST":
@@ -36,16 +36,28 @@ def user_login(request):
             user = authenticate(request,username=user_obj.username,password=password)
             if user is not None:
                 login(request,user)
-                return redirect('profile')
+                return redirect('home')
             else:
                 messages.error(request,"invalid username or password")
-    return render(request,"user_login.html")
+    return render(request,"user/user_login.html")
 
 @login_required
 def user_profile(request):
     user = request.user
-    return render(request,'user_profile.html')
+    return render(request,'user/user_profile.html')
 
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+def user_home(request):
+    return render(request,'user/home.html')
+
+def user_wishlist(request):
+    return render(request,'user/wishlist.html')
+
+def user_cart(request):
+    return render(request,'user/cart.html')
+
+def user_orders(request):
+    return render(request,'user/myorders.html')

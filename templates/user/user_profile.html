@@ -19,12 +19,12 @@
 
     <nav class="glass sticky top-0 z-50 border-b border-violet-100">
         <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer">
                 <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg">
                     <i class="fa-solid fa-bag-shopping text-white"></i>
                 </div>
                 <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
-            </div>
+            </a>
             <div class="flex items-center gap-4">
                 <button class="p-3 rounded-2xl bg-violet-50 text-violet-600 hover:bg-violet-100 transition">
                     <i class="fa-solid fa-bell"></i>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | Cartivo Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        
+        /* Dropdown Animation */
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: slideUp 0.2s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdfaff; }
+        ::-webkit-scrollbar-thumb { background: #ddd6fe; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#fdfaff] text-slate-900">
+
+    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
+        ⚡ Super Sale: Extra 20% Off | Code: <span class="text-amber-300 underline cursor-pointer">VIOLET20</span>
+    </div>
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
+                        <i class="fa-solid fa-bag-shopping text-white"></i>
+                    </div>
+                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                </a>
+
+                <div class="hidden lg:flex flex-1 max-w-lg mx-12">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search your wishlist..." 
+                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
+                        <button class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
+                            <i class="fa-solid fa-magnifying-glass px-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
+                                <span class="text-sm font-bold text-slate-800">Jane Doe <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                            </div>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
+                            <div class="py-2">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold"><i class="fa-regular fa-user-circle w-5"></i> My Profile</a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-violet-700 bg-violet-50 font-bold"><i class="fa-solid fa-heart w-5"></i> Wishlist</a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition"><i class="fa-solid fa-box w-5"></i> Orders</a>
+                                <div class="border-t border-gray-50 my-1"></div>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition"><i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="cart.html" class="relative flex items-center gap-3 bg-white border border-violet-100 p-2 pr-5 rounded-2xl shadow-sm hover:border-violet-300 transition">
+                        <div class="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <span class="font-bold text-slate-800 text-sm tracking-tight">₹16,498</span>
+                        <span class="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">2</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+                <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                    <a href="index.html" class="hover:text-violet-600">Home</a>
+                    <span>/</span>
+                    <span class="text-violet-600">Wishlist</span>
+                </nav>
+                <h1 class="text-4xl font-extrabold text-slate-900">My <span class="text-violet-600">Wishlist</span> <span class="text-lg font-medium text-gray-400 ml-2">(4 Items)</span></h1>
+            </div>
+            <button class="flex items-center gap-2 bg-violet-100 text-violet-700 px-6 py-3 rounded-2xl font-bold hover:bg-violet-200 transition">
+                <i class="fa-solid fa-share-nodes"></i> Share Wishlist
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <div class="group relative bg-white rounded-[2.5rem] p-4 shadow-xl shadow-violet-100/50 border border-transparent hover:border-violet-200 transition-all duration-300">
+                <button class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/80 backdrop-blur-md text-gray-400 hover:text-rose-500 rounded-full flex items-center justify-center shadow-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-violet-50 mb-6">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute bottom-4 left-4 bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow-lg">
+                        ₹500 PRICE DROP
+                    </div>
+                </div>
+
+                <div class="px-2 pb-2">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight">Crimson Runner 2.0</h3>
+                    </div>
+                    <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-tighter">Performance Footwear</p>
+                    
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="text-2xl font-black text-slate-900">₹3,499</span>
+                        <span class="text-sm text-gray-400 line-through">₹3,999</span>
+                    </div>
+
+                    <button class="w-full violet-gradient text-white py-4 rounded-2xl font-bold shadow-lg shadow-violet-200 hover:scale-[1.02] transition active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="group relative bg-white rounded-[2.5rem] p-4 shadow-xl shadow-violet-100/50 border border-transparent hover:border-violet-200 transition-all duration-300">
+                <button class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/80 backdrop-blur-md text-gray-400 hover:text-rose-500 rounded-full flex items-center justify-center shadow-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-violet-50 mb-6">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="font-bold text-slate-800 text-lg leading-tight">Classic Silver Watch</h3>
+                    <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-tighter">Accessories</p>
+                    <div class="flex items-center gap-3 mb-5 text-2xl font-black text-slate-900">
+                        ₹12,999
+                    </div>
+                    <button class="w-full violet-gradient text-white py-4 rounded-2xl font-bold shadow-lg shadow-violet-200 hover:scale-[1.02] transition active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="group relative bg-white rounded-[2.5rem] p-4 shadow-xl shadow-violet-100/50 border border-transparent opacity-80 overflow-hidden">
+                <button class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/80 text-gray-400 rounded-full flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-gray-100 mb-6 grayscale">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-900/40 flex items-center justify-center">
+                        <span class="bg-white text-slate-900 px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest">Out of Stock</span>
+                    </div>
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="font-bold text-slate-800 text-lg leading-tight">Studio Pro Headphones</h3>
+                    <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-tighter">Audio</p>
+                    <div class="flex items-center gap-3 mb-5 text-2xl font-black text-slate-400">
+                        ₹6,999
+                    </div>
+                    <button class="w-full bg-slate-100 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">
+                        Notify Me
+                    </button>
+                </div>
+            </div>
+
+            <div class="group relative bg-white rounded-[2.5rem] p-4 shadow-xl shadow-violet-100/50 border border-transparent hover:border-violet-200 transition-all duration-300">
+                <button class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/80 text-gray-400 hover:text-rose-500 rounded-full flex items-center justify-center shadow-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-violet-50 mb-6">
+                    <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="font-bold text-slate-800 text-lg leading-tight">Summer Shades Gold</h3>
+                    <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-tighter">Eyewear</p>
+                    <div class="flex items-center gap-3 mb-5 text-2xl font-black text-slate-900">
+                        ₹1,899
+                    </div>
+                    <button class="w-full violet-gradient text-white py-4 rounded-2xl font-bold shadow-lg shadow-violet-200 hover:scale-[1.02] transition active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20 p-12 bg-violet-50 rounded-[3rem] border-2 border-dashed border-violet-200 text-center">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-violet-600 text-2xl mx-auto mb-6 shadow-sm">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <h3 class="text-xl font-bold text-violet-900 mb-2">Looking for more?</h3>
+            <p class="text-violet-600/70 mb-8 max-w-md mx-auto">Items stay in your wishlist for 30 days. Add them to your cart before they sell out!</p>
+            <a href="index.html" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-violet-700 transition-all shadow-xl shadow-violet-200">
+                Continue Shopping <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | Cartivo Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .order-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .order-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgb(124 58 237 / 0.1); }
+        
+        /* Dropdown Animation */
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: slideUp 0.2s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#fdfaff] text-slate-900">
+
+    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
+        📦 Free Express Shipping on all orders above ₹5,000
+    </div>
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
+                        <i class="fa-solid fa-bag-shopping text-white"></i>
+                    </div>
+                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                </a>
+
+                <div class="hidden lg:flex flex-1 max-w-lg mx-12">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search your orders..." 
+                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm font-medium">
+                        <button class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
+                            <i class="fa-solid fa-magnifying-glass px-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-8 h-8 rounded-lg object-cover">
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
+                                <span class="text-sm font-bold text-slate-800">Alex G. <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                            </div>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
+                            <div class="py-2">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 transition font-semibold"><i class="fa-regular fa-user-circle w-5"></i> My Profile</a>
+                                <a href="wishlist.html" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 transition"><i class="fa-regular fa-heart w-5"></i> Wishlist</a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-violet-700 bg-violet-50 font-bold"><i class="fa-solid fa-box w-5"></i> Orders</a>
+                                <div class="border-t border-gray-50 my-1"></div>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition"><i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-10">
+        <div class="mb-10">
+            <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                <a href="index.html" class="hover:text-violet-600">Home</a>
+                <span>/</span>
+                <span class="text-violet-600">Orders</span>
+            </nav>
+            <h1 class="text-4xl font-extrabold text-slate-900">Purchase <span class="text-violet-600">History</span></h1>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/4">
+                <div class="bg-white p-6 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50 sticky top-28">
+                    <h3 class="text-lg font-extrabold mb-6 flex items-center justify-between">
+                        Filters <i class="fa-solid fa-sliders text-violet-600 text-sm"></i>
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-4">Order Status</p>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-violet-600 focus:ring-violet-500" checked>
+                                    <span class="text-sm font-bold text-slate-700 group-hover:text-violet-600">On the way</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-violet-600 focus:ring-violet-500">
+                                    <span class="text-sm font-bold text-slate-700 group-hover:text-violet-600">Delivered</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="w-5 h-5 rounded border-gray-300 text-violet-600 focus:ring-violet-500">
+                                    <span class="text-sm font-bold text-slate-700 group-hover:text-violet-600">Cancelled</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-4">Time Period</p>
+                            <select class="w-full bg-violet-50 border-none rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200">
+                                <option>Last 30 Days</option>
+                                <option>Last 6 Months</option>
+                                <option>2025</option>
+                                <option>2024</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-3/4 space-y-6">
+                
+                <div class="bg-white rounded-[2.5rem] border border-violet-100 shadow-sm overflow-hidden order-card">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
+                        <div class="w-32 h-32 bg-violet-50 rounded-[2rem] overflow-hidden flex-shrink-0 p-2">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=300" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-amber-100 text-amber-700 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">Arriving Wednesday</span>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">ID: #CRT-99201</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-1">Crimson Runner 2.0 Premium</h3>
+                            <p class="text-sm text-gray-500 mb-4 font-medium">Size: 10 | Color: Racing Red</p>
+                            <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-2xl inline-flex">
+                                <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                                <span class="text-xs font-bold text-slate-700">In Transit - Out for delivery in Bangalore Hub</span>
+                            </div>
+                        </div>
+                        <div class="flex md:flex-col justify-between items-end gap-4 min-w-[120px]">
+                            <span class="text-2xl font-black text-slate-900">₹3,499</span>
+                            <button class="w-full bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-violet-700 transition shadow-lg shadow-violet-100">
+                                Track Order
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-violet-50/50 px-8 py-4 flex justify-between items-center border-t border-violet-50">
+                        <div class="flex gap-6">
+                            <button class="text-xs font-bold text-violet-700 hover:text-violet-900 transition flex items-center gap-2"><i class="fa-solid fa-file-arrow-down"></i> Download Invoice</button>
+                            <button class="text-xs font-bold text-gray-500 hover:text-slate-800 transition">Get Help</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden order-card opacity-90">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
+                        <div class="w-32 h-32 bg-gray-50 rounded-[2rem] overflow-hidden flex-shrink-0 p-2 grayscale">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=300" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-emerald-100 text-emerald-700 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">Delivered Feb 10</span>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">ID: #CRT-98442</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-1">Minimalist Silver Watch</h3>
+                            <p class="text-sm text-gray-500 mb-4 font-medium">Edition: Limited Silver</p>
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                                <span class="text-xs font-bold text-emerald-600 ml-2">You rated this 5 stars</span>
+                            </div>
+                        </div>
+                        <div class="flex md:flex-col justify-between items-end gap-4 min-w-[120px]">
+                            <span class="text-2xl font-black text-slate-900">₹2,499</span>
+                            <button class="w-full bg-white border-2 border-violet-100 text-violet-700 px-6 py-3 rounded-xl font-bold text-sm hover:bg-violet-50 transition">
+                                Buy it Again
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50/50 px-8 py-4 flex justify-between items-center border-t border-gray-100">
+                        <div class="flex gap-6">
+                            <button class="text-xs font-bold text-gray-600 hover:text-rose-600 transition flex items-center gap-2"><i class="fa-solid fa-rotate-left"></i> Return Item</button>
+                            <button class="text-xs font-bold text-gray-600 hover:text-slate-800 transition">Exchange</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-10 bg-violet-50 rounded-[3rem] border-2 border-dashed border-violet-200 text-center">
+                    <p class="text-violet-600/70 font-bold text-sm uppercase tracking-widest mb-4">Done reviewing your orders?</p>
+                    <a href="index.html" class="inline-flex items-center gap-3 bg-violet-600 text-white px-10 py-4 rounded-2xl font-extrabold hover:bg-violet-700 transition shadow-xl shadow-violet-200">
+                        Continue Shopping <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 text-center text-gray-400 text-xs font-medium">
+        Showing last 6 months of orders. <a href="#" class="text-violet-600 font-bold hover:underline">View Archive</a>
+    </footer>
+
+</body>
+</html>

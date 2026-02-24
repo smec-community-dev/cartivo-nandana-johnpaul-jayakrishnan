@@ -64,27 +64,30 @@
                         <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
                             <div class="p-4 border-b border-gray-50 bg-violet-50/30">
                                 <p class="text-xs text-gray-500 font-semibold">Welcome to Cartivo</p>
-                                <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
+                                <form method="POST" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
+                                </form>
                             </div>
                             <div class="py-2">
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
+                                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
                                     <i class="fa-regular fa-user-circle w-5"></i> My Profile
                                 </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="{% url 'wishlist' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-regular fa-heart w-5"></i> Wishlist
                                 </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="{% url 'cart' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-solid fa-cart-shopping w-5"></i> My Cart
                                 </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="{% url 'myorders' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-solid fa-box w-5"></i> Orders
                                 </a>
                             </div>
-                            <div class="border-t border-gray-50 py-2">
+                            <!-- <div class="border-t border-gray-50 py-2">
                                 <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
                                     <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
