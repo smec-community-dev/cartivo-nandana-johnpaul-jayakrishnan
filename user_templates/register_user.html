@@ -54,7 +54,7 @@
                 <p class="text-gray-500 text-sm">Already have an account? <a href="{% url 'login' %}" class="text-violet-600 font-bold hover:underline">Log in</a></p>
             </div>
 
-            <form class="space-y-5" method="POST" action="{% url 'register' %}">
+            <form class="space-y-5" method="POST" enctype="multipart/form-data" action="{% url 'register' %}">
                 {% csrf_token %}
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Full Name</label>

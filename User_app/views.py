@@ -12,7 +12,7 @@ def user_register(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_number")
         password = request.POST.get('password')
-        profile_image=request.POST.get('profile_image')
+        profile_image=request.FILES.get('profile_image')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists")

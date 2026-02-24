@@ -29,7 +29,7 @@
                 <button class="p-3 rounded-2xl bg-violet-50 text-violet-600 hover:bg-violet-100 transition">
                     <i class="fa-solid fa-bell"></i>
                 </button>
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full border-2 border-violet-200">
+                <img src="{{ user.profile_image.url }}" class="w-10 h-10 rounded-full border-2 border-violet-200">
             </div>
         </div>
     </nav>   
@@ -41,7 +41,7 @@
                 <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50">
                     <div class="flex flex-col items-center text-center mb-8">
                         <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
+                            <img src="{{ user.profile_image.url }}" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
                             <button class="absolute bottom-4 right-0 bg-violet-600 text-white p-2 rounded-lg shadow-lg hover:scale-110 transition">
                                 <i class="fa-solid fa-camera text-xs"></i>
                             </button>
@@ -115,15 +115,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Full Name</label>
-                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">Alex Grayson</div>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">{{ user.username }}</div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Email Address</label>
-                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">alex.grayson@example.com</div>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">{{ user.email }}</div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Phone Number</label>
-                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">+91 98765 43210</div>
+                            <div class="p-4 bg-violet-50/50 rounded-2xl font-bold text-slate-700 border border-transparent">{{ user.phone_number }}</div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Gender</label>

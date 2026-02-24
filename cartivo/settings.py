@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'Seller_app',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -119,6 +119,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'user_media'
 
 AUTH_USER_MODEL = 'Core_app.User'
 

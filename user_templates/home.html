@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartivo | Luxury Shopping Redefined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        
+        /* Dropdown Hover Animation */
+        .group:hover .dropdown-menu {
+            display: block;
+            animation: slideUp 0.2s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#fdfaff] text-slate-900">
+
+    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
+        ⚡ Super Sale: Extra 20% Off | Code: <span class="text-amber-300 underline cursor-pointer">VIOLET20</span>
+    </div>
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
+                        <i class="fa-solid fa-bag-shopping text-white"></i>
+                    </div>
+                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                </div>
+
+                <div class="hidden lg:flex flex-1 max-w-lg mx-12">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search premium products..." 
+                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
+                        <button class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
+                            <i class="fa-solid fa-magnifying-glass px-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
+                                <span class="text-sm font-bold text-slate-800">Login <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                            </div>
+                        </button>
+
+                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
+                            <div class="p-4 border-b border-gray-50 bg-violet-50/30">
+                                <p class="text-xs text-gray-500 font-semibold">Welcome to Cartivo</p>
+                                <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
+                            </div>
+                            <div class="py-2">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
+                                    <i class="fa-regular fa-user-circle w-5"></i> My Profile
+                                </a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                    <i class="fa-regular fa-heart w-5"></i> Wishlist
+                                </a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                    <i class="fa-solid fa-cart-shopping w-5"></i> My Cart
+                                </a>
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                    <i class="fa-solid fa-box w-5"></i> Orders
+                                </a>
+                            </div>
+                            <div class="border-t border-gray-50 py-2">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
+                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="relative group flex items-center gap-3 bg-violet-600 p-2 pr-5 rounded-2xl shadow-lg shadow-violet-200 transition hover:scale-105">
+                        <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <span class="font-bold text-white text-sm tracking-tight">₹0.00</span>
+                        <span class="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white/50 border-t border-violet-50">
+            <div class="max-w-7xl mx-auto px-4 overflow-x-auto no-scrollbar">
+                <div class="flex items-center gap-8 py-3 whitespace-nowrap text-sm font-semibold text-slate-600">
+                    <a href="#" class="text-violet-700 flex items-center gap-2"><i class="fa-solid fa-bolt"></i> Flash Deals</a>
+                    <a href="#" class="hover:text-violet-600 transition">Mobiles</a>
+                    <a href="#" class="hover:text-violet-600 transition">Electronics</a>
+                    <a href="#" class="hover:text-violet-600 transition">Men's Fashion</a>
+                    <a href="#" class="hover:text-violet-600 transition">Women's Fashion</a>
+                    <a href="#" class="hover:text-violet-600 transition">Home & Kitchen</a>
+                    <a href="#" class="hover:text-violet-600 transition">Beauty</a>
+                    <a href="#" class="hover:text-violet-600 transition">Groceries</a>
+                    <a href="#" class="hover:text-violet-600 transition">Appliances</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="max-w-7xl mx-auto px-4 py-8">
+        <div class="relative rounded-[2.5rem] overflow-hidden violet-gradient h-[500px] shadow-2xl shadow-violet-200">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2070" 
+                 class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30">
+            <div class="relative h-full flex items-center px-12 md:px-24">
+                <div class="max-w-2xl text-white">
+                    <h4 class="text-amber-400 font-bold tracking-[0.3em] uppercase mb-4 text-sm">Season 2026</h4>
+                    <h1 class="text-6xl md:text-7xl font-extrabold mb-8 leading-tight">Elite Tech & <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-200 to-rose-200">Streetwear</span></h1>
+                    <div class="flex flex-wrap gap-5">
+                        <button class="bg-white text-violet-900 px-10 py-5 rounded-2xl font-bold shadow-xl hover:scale-105 transition duration-300">Shop Now</button>
+                        <button class="bg-violet-500/30 backdrop-blur-md border border-violet-400/50 text-white px-10 py-5 rounded-2xl font-bold hover:bg-violet-500/50 transition">Latest Offers</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-3xl font-extrabold text-slate-900">Today's <span class="text-violet-600 underline decoration-rose-400 decoration-4 underline-offset-8">Epic Deals</span></h2>
+            <div class="flex items-center gap-2 text-rose-500 font-bold bg-rose-50 px-4 py-2 rounded-xl border border-rose-100">
+                <i class="fa-solid fa-clock"></i>
+                <span>Ends In: 04:22:10</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="group relative bg-white p-4 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50 overflow-hidden flex gap-5 hover:border-violet-300 transition">
+                <div class="w-1/3 aspect-square rounded-2xl overflow-hidden bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1546868831-d1be12bcc33b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="w-2/3 flex flex-col justify-center">
+                    <span class="text-rose-500 font-bold text-xs bg-rose-50 self-start px-2 py-1 rounded-lg mb-2">Save 60%</span>
+                    <h3 class="font-bold text-slate-800 mb-1 truncate">Elite Smart Watch v4</h3>
+                    <div class="text-xl font-black text-violet-700">₹1,299 <span class="text-sm font-normal text-gray-400 line-through ml-2">₹4,999</span></div>
+                    <div class="w-full bg-gray-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-violet-600 h-full w-[85%]"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1 uppercase font-bold tracking-tighter">85% Sold</p>
+                </div>
+            </div>
+
+            <div class="group relative bg-white p-4 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50 overflow-hidden flex gap-5 hover:border-violet-300 transition">
+                <div class="w-1/3 aspect-square rounded-2xl overflow-hidden bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="w-2/3 flex flex-col justify-center">
+                    <span class="text-rose-500 font-bold text-xs bg-rose-50 self-start px-2 py-1 rounded-lg mb-2">Best Deal</span>
+                    <h4 class="font-bold text-slate-800 mb-1 truncate">Nordic Lounge Chair</h4>
+                    <div class="text-xl font-black text-violet-700">₹8,499 <span class="text-sm font-normal text-gray-400 line-through ml-2">₹15k</span></div>
+                    <div class="w-full bg-gray-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-violet-600 h-full w-[40%]"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1 uppercase font-bold tracking-tighter">40% Sold</p>
+                </div>
+            </div>
+
+            <div class="group relative bg-white p-4 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50 overflow-hidden flex gap-5 hover:border-violet-300 transition">
+                <div class="w-1/3 aspect-square rounded-2xl overflow-hidden bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="w-2/3 flex flex-col justify-center">
+                    <span class="text-rose-500 font-bold text-xs bg-rose-50 self-start px-2 py-1 rounded-lg mb-2">Limited</span>
+                    <h3 class="font-bold text-slate-800 mb-1 truncate">Pro Studio Headphones</h3>
+                    <div class="text-xl font-black text-violet-700">₹2,199 <span class="text-sm font-normal text-gray-400 line-through ml-2">₹5,999</span></div>
+                    <div class="w-full bg-gray-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-violet-600 h-full w-[15%]"></div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-1 uppercase font-bold tracking-tighter">Selling Fast</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-10 text-center">Featured Essentials</h2>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="group cursor-pointer">
+                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <i class="fa-solid fa-cart-plus font-bold"></i>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Crimson Runner 2.0</h3>
+                <p class="text-gray-500 text-sm mb-2">Performance Footwear</p>
+                <div class="text-xl font-extrabold text-violet-900">₹3,499</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <i class="fa-solid fa-cart-plus font-bold"></i>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Minimalist Watch</h3>
+                <p class="text-gray-500 text-sm mb-2">Accessories</p>
+                <div class="text-xl font-extrabold text-violet-900">₹2,499</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <i class="fa-solid fa-cart-plus font-bold"></i>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Studio Headphones</h3>
+                <p class="text-gray-500 text-sm mb-2">Electronics</p>
+                <div class="text-xl font-extrabold text-violet-900">₹6,999</div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1585333127302-d29213143bc3?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <i class="fa-solid fa-cart-plus font-bold"></i>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">DSLR Pro Kit</h3>
+                <p class="text-gray-500 text-sm mb-2">Photography</p>
+                <div class="text-xl font-extrabold text-violet-900">₹45,999</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white pt-24 pb-12 rounded-t-[3rem]">
+        <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-1">
+                <span class="text-3xl font-extrabold text-violet-400 tracking-tight">CARTIVO.</span>
+                <p class="mt-6 text-gray-400 font-light leading-relaxed">Elevating the shopping experience across India with curated quality and elite service.</p>
+            </div>
+            <div>
+                <h5 class="font-bold mb-6 text-violet-200 uppercase text-xs tracking-widest">Shop By</h5>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">New Arrivals</a></li>
+                    <li><a href="#" class="hover:text-white transition">Gadgets</a></li>
+                    <li><a href="#" class="hover:text-white transition">Fashion</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold mb-6 text-violet-200 uppercase text-xs tracking-widest">Company</h5>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Track Order</a></li>
+                    <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                </ul>
+            </div>
+            <div class="bg-violet-800/20 p-8 rounded-3xl border border-violet-500/20">
+                <h5 class="font-bold mb-4">Newsletter</h5>
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Email" class="bg-slate-800 border-none rounded-xl px-4 py-2 w-full focus:ring-2 focus:ring-violet-500 outline-none text-sm">
+                    <button class="bg-violet-600 px-4 py-2 rounded-xl hover:bg-violet-700 transition"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-20 text-gray-500 text-xs tracking-widest uppercase font-bold">
+            &copy; 2026 Cartivo India | Luxury at your doorstep
+        </div>
+    </footer>
+</body>
+</html>
