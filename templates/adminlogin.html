@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Cartivo Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .admin-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        .blue-glow { box-shadow: 0 0 20px rgba(56, 189, 248, 0.15); }
+        .input-focus:focus { border-color: #38bdf8 !important; outline: none; background: white !important; }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-5xl w-full grid lg:grid-cols-2 bg-white rounded-[3rem] shadow-2xl overflow-hidden min-h-[700px]">
+        
+        <div class="hidden lg:flex admin-gradient p-12 flex-col justify-between relative">
+            <div>
+                <h1 class="text-3xl font-black text-white tracking-tighter italic">CARTIVO<span class="text-sky-400">.</span></h1>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">Internal Administration</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+            <div class="relative z-10">
+                <div class="bg-white/5 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/10 blue-glow">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-sky-500/20 text-sky-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-sky-400 font-black uppercase tracking-widest leading-none">Secure Access</p>
+                            <p class="text-xl font-bold text-white tracking-tight">System Infrastructure</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed font-medium">
+                        Authorized personnel only. All access attempts and system activities are logged and monitored under protocol 8.4.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                System Version 4.0.2-Stable
+            </div>
+
+            <div class="absolute top-[-10%] right-[-10%] w-64 h-64 bg-sky-500/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="p-8 md:p-16 flex flex-col justify-center">
+            <div class="mb-10 text-center lg:text-left">
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Admin Terminal</h2>
+                <p class="text-gray-400 font-bold mt-2">Enter credentials to initialize session</p>
+            </div>
+
+            <form class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Administrator Username</label>
+                    <div class="relative group">
+                        <i class="fa-solid fa-user-shield absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-sky-500 transition"></i>
+                        <input type="text" placeholder="admin_root" name="username" class="w-full bg-gray-50 border-2 border-transparent input-focus p-5 pl-14 rounded-2xl font-bold text-slate-800 transition">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Master Key</label>
+                    </div>
+                    <div class="relative group">
+                        <i class="fa-solid fa-fingerprint absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-sky-500 transition"></i>
+                        <input type="password" placeholder="••••••••••••" name="password" class="w-full bg-gray-50 border-2 border-transparent input-focus p-5 pl-14 rounded-2xl font-bold text-slate-800 tracking-[0.3em] transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between py-2">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-sky-500 focus:ring-sky-500">
+                        <span class="text-xs font-bold text-slate-500">Restrict session to this IP</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 text-white py-6 rounded-3xl font-black shadow-xl shadow-slate-200 hover:bg-sky-600 transition-all duration-300 uppercase tracking-[0.2em] text-sm">
+                    Authenticate & Enter
+                </button>
+            </form>
+
+            <div class="mt-12 flex items-center justify-center gap-4 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">
+                <span>2FA Enabled</span>
+                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                <span>Encrypted</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+</body>
+
+</html>

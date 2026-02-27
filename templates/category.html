@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Category | Cartivo</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {
+    background-color: #f4f6fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+.sidebar {
+    height: 100vh;
+    background: linear-gradient(180deg,#0f1c3f,#0a122b);
+    color: white;
+    padding: 25px 15px;
+    position: fixed;
+    width: 250px;
+}
+.sidebar .nav-link {
+    color: #cbd3ff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    background-color: #2d4ac7;
+    color: white;
+}
+.main-content {
+    margin-left: 260px;
+    padding: 30px;
+}
+.stat-card {
+    border-radius: 15px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 25px;
+}
+.btn-primary {
+    background-color: #2d4ac7;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #1f37a5;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h4>CARTIVO.</h4>
+    <p class="small text-muted">SYSTEM CONTROLLER</p>
+
+    <nav class="nav flex-column mt-4">
+        <a class="nav-link" href="#">Infrastructure</a>
+        <a class="nav-link" href="#">Merchant Approvals</a>
+        <a class="nav-link active" href="#">Categories</a>
+        <a class="nav-link" href="#">Platform Health</a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <h2 class="fw-bold">Category Management</h2>
+    <p class="text-muted">Manage platform product categories.</p>
+
+    <!-- Category Table -->
+    <div class="table-container">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold">Category List</h5>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <i class="fa fa-plus"></i> Add Category
+            </button>
+        </div>
+
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td>
+                        {% if category.is_active %}
+                        <span class="badge bg-success">Active</span>
+                        {% else %}
+                        <span class="badge bg-danger">Disabled</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No categories found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 🔥 IMPORTANT PART -->
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Category Name</label>
+                <input type="text" 
+                       class="form-control" 
+                       name="name" 
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" 
+                          name="description" 
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Save Category
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
