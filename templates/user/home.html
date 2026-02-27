@@ -56,18 +56,24 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div class="text-left leading-none">
+                                {% if user.is_authenticated %}
                                 <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
+                                {% else %}
                                 <span class="text-sm font-bold text-slate-800">Login <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                                {% endif %}
                             </div>
                         </button>
 
                         <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
                             <div class="p-4 border-b border-gray-50 bg-violet-50/30">
                                 <p class="text-xs text-gray-500 font-semibold">Welcome to Cartivo</p>
-                                <form method="POST" action="{% url 'login' %}">
-                                    {% csrf_token %}
-                                    <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
-                                </form>
+                                {% if user.is_authenticated %}
+                                <div class="border-t border-gray-50 py-2">
+                                <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
+                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
+                                </a>
+                            </div>
+
                             </div>
                             <div class="py-2">
                                 <a href="{% url 'profile' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
@@ -82,12 +88,15 @@
                                 <a href="{% url 'myorders' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-solid fa-box w-5"></i> Orders
                                 </a>
+                                {% else %}
+                                <form method="POST" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
+                                </form>
+                                {% endif %}
                             </div>
-                            <!-- <div class="border-t border-gray-50 py-2">
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
-                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
-                                </a>
-                            </div> -->
+                            
+                            
                         </div>
                     </div>
 
@@ -196,53 +205,50 @@
     <section class="max-w-7xl mx-auto px-4 py-16">
         <h2 class="text-3xl font-extrabold text-slate-900 mb-10 text-center">Featured Essentials</h2>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-10">
-            <div class="group cursor-pointer">
-                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        <i class="fa-solid fa-cart-plus font-bold"></i>
-                    </button>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Crimson Runner 2.0</h3>
-                <p class="text-gray-500 text-sm mb-2">Performance Footwear</p>
-                <div class="text-xl font-extrabold text-violet-900">₹3,499</div>
-            </div>
+            
+            {% for product in products %}
+            {% with variant=product.variants.first %}
+            {% if variant %}
+            
+            <a href="{% url 'product_view' product.id %}">
+                <div class="group cursor-pointer">
+                    
+                    <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
+                        
+                        {% if variant.images.first %}
+                            <img src="{{ variant.images.first.product_images.url }}" 
+                                class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        {% else %}
+                            <img src="/media/default.jpg"
+                                class="w-full h-full object-cover">
+                        {% endif %}
+                        
+                        <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                            <i class="fa-solid fa-cart-plus font-bold"></i>
+                        </button>
+                    </div>
 
-            <div class="group cursor-pointer">
-                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        <i class="fa-solid fa-cart-plus font-bold"></i>
-                    </button>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Minimalist Watch</h3>
-                <p class="text-gray-500 text-sm mb-2">Accessories</p>
-                <div class="text-xl font-extrabold text-violet-900">₹2,499</div>
-            </div>
+                    <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">
+                        {{ product.name }}
+                    </h3>
 
-            <div class="group cursor-pointer">
-                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        <i class="fa-solid fa-cart-plus font-bold"></i>
-                    </button>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">Studio Headphones</h3>
-                <p class="text-gray-500 text-sm mb-2">Electronics</p>
-                <div class="text-xl font-extrabold text-violet-900">₹6,999</div>
-            </div>
+                    <p class="text-gray-500 text-sm mb-2">
+                        {{ product.description|truncatechars:60 }}
+                    </p>
 
-            <div class="group cursor-pointer">
-                <div class="relative bg-violet-50 rounded-[2rem] aspect-[4/5] mb-6 overflow-hidden shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1585333127302-d29213143bc3?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <button class="absolute bottom-6 right-6 bg-white w-12 h-12 rounded-2xl flex items-center justify-center text-violet-600 shadow-xl opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        <i class="fa-solid fa-cart-plus font-bold"></i>
-                    </button>
+                    <div class="text-xl font-extrabold text-violet-900">
+                        ₹{{ variant.selling_price }}
+                        <span class="text-sm font-normal text-gray-400 line-through ml-2">
+                            ₹{{ variant.mrp }}
+                        </span>
+                    </div>
+
                 </div>
-                <h3 class="font-bold text-lg text-slate-800 group-hover:text-violet-700 transition">DSLR Pro Kit</h3>
-                <p class="text-gray-500 text-sm mb-2">Photography</p>
-                <div class="text-xl font-extrabold text-violet-900">₹45,999</div>
-            </div>
+            </a>
+
+            {% endif %}
+            {% endwith %}
+            {% endfor %}
         </div>
     </section>
 

@@ -4,8 +4,12 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .models import User
+from User_app.decorators import customer_required
+from Seller_app.models import Product,ProductImage,ProductVariant,VariantAttributeBridge
+
 
 # Create your views here.
+
 def user_register(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -46,18 +50,36 @@ def user_profile(request):
     user = request.user
     return render(request,'user/user_profile.html')
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('login')
 
 def user_home(request):
-    return render(request,'user/home.html')
+    products = Product.objects.prefetch_related('variants__images').filter(is_active=True, approval_status='APPROVED')
+    return render(request,'user/home.html',{'products':products})
 
+@login_required
 def user_wishlist(request):
     return render(request,'user/wishlist.html')
 
+@login_required
 def user_cart(request):
     return render(request,'user/cart.html')
 
+@login_required
 def user_orders(request):
     return render(request,'user/myorders.html')
+
+@login_required
+def user_address(request):
+    return render(request,'user/add_address.html')
+
+@login_required
+def user_payment_method(request):
+    return render(request,'user/payment_add.html')
+
+@login_required
+def user_product_view(request,id):
+    variant = ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
+    return render(request,'user/product_view.html',{'variant':variant})

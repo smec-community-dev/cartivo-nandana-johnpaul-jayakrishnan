@@ -92,7 +92,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
                 <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
-                    <a href="index.html" class="hover:text-violet-600">Home</a>
+                    <a href="/user/home/" class="hover:text-violet-600">Home</a>
                     <span>/</span>
                     <span class="text-violet-600">Wishlist</span>
                 </nav>
@@ -202,7 +202,7 @@
             </div>
             <h3 class="text-xl font-bold text-violet-900 mb-2">Looking for more?</h3>
             <p class="text-violet-600/70 mb-8 max-w-md mx-auto">Items stay in your wishlist for 30 days. Add them to your cart before they sell out!</p>
-            <a href="index.html" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-violet-700 transition-all shadow-xl shadow-violet-200">
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-violet-700 transition-all shadow-xl shadow-violet-200">
                 Continue Shopping <i class="fa-solid fa-arrow-right ml-2"></i>
             </a>
         </div>

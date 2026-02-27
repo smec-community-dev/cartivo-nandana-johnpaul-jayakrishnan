@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Addresses | Cartivo Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            scroll-behavior: smooth; 
+            background-color: #fdfaff;
+        }
+
+        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        
+        /* Address Card Animations */
+        .address-card { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 2px solid transparent; 
+        }
+        .address-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 30px 60px -12px rgba(124, 58, 237, 0.15); 
+        }
+        .address-card.active { 
+            border-color: #7c3aed; 
+            background: white; 
+        }
+
+        /* Dropdown Menu Animation */
+        .group:hover .dropdown-menu { 
+            display: block; 
+            animation: slideUp 0.25s ease-out; 
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Transitions */
+        .modal-animate {
+            animation: modalIn 0.3s ease-out;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <div class="bg-violet-900 text-violet-100 text-center py-2.5 text-[10px] font-black tracking-[0.2em] uppercase">
+        ✨ Free Express Shipping on all luxury orders above ₹5,000
+    </div>
+
+    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="{% url 'home' %}" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200 transition-transform group-hover:rotate-12">
+                        <i class="fa-solid fa-bag-shopping text-white"></i>
+                    </div>
+                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                </a>
+
+                <div class="flex items-center gap-6">
+                    <div class="relative group">
+                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" class="w-8 h-8 rounded-lg object-cover">
+                            <div class="text-left leading-none">
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Member</span>
+                                <span class="text-sm font-bold text-slate-800">Alex G. <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
+                            </div>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 mt-3 w-60 bg-white rounded-[2rem] shadow-2xl border border-violet-50 overflow-hidden z-[60]">
+                            <div class="p-2">
+                                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-5 py-3 text-sm text-slate-700 hover:bg-violet-50 transition font-semibold rounded-xl">
+                                    <i class="fa-regular fa-user-circle w-5 text-violet-500"></i> My Profile
+                                </a>
+                                <a href="{% url 'myorders' %}" class="flex items-center gap-3 px-5 py-3 text-sm text-slate-700 hover:bg-violet-50 transition font-semibold rounded-xl">
+                                    <i class="fa-solid fa-box w-5 text-violet-500"></i> My Orders
+                                </a>
+                                <a href="{% url 'address' %}" class="flex items-center gap-3 px-5 py-3 text-sm text-violet-700 bg-violet-50 font-bold rounded-xl">
+                                    <i class="fa-solid fa-location-dot w-5"></i> Saved Addresses
+                                </a>
+                                <div class="border-t border-gray-50 my-2"></div>
+                                <a href="{% url 'logout' %}" class="flex items-center gap-3 px-5 py-3 text-sm text-rose-600 hover:bg-rose-50 transition font-bold rounded-xl">
+                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> logOut
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+            <div>
+                <nav class="flex text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 gap-2">
+                    <a href="{% url 'home' %}" class="hover:text-violet-600 transition">Home</a>
+                    <span>/</span>
+                    <a href="{% url 'profile' %}" class="hover:text-violet-600 transition">Profile</a>
+                    <span>/</span>
+                    <span class="text-violet-600">Addresses</span>
+                </nav>
+                <h1 class="text-5xl font-extrabold text-slate-900 tracking-tighter">Delivery <span class="text-violet-600">Hub</span></h1>
+                <p class="text-slate-500 font-medium mt-2">Manage your premium delivery locations for a faster checkout.</p>
+            </div>
+            
+            <button onclick="toggleModal('addressModal')" class="group flex items-center gap-3 bg-slate-900 text-white px-8 py-4.5 rounded-[2rem] font-bold hover:bg-violet-600 transition shadow-2xl shadow-slate-200 active:scale-95">
+                <i class="fa-solid fa-plus text-xs group-hover:rotate-90 transition-transform"></i> Add New Address
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="address-card active bg-white p-8 rounded-[3rem] shadow-xl shadow-violet-100/40 relative">
+                <div class="absolute top-8 right-8 bg-violet-600 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-violet-200">
+                    Default
+                </div>
+                
+                <div class="w-14 h-14 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center mb-8">
+                    <i class="fa-solid fa-briefcase text-2xl"></i>
+                </div>
+
+                <div class="mb-8">
+                    <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-1">Office / Work</p>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Alex Grayson</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-4 leading-relaxed">
+                        Level 4, Prestige Tech Park,<br>
+                        Marathahalli Junction, ORR,<br>
+                        Bengaluru, KA - 560103
+                    </p>
+                    <div class="mt-6 flex items-center gap-3 text-slate-400">
+                        <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <span class="font-bold text-slate-700 text-sm">+91 98765 43210</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6 pt-8 border-t border-slate-50">
+                    <button class="text-xs font-black text-violet-600 hover:underline uppercase tracking-widest">Edit Details</button>
+                    <button onclick="toggleModal('deleteModal')" class="text-xs font-black text-gray-300 hover:text-rose-500 transition uppercase tracking-widest">Remove</button>
+                </div>
+            </div>
+
+            <div class="address-card bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm relative group">
+                <div class="w-14 h-14 bg-slate-50 text-slate-400 group-hover:bg-violet-50 group-hover:text-violet-600 transition-colors rounded-2xl flex items-center justify-center mb-8">
+                    <i class="fa-solid fa-house text-2xl"></i>
+                </div>
+
+                <div class="mb-8">
+                    <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-1">Residence</p>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Alex Grayson</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-4 leading-relaxed">
+                        Apartment 12C, Skyview Residences,<br>
+                        Indiranagar 100ft Road,<br>
+                        Bengaluru, KA - 560038
+                    </p>
+                    <div class="mt-6 flex items-center gap-3 text-slate-400">
+                        <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-xs text-slate-400">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <span class="font-bold text-slate-700 text-sm">+91 98765 43210</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6 pt-8 border-t border-slate-50">
+                    <button class="text-xs font-black text-violet-600 hover:underline uppercase tracking-widest">Edit Details</button>
+                    <button onclick="toggleModal('deleteModal')" class="text-xs font-black text-gray-300 hover:text-rose-500 transition uppercase tracking-widest">Remove</button>
+                    <button class="ml-auto text-[9px] font-black text-slate-400 hover:text-violet-600 uppercase tracking-widest">Set Default</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="mt-32 bg-white border-t border-violet-100">
+        <div class="max-w-7xl mx-auto px-4 pt-20 pb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+                <div class="space-y-8">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="w-8 h-8 violet-gradient rounded-lg flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-bag-shopping text-white text-xs"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
+                    </a>
+                    <p class="text-slate-500 text-sm leading-relaxed font-medium italic">
+                        "Redefining the digital shopping experience through curated luxury and effortless elegance."
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center hover:bg-violet-600 hover:text-white transition-all"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Collections</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Premium Footwear</a></li>
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Luxury Watches</a></li>
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Designer Apparel</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Assistance</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Order Tracking</a></li>
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Shipping Policy</a></li>
+                        <li><a href="#" class="text-sm font-bold text-slate-600 hover:text-violet-600 transition">Returns Hub</a></li>
+                    </ul>
+                </div>
+
+                <div class="bg-violet-50/50 p-8 rounded-[2.5rem] border border-violet-100">
+                    <h4 class="text-sm font-black text-slate-900 mb-2">Join the Inner Circle</h4>
+                    <p class="text-xs text-slate-500 font-medium mb-6">Exclusive access to drops and private sales.</p>
+                    <div class="relative">
+                        <input type="email" placeholder="Email Address" class="w-full bg-white border-none p-4 pr-12 rounded-2xl text-xs font-bold outline-none focus:ring-4 focus:ring-violet-100 transition">
+                        <button class="absolute right-2 top-2 bg-slate-900 text-white w-8 h-8 rounded-xl flex items-center justify-center hover:bg-violet-600 transition shadow-lg">
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">© 2026 CARTIVO RETAIL GROUP. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-8 text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                    <a href="#" class="hover:text-violet-600">Privacy</a>
+                    <a href="#" class="hover:text-violet-600">Terms</a>
+                    <a href="#" class="hover:text-violet-600">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="addressModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="toggleModal('addressModal')"></div>
+        <div class="relative bg-white w-full max-w-xl rounded-[3rem] shadow-2xl overflow-hidden modal-animate">
+            <div class="violet-gradient p-10 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl font-extrabold mb-1">New Location</h2>
+                        <p class="text-violet-100/70 font-medium">Add a new destination for your deliveries.</p>
+                    </div>
+                    <button onclick="toggleModal('addressModal')" class="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-2xl flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <form class="p-10 space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                        <input type="text" placeholder="Alex Grayson" class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-4 rounded-2xl outline-none transition font-bold text-sm">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                        <input type="text" placeholder="+91 00000 00000" class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-4 rounded-2xl outline-none transition font-bold text-sm">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label>
+                    <input type="text" placeholder="Building, Street, Landmark" class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-4 rounded-2xl outline-none transition font-bold text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <input type="text" placeholder="City" class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-4 rounded-2xl outline-none transition font-bold text-sm">
+                    <input type="text" placeholder="Pincode" class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-4 rounded-2xl outline-none transition font-bold text-sm">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Location Tag</label>
+                    <div class="flex gap-4">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="type" class="hidden peer" checked>
+                            <div class="flex items-center justify-center gap-2 p-4 rounded-2xl border-2 border-slate-100 peer-checked:border-violet-600 peer-checked:bg-violet-50 peer-checked:text-violet-700 font-extrabold text-xs transition">
+                                <i class="fa-solid fa-house"></i> Home
+                            </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="type" class="hidden peer">
+                            <div class="flex items-center justify-center gap-2 p-4 rounded-2xl border-2 border-slate-100 peer-checked:border-violet-600 peer-checked:bg-violet-50 peer-checked:text-violet-700 font-extrabold text-xs transition">
+                                <i class="fa-solid fa-briefcase"></i> Office
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="w-full violet-gradient text-white py-5 rounded-[2rem] font-extrabold text-lg shadow-2xl shadow-violet-200 hover:shadow-violet-400 hover:scale-[1.01] transition active:scale-95">
+                    Save Delivery Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="toggleModal('deleteModal')"></div>
+        <div class="relative bg-white w-full max-w-sm rounded-[3rem] p-10 shadow-2xl text-center modal-animate">
+            <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-trash-can text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Delete Address?</h3>
+            <p class="text-slate-500 text-sm font-medium mb-10 leading-relaxed">This destination will be removed from your account permanently.</p>
+            <div class="flex gap-4">
+                <button onclick="toggleModal('deleteModal')" class="flex-1 py-4 rounded-2xl font-bold text-slate-400 hover:bg-slate-50 transition">Keep It</button>
+                <button class="flex-1 py-4 rounded-2xl font-bold bg-rose-500 text-white shadow-xl shadow-rose-100 hover:bg-rose-600 transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>

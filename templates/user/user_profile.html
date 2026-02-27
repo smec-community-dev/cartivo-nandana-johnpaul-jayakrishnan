@@ -29,7 +29,8 @@
                 <button class="p-3 rounded-2xl bg-violet-50 text-violet-600 hover:bg-violet-100 transition">
                     <i class="fa-solid fa-bell"></i>
                 </button>
-                <img src="{{ user.profile_image.url }}" class="w-10 h-10 rounded-full border-2 border-violet-200">
+                
+                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=300{% endif %}" class="w-10 h-10 rounded-full border-2 border-violet-200">
             </div>
         </div>
     </nav>   
@@ -41,7 +42,7 @@
                 <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50">
                     <div class="flex flex-col items-center text-center mb-8">
                         <div class="relative">
-                            <img src="{{ user.profile_image.url }}" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
+                            <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=300{% endif %}" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
                             <button class="absolute bottom-4 right-0 bg-violet-600 text-white p-2 rounded-lg shadow-lg hover:scale-110 transition">
                                 <i class="fa-solid fa-camera text-xs"></i>
                             </button>
@@ -53,16 +54,16 @@
                     <nav class="space-y-2">
                         <form>
                            {% csrf_token %}
-                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
+                            <a href="{% url 'profile' %}" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
                                 <i class="fa-solid fa-user-gear"></i> Personal Info
                             </a>
-                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <a href="{% url 'myorders' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
                                 <i class="fa-solid fa-box"></i> My Orders
                             </a>
-                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <a href="{% url 'address' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
                                 <i class="fa-solid fa-location-dot"></i> Addresses
                             </a>
-                            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                            <a href="{% url 'payment_method' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
                                 <i class="fa-solid fa-credit-card"></i> Payment Methods
                             </a>
                             <hr class="my-4 border-gray-50">

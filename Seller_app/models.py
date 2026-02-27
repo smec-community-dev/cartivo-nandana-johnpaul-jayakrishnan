@@ -39,15 +39,15 @@ class ProductVariant(models.Model):
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.IntegerField()
     weight = models.FloatField(help_text="Weight in kg")
-    length = models.FloatField(help_text="Length in cm")
-    width = models.FloatField(help_text="Width in cm")
-    height = models.FloatField(help_text="Height in cm")
+    length = models.FloatField(help_text="Length in cm",null=True)
+    width = models.FloatField(help_text="Width in cm",null=True)
+    height = models.FloatField(help_text="Height in cm",null=True)
     tax_percentage = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 class ProductImage(models.Model):
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name="images")
-    image_url = models.URLField()
+    product_images = models.ImageField(upload_to='product_images/', null=True, blank=True)
     alt_text = models.CharField(max_length=255, blank=True)
     is_primary = models.BooleanField(default=False)
 
