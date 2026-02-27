@@ -42,9 +42,8 @@ static_root/
 # ===============================
 # Migrations (optional)
 # ===============================
-# Uncomment if you don't want migrations tracked
-# */migrations/*
-# !*/migrations/__init__.py
+*/migrations/*
+!*/migrations/__init__.py
 
 # ===============================
 # Testing / Coverage
