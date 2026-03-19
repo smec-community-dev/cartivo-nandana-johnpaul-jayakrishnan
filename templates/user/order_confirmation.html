@@ -1,72 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | Cartivo Luxury Secure</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% extends "user/base.html" %}
+
+{% block title %}Checkout | Cartivo Luxury Secure{% endblock %}
+
+{% block extra_head %}
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* Matching the home page interaction */
-        .group:hover .dropdown-menu { display: block; animation: slideUp 0.2s ease-out; }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
-</head>
-<body class="bg-[#fdfaff] text-slate-900">
+{% endblock %}
 
-    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
-        🔒 SSL Secure Checkout | Trusted by 1M+ Customers
-    </div>
-
-    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer">
-                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
-                        <i class="fa-solid fa-bag-shopping text-white"></i>
-                    </div>
-                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
-                </a>
-
-                <div class="hidden lg:flex items-center gap-8 text-sm font-bold text-slate-400">
-                    <div class="flex items-center gap-2 text-violet-600">
-                        <span class="w-6 h-6 rounded-full border-2 border-violet-600 flex items-center justify-center text-[10px]">1</span>
-                        <span>Bag</span>
-                    </div>
-                    <div class="w-8 h-[2px] bg-violet-100"></div>
-                    <div class="flex items-center gap-2 text-slate-900">
-                        <span class="w-6 h-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-[10px]">2</span>
-                        <span>Checkout</span>
-                    </div>
-                    <div class="w-8 h-[2px] bg-violet-100"></div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-[10px]">3</span>
-                        <span>Payment</span>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-6">
-                    <div class="text-right hidden md:block">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">Need Help?</p>
-                        <p class="text-sm font-bold text-violet-600">1800-CARTIVO</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-full bg-violet-100 border-2 border-white shadow-sm overflow-hidden">
-                        <img src="https://i.pravatar.cc/100?u=nandana" alt="user">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+{% block content %}
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div class="flex flex-col lg:flex-row gap-8">
             
@@ -205,39 +147,4 @@
            
         </div>
     </main>
-
-    <footer class="bg-slate-900 text-white pt-24 pb-12 rounded-t-[4rem] mt-20">
-        <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-1">
-                <span class="text-3xl font-extrabold text-violet-400 tracking-tight">CARTIVO.</span>
-                <p class="mt-6 text-gray-400 font-light leading-relaxed">Luxury shopping redefined. Bringing the world's most premium brands to your doorstep with unmatched speed.</p>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6 text-violet-200 uppercase text-xs tracking-widest">Shopping</h5>
-                <ul class="space-y-4 text-gray-400 text-sm">
-                    <li><a href="#" class="hover:text-white transition">Track Order</a></li>
-                    <li><a href="#" class="hover:text-white transition">Returns Policy</a></li>
-                    <li><a href="#" class="hover:text-white transition">Size Guide</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6 text-violet-200 uppercase text-xs tracking-widest">Support</h5>
-                <ul class="space-y-4 text-gray-400 text-sm">
-                    <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-white transition">Payment Methods</a></li>
-                    <li><a href="#" class="hover:text-white transition">Shipping Info</a></li>
-                </ul>
-            </div>
-            <div class="bg-violet-800/20 p-8 rounded-[2rem] border border-violet-500/20">
-                <h5 class="font-bold mb-4">Elite Support</h5>
-                <p class="text-xs text-gray-400 mb-6">Our concierge is available 24/7 for premium members.</p>
-                <button class="w-full bg-violet-600 py-3 rounded-xl font-bold hover:bg-violet-700 transition">Chat Now</button>
-            </div>
-        </div>
-        <div class="text-center mt-20 text-gray-600 text-[10px] tracking-[0.3em] uppercase font-bold">
-            &copy; 2026 Cartivo International | Secure Checkout Environment
-        </div>
-    </footer>
-
-</body>
-</html>
+{% endblock %}

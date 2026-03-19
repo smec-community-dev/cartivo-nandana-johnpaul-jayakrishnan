@@ -1,12 +1,19 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.conf import settings
 from .models import User,Cart,CartItem,Order,OrderItem,Wishlist,WishlistItem
 from User_app.decorators import customer_login_required,customer_required
 from Seller_app.models import Product,ProductImage,ProductVariant,VariantAttributeBridge,Attribute
-
+from Core_app.models import Address, Category, SubCategory
 
 # Create your views here.
 
@@ -30,9 +37,39 @@ def user_register(request):
             messages.error(request, "Phone number already exists")
             return redirect("register")
         
-        data_user = User(username=username,email=email,phone_number=phone_number,password=make_password(password),profile_image=profile_image)
+        data_user = User(
+            username=username,
+            email=email,
+            phone_number=phone_number,
+            password=make_password(password),
+            profile_image=profile_image,
+            is_active=False,
+        )
         data_user.save()
-        return redirect("login") 
+        
+        uidb64 = urlsafe_base64_encode(force_bytes(data_user.pk))
+        token = default_token_generator.make_token(data_user)
+        verify_url = request.build_absolute_uri(
+            reverse('user_verify_email', kwargs={'uidb64': uidb64, 'token': token})
+        )
+        subject = "Verify your Cartivo account"
+        message = (
+            f"Hi {data_user.username},\n\n"
+            "Thanks for registering on Cartivo.\n"
+            "Please verify your email by clicking the link below:\n\n"
+            f"{verify_url}\n\n"
+            "If you didn't create this account, you can ignore this email.\n"
+        )
+        send_mail(
+            subject,
+            message,
+            getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'no-reply@cartivo.local',
+            [data_user.email],
+            fail_silently=True,
+        )
+
+        messages.success(request, "Account created! Please check your email to verify your account before logging in.")
+        return redirect("login")
     return render (request,"user/register_user.html")
 
 def user_login(request):
@@ -41,6 +78,9 @@ def user_login(request):
         password = request.POST.get('password')
         user_obj = User.objects.filter(email=email).first()
         if user_obj:
+            if not user_obj.is_active:
+                messages.error(request, "Please verify your email before logging in.")
+                return redirect('login')
             user = authenticate(request,username=user_obj.username,password=password)
             if user is not None:
                 if user_obj.role == 'CUSTOMER':
@@ -51,6 +91,23 @@ def user_login(request):
             else:
                 messages.error(request,"invalid username or password")
     return render(request,"user/user_login.html")
+
+def user_verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+        messages.success(request, "Email verified successfully. You can now log in.")
+        return redirect('login')
+
+    messages.error(request, "Verification link is invalid or has expired.")
+    return redirect('register')
 
 @customer_login_required
 def user_profile(request):
@@ -87,7 +144,7 @@ def user_profile(request):
 
     return render(request,'user/user_profile.html')
 
-@customer_login_required
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('login')
@@ -96,6 +153,60 @@ def user_home(request):
     user = request.user
     products = products = Product.objects.filter(is_active=True,approval_status='APPROVED').prefetch_related('variants__images')
     return render(request,'user/home.html',{'products':products})
+
+@customer_login_required
+def user_product_filter_page(request):
+    q = (request.GET.get('q') or '').strip()
+    brand = (request.GET.get('brand') or '').strip()
+    category_id = (request.GET.get('category') or '').strip()
+    subcategory_id = (request.GET.get('subcategory') or '').strip()
+    sort = (request.GET.get('sort') or '').strip()
+
+    products = Product.objects.filter(is_active=True, approval_status='APPROVED').select_related(
+        'subcategory', 'subcategory__category'
+    ).prefetch_related('variants__images')
+
+    if q:
+        products = products.filter(
+            Q(name__icontains=q) |
+            Q(description__icontains=q) | 
+            Q(brand__icontains=q) |
+            Q(model_number__icontains=q)
+        )
+
+    if brand:
+        products = products.filter(brand__iexact=brand)
+
+    if subcategory_id.isdigit():
+        products = products.filter(subcategory_id=int(subcategory_id))
+    elif category_id.isdigit():
+        products = products.filter(subcategory__category_id=int(category_id))
+
+    if sort == 'price_low':
+        products = products.order_by('variants__cost_price')
+    elif sort == 'price_high':
+        products = products.order_by('-variants__cost_price')
+    elif sort == 'new':
+        products = products.order_by('-created_at')
+    else:
+        products = products.order_by('-created_at')
+
+    categories = Category.objects.all().order_by('name')
+    subcategories = SubCategory.objects.select_related('category').all().order_by('name')
+    brands = Product.objects.filter(is_active=True, approval_status='APPROVED').exclude(brand__isnull=True).exclude(brand__exact='').values_list('brand', flat=True).distinct().order_by('brand')
+
+    context = {
+        'products': products,
+        'q': q,
+        'brand': brand,
+        'category_id': category_id,
+        'subcategory_id': subcategory_id,
+        'sort': sort,
+        'categories': categories,
+        'subcategories': subcategories,
+        'brands': brands,
+    }
+    return render(request, 'user/product_filter_page.html', context)
 
 @customer_login_required
 def user_wishlist(request,id):
@@ -152,7 +263,7 @@ def user_cart(request,id):
 def user_cart_add_quantity(request,id):
     variant=ProductVariant.objects.get(id=id)
     cart=Cart.objects.get(user=request.user)
-    cart_item=CartItem.objects.get(variant=variant)
+    cart_item=CartItem.objects.get(cart=cart,variant=variant)
     if cart_item.quantity < variant.stock_quantity:
         cart_item.quantity += 1
         cart_item.save()
@@ -166,7 +277,7 @@ def user_cart_add_quantity(request,id):
 def user_cart_substract_quantity(request,id):
     variant=ProductVariant.objects.get(id=id)
     cart=Cart.objects.get(user=request.user)
-    cart_item=CartItem.objects.get(variant=variant)
+    cart_item=CartItem.objects.get(cart=cart,variant=variant)
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
@@ -181,7 +292,8 @@ def user_cart_substract_quantity(request,id):
 @customer_login_required
 def user_cart_item_delete(request,id):
     variant=ProductVariant.objects.get(id=id)
-    cart_item=CartItem.objects.get(variant=variant)
+    cart=Cart.objects.get(user=request.user)
+    cart_item=CartItem.objects.get(cart=cart,variant=variant)
     cart_item.delete()
     return redirect('cart')
 
@@ -192,32 +304,34 @@ def user_cart_display(request):
     cart_item=CartItem.objects.filter(cart=cart)
     return render(request,'user/cart.html',{'cart_item':cart_item,'cart':cart})
 
-@customer_login_required
-def user_orders(request):
-    return render(request,'user/myorders.html')
-
-@customer_login_required
-def user_address(request):
-    return render(request,'user/add_address.html')
 
 @customer_login_required
 def user_payment_method(request):
     return render(request,'user/payment_add.html')
 
-@customer_login_required
-def user_product_view(request,id):
-    user=request.user
+def user_product_view(request, id):
+    user = request.user
     variant = ProductVariant.objects.select_related('product').prefetch_related('images').get(id=id)
     variants = ProductVariant.objects.filter(product=variant.product).prefetch_related('images')
-    attributebridge =VariantAttributeBridge.objects.filter(variant=variants)
-    if attributebridge:
-        for item in attributebridge:
-            attribute =Attribute.objects.filter(id=attributebridge.option)
-    return render(request,'user/product_view.html',{'variant':variant,'variants':variants,'user':user})
+    attributebridge = VariantAttributeBridge.objects.filter(variant=variant)
+    attributes = []
+    for item in attributebridge:
+        attribute = Attribute.objects.get(id=item.option.id)
+        attributes.append(attribute)
+    return render(request, 'user/product_view.html', {
+        'variant': variant,
+        'variants': variants,
+        'user': user,
+        'attribute': attributes
+    })
 
 @customer_login_required
 def user_payment_choice(request):
     return render(request,'user/payment.html')  
+
+@customer_login_required
+def user_orders(request):
+    return render(request,'user/myorders.html')
 
 @customer_login_required
 def user_order_confirmation(request,id):
@@ -253,7 +367,7 @@ def user_order_confirmation(request,id):
 def user_order_add_quantity(request,id):
     variant=ProductVariant.objects.get(id=id)
     order=Order.objects.get(user=request.user)
-    order_item=OrderItem.objects.get(variant=variant)
+    order_item=OrderItem.objects.get(order=order,variant=variant)
     if order_item.quantity < variant.stock_quantity:
         order_item.quantity += 1
         order_item.save()
@@ -267,7 +381,7 @@ def user_order_add_quantity(request,id):
 def user_order_substract_quantity(request,id):
     variant=ProductVariant.objects.get(id=id)
     order=Order.objects.get(user=request.user)
-    order_item=OrderItem.objects.get(variant=variant)
+    order_item=OrderItem.objects.get(order=order,variant=variant)
     if order_item.quantity > 1:
         order_item.quantity -= 1
         order_item.save()
@@ -282,7 +396,8 @@ def user_order_substract_quantity(request,id):
 @customer_login_required
 def user_order_item_delete(request,id):
     variant=ProductVariant.objects.get(id=id)
-    order_item=OrderItem.objects.get(variant=variant)
+    order=Order.objects.get(user=request.user)
+    order_item=OrderItem.objects.get(order=order,variant=variant)
     order_item.delete()
     return redirect('user_order_display')
 
@@ -328,3 +443,74 @@ def user_order_cart_confirmation(request,id):
     else:
         messages.error(request,'zero items in your cart')
     return redirect('user_order_display')
+
+@customer_login_required
+def user_address_display(request):
+    user_address=Address.objects.filter(user=request.user)
+    return render(request,'user/add_address.html',{'user_address':user_address})
+
+@customer_login_required
+def user_address_add(request):
+    if request.method=='POST':
+        full_name=request.POST.get('full_name')
+        phone_number=request.POST.get('phone_number')
+        pincode=request.POST.get('pincode')
+        locality=request.POST.get('locality')
+        house_info=request.POST.get('house_info')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        country=request.POST.get('country')
+        landmark=request.POST.get('landmark')
+        address_type=request.POST.get('address_type')
+        address_data=Address(user=request.user,
+                             full_name=full_name,
+                             phone_number=phone_number,
+                             pincode=pincode,locality=locality,
+                             house_info=house_info,
+                             city=city,
+                             state=state,
+                             country=country,
+                             landmark=landmark,
+                             address_type=address_type,
+                             )
+        address_data.save()
+    previous_url = request.META.get('HTTP_REFERER')
+    return redirect(previous_url)
+
+@customer_login_required
+def user_address_edit(request,id):
+    address = get_object_or_404(Address, id=id, user=request.user)
+
+    if request.method == 'POST':
+        address.full_name = request.POST.get('full_name') or address.full_name
+        address.phone_number = request.POST.get('phone_number') or address.phone_number
+        address.pincode = request.POST.get('pincode') or address.pincode
+        address.locality = request.POST.get('locality') or address.locality
+        address.house_info = request.POST.get('house_info') or address.house_info
+        address.city = request.POST.get('city') or address.city
+        address.state = request.POST.get('state') or address.state
+        address.country = request.POST.get('country') or address.country
+        address.landmark = request.POST.get('landmark') or address.landmark
+        address.address_type = request.POST.get('address_type') or address.address_type
+
+        required_fields = {
+            'full_name': address.full_name,
+            'phone_number': address.phone_number,
+            'pincode': address.pincode,
+            'locality': address.locality,
+            'house_info': address.house_info,
+            'city': address.city,
+            'state': address.state,
+            'country': address.country,
+            'address_type': address.address_type,
+        }
+        missing = [k for k, v in required_fields.items() if not v]
+        if missing:
+            messages.error(request, "Please fill all required address fields.")
+            return render(request, 'user/edit_address.html', {'address': address})
+
+        address.save()
+        messages.success(request, "Address updated successfully.")
+        return redirect('address')
+
+    return render(request, 'user/edit_address.html', {'address': address})

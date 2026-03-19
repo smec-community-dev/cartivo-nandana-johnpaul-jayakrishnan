@@ -1,96 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart | Cartivo Luxury</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
-        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        /* Dropdown Animation from Home */
-        .group:hover .dropdown-menu {
-            display: block;
-            animation: slideUp 0.2s ease-out;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+{% extends "user/base.html" %}
 
-        /* Custom scrollbar */
+{% block title %}Your Cart | Cartivo Luxury{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body { scroll-behavior: smooth; }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fdfaff; }
         ::-webkit-scrollbar-thumb { background: #ddd6fe; border-radius: 10px; }
     </style>
-</head>
-<body class="bg-[#fdfaff] text-slate-900">
+{% endblock %}
 
-    <div class="bg-violet-900 text-violet-100 text-center py-2 text-xs font-semibold tracking-wide uppercase">
-        ⚡ Super Sale: Extra 20% Off | Code: <span class="text-amber-300 underline cursor-pointer">VIOLET20</span>
-    </div>
-
-    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer">
-                    <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200">
-                        <i class="fa-solid fa-bag-shopping text-white"></i>
-                    </div>
-                    <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
-                </a>
-
-                <div class="hidden lg:flex flex-1 max-w-lg mx-12">
-                    <div class="relative w-full">
-                        <input type="text" placeholder="Search premium products..." 
-                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
-                        <button class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
-                            <i class="fa-solid fa-magnifying-glass px-2"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-6">
-                    <div class="relative group">
-                        <button class="flex items-center gap-3 bg-white p-2 pr-4 rounded-2xl border border-violet-100 hover:border-violet-300 transition shadow-sm">
-                            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <div class="text-left leading-none">
-                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
-                                <span class="text-sm font-bold text-slate-800">Login <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                            </div>
-                        </button>
-                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
-                            <div class="p-4 border-b border-gray-50 bg-violet-50/30">
-                                <p class="text-xs text-gray-500 font-semibold">Welcome Back</p>
-                                <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In</button>
-                            </div>
-                            <div class="py-2">
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold"><i class="fa-regular fa-user-circle w-5"></i> My Profile</a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition"><i class="fa-regular fa-heart w-5"></i> Wishlist</a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition"><i class="fa-solid fa-box w-5"></i> Orders</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative flex items-center gap-3 bg-violet-600 p-2 pr-5 rounded-2xl shadow-lg shadow-violet-200 transition">
-                        <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-white">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </div>
-                        <span id="nav-total" class="font-bold text-white text-sm tracking-tight">₹0</span>
-                        <span id="nav-count" class="absolute -top-2 -right-2 bg-rose-500 text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+{% block content %}
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div class="mb-10">
             <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
@@ -219,6 +141,9 @@
         </div>
     </main>
 
+{% endblock %}
+
+{% block extra_scripts %}
     <script>
         function calculateTotals() {
             let subtotal = 0;
@@ -276,5 +201,4 @@
 
         calculateTotals();
     </script>
-</body>
-</html>
+{% endblock %}

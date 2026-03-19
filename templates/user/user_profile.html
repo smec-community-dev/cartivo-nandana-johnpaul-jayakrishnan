@@ -1,40 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile | Cartivo Elite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% extends "user/base.html" %}
+
+{% block title %}My Profile | Cartivo Elite{% endblock %}
+
+{% block extra_head %}
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .violet-gradient { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
         .profile-card { transition: all 0.3s ease; }
         .profile-card:hover { transform: translateY(-5px); }
     </style>
-</head>
-<body class="bg-[#fdfaff] text-slate-900">
+{% endblock %}
 
-    <nav class="glass sticky top-0 z-50 border-b border-violet-100">
-        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-            <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer">
-                <div class="w-10 h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg">
-                    <i class="fa-solid fa-bag-shopping text-white"></i>
-                </div>
-                <span class="text-3xl font-extrabold text-slate-900 tracking-tight">CARTIVO<span class="text-violet-600">.</span></span>
-            </a>
-            <div class="flex items-center gap-4">
-                <button class="p-3 rounded-2xl bg-violet-50 text-violet-600 hover:bg-violet-100 transition">
-                    <i class="fa-solid fa-bell"></i>
-                </button>
-                
-                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=300{% endif %}" class="w-10 h-10 rounded-full border-2 border-violet-200">
-            </div>
-        </div>
-    </nav>   
-
+{% block content %}
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div class="flex flex-col lg:flex-row gap-8">
             
@@ -181,7 +156,6 @@
                                     <input type="hidden" name="gender" :value="selected">
                                 </div>
 
-                                <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
                             </div>
                         </div>
                     </div>
@@ -206,22 +180,8 @@
 
         </div>
     </main>
+{% endblock %}
 
-    <footer class="py-12 text-center text-gray-400 text-xs">
-        &copy; 2026 Cartivo User Dashboard | Security Certified
-    </footer>
-<!-- <script>
-    setTimeout(function () {
-        const messages = document.querySelectorAll('.toast-message');
-        messages.forEach(function (message) {
-            message.style.transition = "opacity 0.5s ease";
-            message.style.opacity = "0";
-            
-            setTimeout(() => {
-                message.remove();
-            }, 500); // remove after fade out
-        });
-    }, 2000); // 5 seconds
-</script> -->
-</body>
-</html>
+{% block extra_scripts %}
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock %}

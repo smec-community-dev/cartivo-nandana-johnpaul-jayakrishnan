@@ -1,146 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amazon Laptop Listings</title>
+{% extends "user/base.html" %}
 
-<script src="https://cdn.tailwindcss.com"></script>
+{% block title %}Browse Products | Cartivo{% endblock %}
 
-</head>
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-10">
+  <div class="flex flex-col lg:flex-row gap-6">
+    <aside class="lg:w-72 bg-white border border-violet-100 rounded-[2rem] p-6 h-fit">
+      <form method="GET" class="space-y-6">
+        <div>
+          <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Search</label>
+          <div class="mt-2 flex gap-2">
+            <input name="q" value="{{ q }}" placeholder="Search products..."
+              class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-4 transition-all outline-none text-sm">
+            <button class="bg-violet-600 text-white px-4 rounded-2xl font-bold hover:bg-violet-700 transition" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </div>
 
-<body class="bg-gray-100">
+        <div>
+          <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Category</label>
+          <select name="category" class="mt-2 w-full bg-white border border-violet-100 rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200">
+            <option value="">All categories</option>
+            {% for c in categories %}
+              <option value="{{ c.id }}" {% if category_id|add:'' == c.id|add:'' %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-<!-- TOP NAVBAR -->
+        <div>
+          <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subcategory</label>
+          <select name="subcategory" class="mt-2 w-full bg-white border border-violet-100 rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200">
+            <option value="">All subcategories</option>
+            {% for s in subcategories %}
+              <option value="{{ s.id }}" {% if subcategory_id|add:'' == s.id|add:'' %}selected{% endif %}>{{ s.category.name }} • {{ s.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-<header class="bg-gray-900 text-white">
+        <div>
+          <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Brand</label>
+          <select name="brand" class="mt-2 w-full bg-white border border-violet-100 rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200">
+            <option value="">All brands</option>
+            {% for b in brands %}
+              <option value="{{ b }}" {% if brand == b %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-<div class="max-w-7xl mx-auto flex items-center justify-between p-3">
+        <div>
+          <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sort</label>
+          <select name="sort" class="mt-2 w-full bg-white border border-violet-100 rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200">
+            <option value="" {% if not sort %}selected{% endif %}>Newest</option>
+            <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+            <option value="new" {% if sort == 'new' %}selected{% endif %}>Newest</option>
+          </select>
+        </div>
 
-<div class="flex items-center gap-4">
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 violet-gradient text-white py-3.5 rounded-2xl font-extrabold shadow-xl shadow-violet-200 hover:shadow-violet-400 transition active:scale-95">
+            Apply
+          </button>
+          <a href="{% url 'product_filter' %}" class="flex-1 text-center py-3.5 rounded-2xl font-extrabold bg-slate-50 text-slate-700 hover:bg-slate-100 transition">
+            Reset
+          </a>
+        </div>
+      </form>
+    </aside>
 
-<h1 class="text-2xl font-bold">amazon.in</h1>
+    <main class="flex-1">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Browse <span class="text-violet-600">Products</span></h1>
+          <p class="text-sm text-slate-500 font-medium mt-1">
+            Showing {{ products|length }} result{{ products|length|pluralize }}{% if q %} for “{{ q }}”{% endif %}.
+          </p>
+        </div>
+      </div>
 
-<p class="text-sm hidden md:block">
-Delivering to Kochi 682024
-</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for product in products %}
+          {% with variant=product.variants.first %}
+            {% if variant %}
+              <div class="bg-white border border-violet-100 rounded-[2rem] p-4 shadow-sm hover:shadow-xl hover:shadow-violet-100/50 transition">
+                <a href="{% url 'product_view' variant.id %}" class="block">
+                  <div class="relative bg-violet-50 rounded-[1.75rem] aspect-[4/5] overflow-hidden mb-4">
+                    {% if variant.images.first %}
+                      <img src="{{ variant.images.first.product_images.url }}" class="w-full h-full object-cover">
+                    {% else %}
+                      <img src="/media/default.jpg" class="w-full h-full object-cover">
+                    {% endif %}
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black text-slate-700 uppercase tracking-widest">
+                      {{ product.brand }}
+                    </div>
+                  </div>
+                  <h3 class="font-extrabold text-slate-900 leading-tight">{{ product.name }}</h3>
+                  <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
+                    {{ product.subcategory.category.name }} • {{ product.subcategory.name }}
+                  </p>
+                  <p class="text-sm text-slate-500 mt-2">{{ product.description|truncatechars:70 }}</p>
 
+                  <div class="mt-4 flex items-end justify-between">
+                    <div class="text-xl font-black text-violet-900">₹{{ variant.cost_price }}</div>
+                    <div class="text-xs font-bold text-slate-400">
+                      {% if variant.mrp %}<span class="line-through">₹{{ variant.mrp }}</span>{% endif %}
+                    </div>
+                  </div>
+                </a>
+
+                <div class="mt-4 flex gap-2">
+                  <a href="{% url 'add_cart' variant.id %}" class="flex-1">
+                    <button class="w-full bg-violet-600 text-white py-3 rounded-2xl font-extrabold hover:bg-violet-700 transition">
+                      Add to Cart
+                    </button>
+                  </a>
+                  <a href="{% url 'wishlist_add' variant.id %}">
+                    <button class="w-12 h-12 rounded-2xl bg-white border border-violet-100 text-rose-500 hover:bg-rose-50 transition flex items-center justify-center">
+                      <i class="fa-solid fa-heart"></i>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          {% endwith %}
+        {% empty %}
+          <div class="col-span-full bg-white border border-violet-100 rounded-[2rem] p-10 text-center">
+            <h3 class="text-xl font-extrabold text-slate-900">No products found</h3>
+            <p class="text-slate-500 mt-2">Try changing filters or clearing your search.</p>
+            <a href="{% url 'product_filter' %}" class="inline-flex mt-6 items-center gap-2 bg-violet-600 text-white px-8 py-3 rounded-2xl font-extrabold hover:bg-violet-700 transition">
+              Reset Filters <i class="fa-solid fa-rotate-left"></i>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
 </div>
+{% endblock %}
 
-
-<div class="flex-1 mx-6 hidden md:flex">
-
-<input
-class="w-full p-2 rounded-l-md text-black"
-placeholder="Search laptops"
-/>
-
-<button class="bg-yellow-400 px-4 rounded-r-md">
-🔍
-</button>
-
-</div>
-
-<div class="flex gap-6 text-sm">
-
-<div>Hello, sign in</div>
-<div>Returns & Orders</div>
-<div>Cart</div>
-
-</div>
-
-</div>
-
-</header>
-
-
-<!-- CATEGORY BAR -->
-
-<div class="bg-gray-800 text-white text-sm">
-
-<div class="max-w-7xl mx-auto flex gap-6 p-2 overflow-x-auto">
-
-<span>All</span>
-<span>Fresh</span>
-<span>Best Sellers</span>
-<span>Mobiles</span>
-<span>Today's Deals</span>
-<span>Prime</span>
-<span>Electronics</span>
-<span>Home & Kitchen</span>
-
-</div>
-
-</div>
-
-
-
-<!-- MAIN CONTAINER -->
-
-<div class="max-w-7xl mx-auto flex mt-4">
-
-<!-- SIDEBAR -->
-
-<aside class="hidden lg:block w-64 bg-white p-4 border">
-
-<h3 class="font-bold mb-2">Delivery Day</h3>
-
-<div class="space-y-1 text-sm">
-
-<label class="block"><input type="checkbox"> Get It Today</label>
-<label class="block"><input type="checkbox"> Get it Tomorrow</label>
-<label class="block"><input type="checkbox"> Get it in 2 Days</label>
-
-</div>
-
-
-<h3 class="font-bold mt-6 mb-2">RAM Size</h3>
-
-<div class="space-y-1 text-sm">
-
-<label class="block"><input type="checkbox"> 4 GB</label>
-<label class="block"><input type="checkbox"> 8 GB</label>
-<label class="block"><input type="checkbox"> 16 GB</label>
-
-</div>
-
-
-<h3 class="font-bold mt-6 mb-2">Brands</h3>
-
-<div class="space-y-1 text-sm">
-
-<label class="block"><input type="checkbox"> HP</label>
-<label class="block"><input type="checkbox"> Lenovo</label>
-<label class="block"><input type="checkbox"> ASUS</label>
-<label class="block"><input type="checkbox"> Dell</label>
-
-</div>
-
-</aside>
-
-
-
-<!-- PRODUCTS -->
-
-<main class="flex-1 p-4">
-
-<h2 class="text-lg font-semibold mb-4">
-1-24 of over 60,000 results for "laptops"
-</h2>
-
-<div
-id="products"
-class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"
->
-
-</div>
-
-</main>
-
-</div>
-
-
-<script src="script.js"></script>
-
-</body>
-</html>
+{% block extra_scripts %}
+{# No JS required #}
+{% endblock %}
