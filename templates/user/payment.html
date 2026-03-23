@@ -15,51 +15,65 @@
     </style>
 {% endblock %}
 
-{% block body_attrs %}x-data="{ step: 3, payMethod: 'upi', upiApp: 'gpay', price: 19999, discount: 3501, platformFee: 5, get total() { return this.price - this.discount + this.platformFee } }"{% endblock %}
+{% block body_attrs %}x-data="{
+  step: 3,
+  payMethod: 'upi',
+  upiApp: 'gpay',
+  bagTotal: {{ f_bag_total }},
+  savingsMrp: {{ f_total_discount }},
+  couponOff: {{ f_coupon_discount }},
+  platformFee: {{ f_handling_fee }},
+  totalPayable: {{ f_amount_payable }},
+  formatInr(n) {
+    return Number(n).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+}"{% endblock %}
 
 {% block content %}
-    <main class="max-w-7xl mx-auto px-4 py-12">
-        <nav class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <nav class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 sm:mb-8 break-words">
             Cart / Delivery / <span class="text-violet-600">Secure Payment</span>
         </nav>
 
-        <div class="flex flex-col lg:flex-row gap-12">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
             
-            <div class="lg:w-2/3 space-y-6">
+            <div class="w-full lg:w-2/3 space-y-6 min-w-0">
                 
-                <div class="bg-white/60 backdrop-blur-sm border border-violet-100 rounded-3xl p-6 flex justify-between items-center transition-all"
+                <div class="bg-white/60 backdrop-blur-sm border border-violet-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 transition-all"
                      :class="step === 3 ? 'opacity-60' : 'opacity-100'">
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 min-w-0">
                         <span class="text-white bg-violet-600 w-6 h-6 flex items-center justify-center text-[10px] font-bold rounded-full">✓</span>
                         <div class="flex flex-col">
                             <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Step 1 & 2</span>
                             <span class="text-sm font-bold text-slate-800">Login & Shipping Address</span>
                         </div>
                     </div>
-                    <button @click="step = (step === 3 ? 1 : 3)" class="text-violet-600 text-xs font-bold px-5 py-2.5 bg-violet-50 hover:bg-violet-100 rounded-xl transition uppercase tracking-tighter">
-                        <span x-text="step === 3 ? 'Change' : 'Save'"></span>
+                    <a href="{% url 'user_order_display' %}">
+                    <button type="submit"  class="self-start sm:self-auto text-violet-600 text-xs font-bold px-5 py-2.5 bg-violet-50 hover:bg-violet-100 rounded-xl transition uppercase tracking-tighter">
+                        <!-- <span x-text="step === 3 ? 'Change' : 'Save'"></span> -->change
                     </button>
-                </div>
+                    </a>
+                </div>    
 
                 <div x-show="step === 3" x-transition:enter="animate-slide-up" class="bg-white shadow-2xl shadow-violet-100 border border-violet-100 rounded-[2.5rem] overflow-hidden">
-                    <div class="violet-gradient p-6 flex items-center gap-4">
-                        <span class="bg-white text-violet-700 w-8 h-8 flex items-center justify-center text-sm font-black rounded-xl">3</span>
-                        <h2 class="text-white font-bold uppercase tracking-widest">Select Payment Method</h2>
+                    <div class="violet-gradient p-4 sm:p-6 flex items-center gap-4">
+                        <span class="bg-white text-violet-700 w-8 h-8 flex items-center justify-center text-sm font-black rounded-xl shrink-0">3</span>
+                        <h2 class="text-white font-bold uppercase tracking-widest text-sm sm:text-base">Select Payment Method</h2>
                     </div>
                     
-                    <div class="p-2">
+                    <div class="p-1 sm:p-2">
                         <label class="block cursor-pointer">
                             <input type="radio" name="pay_method" value="upi" x-model="payMethod" class="hidden">
-                            <div class="p-8 border-b border-violet-50 flex items-start gap-6 transition-all"
+                            <div class="p-4 sm:p-8 border-b border-violet-50 flex items-start gap-4 sm:gap-6 transition-all"
                                  :class="payMethod === 'upi' ? 'bg-violet-50/50' : 'hover:bg-slate-50'">
                                 <div class="w-6 h-6 border-2 rounded-full flex items-center justify-center mt-1 transition-all"
                                      :class="payMethod === 'upi' ? 'border-violet-600' : 'border-gray-300'">
                                     <div class="w-3 h-3 bg-violet-600 rounded-full" x-show="payMethod === 'upi'"></div>
                                 </div>
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <span class="text-lg font-bold text-slate-800">UPI (Instant Transfer)</span>
-                                        <img src="https://www.vectorlogo.zone/logos/upi/upi-ar21.svg" class="h-6" :class="payMethod === 'upi' ? '' : 'grayscale opacity-50'">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 sm:mb-6">
+                                        <span class="text-base sm:text-lg font-bold text-slate-800">UPI (Instant Transfer)</span>
+                                        <img src="https://www.vectorlogo.zone/logos/upi/upi-ar21.svg" class="h-6 shrink-0" alt="" :class="payMethod === 'upi' ? '' : 'grayscale opacity-50'">
                                     </div>
                                     <div class="space-y-4" x-show="payMethod === 'upi'" x-collapse>
                                         <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Choose your UPI app:</p>
@@ -78,20 +92,20 @@
 
                         <label class="block cursor-pointer">
                             <input type="radio" name="pay_method" value="card" x-model="payMethod" class="hidden">
-                            <div class="p-8 border-b border-violet-50 flex items-start gap-6 transition-all"
+                            <div class="p-4 sm:p-8 border-b border-violet-50 flex items-start gap-4 sm:gap-6 transition-all"
                                  :class="payMethod === 'card' ? 'bg-violet-50/50' : 'hover:bg-slate-50'">
                                 <div class="w-6 h-6 border-2 rounded-full flex items-center justify-center mt-1 transition-all"
                                      :class="payMethod === 'card' ? 'border-violet-600' : 'border-gray-300'">
                                     <div class="w-3 h-3 bg-violet-600 rounded-full" x-show="payMethod === 'card'"></div>
                                 </div>
-                                <div class="flex-1">
-                                    <span class="text-lg font-bold text-slate-800">Credit / Debit Card</span>
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-base sm:text-lg font-bold text-slate-800">Credit / Debit Card</span>
                                     <p class="text-sm text-gray-400 mt-1">Visa, Mastercard, RuPay, Maestro</p>
                                     <div x-show="payMethod === 'card'" x-collapse class="mt-6 space-y-4">
                                         <input type="text" placeholder="Card Number" class="w-full p-4 rounded-xl border border-violet-100 focus:ring-2 focus:ring-violet-600 outline-none">
-                                        <div class="flex gap-4">
-                                            <input type="text" placeholder="MM/YY" class="w-1/2 p-4 rounded-xl border border-violet-100 focus:ring-2 focus:ring-violet-600 outline-none">
-                                            <input type="password" placeholder="CVV" class="w-1/2 p-4 rounded-xl border border-violet-100 focus:ring-2 focus:ring-violet-600 outline-none">
+                                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                            <input type="text" placeholder="MM/YY" class="w-full sm:w-1/2 p-4 rounded-xl border border-violet-100 focus:ring-2 focus:ring-violet-600 outline-none min-w-0">
+                                            <input type="password" placeholder="CVV" class="w-full sm:w-1/2 p-4 rounded-xl border border-violet-100 focus:ring-2 focus:ring-violet-600 outline-none min-w-0">
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +114,7 @@
 
                         <label class="block cursor-pointer">
                             <input type="radio" name="pay_method" value="cod" x-model="payMethod" class="hidden">
-                            <div class="p-8 flex items-start gap-6 transition-all"
+                            <div class="p-4 sm:p-8 flex items-start gap-4 sm:gap-6 transition-all"
                                  :class="payMethod === 'cod' ? 'bg-violet-50/50' : 'hover:bg-slate-50'">
                                 <div class="w-6 h-6 border-2 rounded-full flex items-center justify-center mt-1 transition-all"
                                      :class="payMethod === 'cod' ? 'border-violet-600' : 'border-gray-300'">
@@ -113,45 +127,57 @@
                             </div>
                         </label>
 
-                        <div class="p-8 bg-slate-50 flex flex-col md:flex-row items-center justify-between gap-4">
-                            <p class="text-xs font-bold text-slate-400 italic">By clicking confirm, you agree to our policies.</p>
-                            <button class="violet-gradient text-white px-16 py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-violet-200 transition-all hover:scale-[1.02] active:scale-95">
-                                <span x-text="payMethod === 'cod' ? 'Place Order' : 'Pay ₹' + total.toLocaleString('en-IN')"></span>
+                        <div class="p-4 sm:p-8 bg-slate-50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                            <p class="text-xs font-bold text-slate-400 italic text-center md:text-left">By clicking confirm, you agree to our policies.</p>
+                            <button  id="pay-btn" 
+                                class="violet-gradient text-white w-full md:w-auto px-8 py-5 rounded-2xl font-black">
+                                
+                              <span>Pay ₹{{ amount_payable }}</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:w-1/3">
-                <div class="bg-white rounded-[2.5rem] border border-violet-100 shadow-2xl shadow-violet-100/50 sticky top-32 overflow-hidden">
+            <div class="w-full lg:w-1/3 min-w-0">
+                <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] border border-violet-100 shadow-2xl shadow-violet-100/50 lg:sticky lg:top-4 xl:top-28 overflow-hidden">
                     <div class="p-6 border-b border-violet-50">
                         <h2 class="text-slate-400 font-black uppercase text-xs tracking-[0.2em]">Order Summary</h2>
+                        <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-wider">Order #{{ order.order_number }} · {{ order_item_count }} item{{ order_item_count|pluralize }}</p>
+                        {% if applied_coupon_code %}
+                        <p class="text-xs font-bold text-emerald-600 mt-1">Coupon applied: {{ applied_coupon_code }}</p>
+                        {% endif %}
                     </div>
                     <div class="p-8 space-y-5">
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 font-medium">Items Total</span>
-                            <span class="font-bold text-slate-800" x-text="'₹' + price.toLocaleString('en-IN')"></span>
+                            <span class="text-slate-500 font-medium">Items total (bag)</span>
+                            <span class="font-bold text-slate-800" x-text="'₹' + formatInr(bagTotal)"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 font-medium">Cartivo Discount</span>
-                            <span class="text-rose-500 font-bold" x-text="'-₹' + discount.toLocaleString('en-IN')"></span>
+                            <span class="text-slate-500 font-medium">Bag discount (vs MRP)</span>
+                            <span class="text-rose-500 font-bold" x-text="'-₹' + formatInr(savingsMrp)"></span>
+                        </div>
+                        <div class="flex justify-between text-sm" x-show="couponOff > 0">
+                            <span class="text-slate-500 font-medium">Coupon</span>
+                            <span class="text-emerald-600 font-bold" x-text="'-₹' + formatInr(couponOff)"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 font-medium">Platform Fee</span>
-                            <span class="font-bold text-slate-800" x-text="'₹' + platformFee"></span>
+                            <span class="text-slate-500 font-medium">Handling fee</span>
+                            <span class="font-bold text-slate-800" x-text="'₹' + formatInr(platformFee)"></span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-slate-500 font-medium">Delivery</span>
                             <span class="text-emerald-500 font-black uppercase text-[10px] tracking-widest">Free</span>
                         </div>
                         <div class="pt-6 border-t border-dashed border-violet-100 flex justify-between items-center">
-                            <span class="text-lg font-extrabold text-slate-900">Total Payable</span>
-                            <span class="text-3xl font-black text-violet-900" x-text="'₹' + total.toLocaleString('en-IN')"></span>
+                            <span class="text-lg font-extrabold text-slate-900">Total payable</span>
+                            <span class="text-3xl font-black text-violet-900" x-text="'₹' + formatInr(totalPayable)"></span>
                         </div>
                     </div>
                     <div class="p-4 bg-emerald-50 text-center">
-                        <p class="text-emerald-700 text-xs font-bold uppercase tracking-tighter">You are saving ₹3,501 on this order</p>
+                        <p class="text-emerald-700 text-xs font-bold uppercase tracking-tighter">
+                            You are saving <span x-text="'₹' + formatInr(savingsMrp + couponOff)"></span> on this order
+                        </p>
                     </div>
                 </div>
                 
@@ -165,4 +191,73 @@
             </div>
         </div>
     </main>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+async function startPayment() {
+
+    var options = {
+        "key": "{{ razorpay_key }}",
+        "amount": "{{ amount }}",
+        "currency": "INR",
+        "name": "CARTIVO",
+        "description": "UPI Payment",
+        "order_id": "{{ payment.id }}",
+
+        // ✅ Prefer UPI (NOT force)
+        "method": {
+            "upi": true
+        },
+
+        // ✅ Show UPI first
+        "config": {
+            "display": {
+                "sequence": ["block.upi"]
+            }
+        },
+
+        "handler": async function (response){
+            let verify = await fetch("{% url 'razorpay_verify' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(response)
+            });
+
+            let result = await verify.json();
+
+            if(result.status === "success"){
+                window.location.href = "/success/";
+            } else {
+                alert("Payment Failed");
+            }
+        },
+
+        "prefill": {
+            "name": "{{ user.username|escapejs }}",
+            "email": "{{ user.email|escapejs }}",
+            "contact": "{{ user.phone_number|escapejs }}"
+        },
+
+        "theme": {
+            "color": "#7c3aed"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+
+    rzp.on('payment.failed', function (response){
+        alert("Payment Failed");
+    });
+
+    rzp.open();
+}
+
+document.getElementById('pay-btn').onclick = function(e){
+    startPayment();
+    e.preventDefault();
+};
+</script>
 {% endblock %}

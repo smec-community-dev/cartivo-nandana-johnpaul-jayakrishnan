@@ -17,7 +17,8 @@
             border: 1px solid #f0e7ff;
             border-radius: 1rem;
             padding: 1rem;
-            min-width: 150px;
+            min-width: min(150px, 85vw);
+            flex: 0 0 auto;
             background: white;
             transition: all 0.3s ease;
         }
@@ -64,12 +65,12 @@
 {% endblock %}
 
 {% block content %}
-    <main class="max-w-7xl mx-auto px-4 py-12">
-        <nav class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <nav class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 sm:mb-8 break-words leading-relaxed">
             {{variant.product.subcategory.category.name}} / {{variant.product.subcategory.name}} / <span class="text-violet-600">{{variant.product.name}}</span>
         </nav>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         
             <div class="lg:col-span-4 space-y-6">
                 <div class="relative aspect-square rounded-[3rem] overflow-hidden bg-white border border-violet-50 shadow-2xl shadow-violet-100/50">
@@ -94,7 +95,7 @@
             <div class="lg:col-span-5 space-y-6">
                 {% if variant.product %}
                 <div>
-                    <h1 class="text-4xl font-extrabold text-slate-900 leading-tight mb-2">{{variant.product.name}}</h1>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-2 break-words">{{variant.product.name}}</h1>
                     <div class="flex items-center gap-3">
                         <div class="flex text-amber-400 text-sm">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
@@ -104,10 +105,10 @@
                 </div>
 
                 <div class="p-6 rounded-[2rem] bg-white border border-violet-50 shadow-xl shadow-violet-100/20">
-                    <div class="flex items-baseline gap-3 mb-2">
-                        <span class="text-4xl font-black text-violet-900">₹{{variant.cost_price}}</span>
-                        <span class="text-lg text-gray-400 line-through">₹{{ variant.mrp }}</span>
-                        <span class="text-rose-500 font-bold text-sm">10% OFF</span>
+                    <div class="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-2">
+                        <span class="text-3xl sm:text-4xl font-black text-violet-900">₹{{variant.cost_price}}</span>
+                        <span class="text-base sm:text-lg text-gray-400 line-through">₹{{ variant.mrp }}</span>
+                        <span class="text-rose-500 font-bold text-sm">{{discount}}% OFF</span>
                     </div>
                     <div class="inline-block bg-rose-50 text-rose-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Limited Time Deal</div>
                 </div>
@@ -127,8 +128,8 @@
                 
                 <div class="space-y-4">
                     <!-- <h4 class="font-bold text-sm uppercase tracking-widest text-gray-400">Select Colour: <span id="colorName" class="text-slate-900">Midnight Black</span></h4> -->
-                    <div class="flex gap-3">
-                        <p>Total variants: {{ variants|length }}</p>
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <p class="w-full sm:w-auto text-sm text-slate-600">Total variants: {{ variants|length }}</p>
                         {% for v in variants %}
                             <a href="{% url 'product_view' v.id %}"
                                 class="px-6 py-3 rounded-xl border-2 font-bold text-sm transition
@@ -144,14 +145,14 @@
                 </div>
                 
             </div>
-            
-            <div class="lg:col-span-3">
-                <div class="sticky top-32 p-8 rounded-[2.5rem] bg-white border border-violet-100 shadow-2xl shadow-violet-200/50 space-y-6">
+            {% if variant.product %}
+            <div class="lg:col-span-3 w-full min-w-0">
+                <div class="lg:sticky lg:top-24 xl:top-28 p-4 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-violet-100 shadow-2xl shadow-violet-200/50 space-y-6">
                     <div class="space-y-1">
                         <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter">Subtotal</p>
-                        <p class="text-3xl font-black text-slate-900">₹90</p>
+                        <p class="text-3xl font-black text-slate-900">₹{{variant.cost_price}}</p>
                     </div>
-                    {% if variant.product %}
+                    
                     <div class="space-y-3">
                         <a href="{% url 'wishlist_add' variant.id %}">
                         <button class="w-full violet-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95">
@@ -171,7 +172,7 @@
                         </button>
                         </a>
                     </div>
-                    {% endif %}
+                    
                     <div class="pt-6 border-t border-violet-50 space-y-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
                         <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-violet-600 text-base"></i> 1 Year Warranty</div>
                         <div class="flex items-center gap-3"><i class="fa-solid fa-rotate-left text-violet-600 text-base"></i> 7 Days Replacement</div>
@@ -179,6 +180,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <section class="mt-20 border-t border-violet-100 pt-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">

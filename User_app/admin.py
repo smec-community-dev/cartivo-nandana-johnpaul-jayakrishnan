@@ -3,7 +3,7 @@ from Seller_app.models import Product
 from .models import Order,OrderItem,Cart,CartItem
 from Seller_app.models import ProductImage,SellerProfile,ProductVariant,Attribute,AttributeOption,VariantAttributeBridge
 from Core_app.models import SubCategory,Category
-
+from Admin_app.models import Offer,Discount,OfferDiscountBridge,ProductOfferBridge,Coupon
 # Register your models here.
 admin.site.register(Product)
 admin.site.register(ProductImage)
@@ -18,3 +18,4 @@ admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(Cart)
 admin.site.register(CartItem)
+admin.site.register(Coupon)

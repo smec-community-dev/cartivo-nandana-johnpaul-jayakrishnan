@@ -12,19 +12,19 @@
 {% endblock %}
 
 {% block content %}
-    <main class="max-w-7xl mx-auto px-4 py-12">
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-            <div>
-                <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+            <div class="min-w-0">
+                <nav class="flex flex-wrap text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
                     <a href="{% url 'home' %}" class="hover:text-violet-600">Home</a>
                     <span>/</span>
                     <a href="{% url 'profile' %}" class="hover:text-violet-600">Profile</a>
                     <span>/</span>
                     <span class="text-violet-600">Wishlist</span>
                 </nav>
-                <h1 class="text-4xl font-extrabold text-slate-900">My <span class="text-violet-600">Wishlist</span> <span class="text-lg font-medium text-gray-400 ml-2">(4 Items)</span></h1>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 break-words">My <span class="text-violet-600">Wishlist</span> <span class="text-base sm:text-lg font-medium text-gray-400 ml-2">(4 Items)</span></h1>
             </div>
-            <button class="flex items-center gap-2 bg-violet-100 text-violet-700 px-6 py-3 rounded-2xl font-bold hover:bg-violet-200 transition">
+            <button type="button" class="flex items-center justify-center gap-2 bg-violet-100 text-violet-700 px-6 py-3 rounded-2xl font-bold hover:bg-violet-200 transition w-full sm:w-auto shrink-0">
                 <i class="fa-solid fa-share-nodes"></i> Share Wishlist
             </button>
         </div>

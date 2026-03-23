@@ -9,7 +9,7 @@ urlpatterns=[
     path('logout/',views.user_logout,name='logout'),
     path('home/',views.user_home,name='home'),
     path('product_view/<int:id>/',views.user_product_view,name='product_view'),
-    path('products/',views.user_product_filter_page,name='product_filter'),
+    path('products/',views.user_product_filter,name='product_filter'),
 
     path('wishlist/',views.user_wishlist_display,name='wishlist'),
     path('wishlist_add/<int:id>/    ',views.user_wishlist,name='wishlist_add'),
@@ -18,9 +18,12 @@ urlpatterns=[
     path('address/',views.user_address_display,name='address'),
     path('user_address_add/',views.user_address_add,name='user_address_add'),
     path('user_address_edit/<int:id>/',views.user_address_edit,name='user_address_edit'),
+    path('default_address/<int:id>/',views.select_address_default,name='default_address'),
 
     path('payment_method/',views.user_payment_method,name='payment_method'),
     path('payment_choice',views.user_payment_choice,name='payment_choice'),
+    path('create_payment/', views.create_payment, name='create_payment'),
+    path('razorpay_verify/', views.razorpay_verify, name='razorpay_verify'),
 
     path('cart/',views.user_cart_display,name='cart'),
     path('add_cart/<int:id>/',views.user_cart,name='add_cart'),
@@ -32,7 +35,9 @@ urlpatterns=[
     path('user_order_confirm/<int:id>/',views.user_order_confirmation,name='user_order_confirm'),
     path('user_order_cart_confirm/<int:id>/',views.user_order_cart_confirmation,name='user_order_cart_confirm'),
     path('user_order_display/',views.user_order_display,name='user_order_display'),
+    path('apply_coupon/',views.user_apply_coupon,name='apply_coupon'),
     path('add_order_quantity/<int:id>/',views.user_order_add_quantity,name='add_order_quantity'),
     path('sub_order_quantity/<int:id>/',views.user_order_substract_quantity,name='sub_order_quantity'),      
     path('delete_order_item/<int:id>/',views.user_order_item_delete,name='delete_order_item'),
+
 ]       

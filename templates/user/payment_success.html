@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Cartivo{% endblock %}</title>
+    <title>Payment Successful | Cartivo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,19 +16,21 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
         
-        /* Dropdown Hover Animation */
-        .group:hover .dropdown-menu {
-            display: block;
-            animation: slideUp 0.2s ease-out;
+        /* Success animations */
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .animate-bounce-in { animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        @keyframes confetti {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
     </style>
-    {% block extra_head %}{% endblock %}
 </head>
-<body class="{% block body_class %}bg-[#fdfaff] text-slate-900 min-w-0 overflow-x-hidden{% endblock %}" {% block body_attrs %}{% endblock %}>
+<body class="bg-[#fdfaff] text-slate-900 min-w-0 overflow-x-hidden">
 
     <div class="bg-violet-900 text-violet-100 text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide uppercase leading-relaxed">
         ⚡ Super Sale: Extra 20% Off | Code: <span class="text-amber-300 underline cursor-pointer">VIOLET20</span>
@@ -37,7 +39,7 @@
     <nav class="glass sticky top-0 z-50 border-b border-violet-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-wrap justify-between items-center gap-y-3 min-h-[4rem] sm:min-h-[5rem] py-2 sm:py-0 sm:h-20">
-                <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer min-w-0 shrink-0">
+                <a href="#" class="flex items-center gap-2 cursor-pointer min-w-0 shrink-0">
                     <div class="w-9 h-9 sm:w-10 sm:h-10 violet-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-200 shrink-0">
                         <i class="fa-solid fa-bag-shopping text-white"></i>
                     </div>
@@ -46,16 +48,15 @@
                 
                 <div class="hidden lg:flex flex-1 max-w-lg mx-4 xl:mx-12 min-w-0">
                     <div class="relative w-full">
-                        <form method="GET" action="{% url 'product_filter' %}">
-                        <input type="text" name="q" value="{{ q }}" placeholder="Search premium products..."
-                            class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
-                        <button type="submit" class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
-                            <i class="fa-solid fa-magnifying-glass px-2"></i>
-                        </button>
+                        <form method="GET" action="#">
+                            <input type="text" name="q" placeholder="Search premium products..."
+                                class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-3 px-6 transition-all outline-none text-sm">
+                            <button type="submit" class="absolute right-2 top-1.5 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition">
+                                <i class="fa-solid fa-magnifying-glass px-2"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
-                
 
                 <div class="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
                     <div class="relative group">
@@ -64,49 +65,36 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div class="text-left leading-none">
-                                {% if user.is_authenticated %}
                                 <span class="block text-[10px] text-gray-400 font-bold uppercase">Account</span>
-                                {% else %}
-                                <span class="text-sm font-bold text-slate-800">Login <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
-                                {% endif %}
+                                <span class="text-sm font-bold text-slate-800">John Doe <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></span>
                             </div>
                         </button>
 
                         <div class="dropdown-menu hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-violet-50 overflow-hidden z-[60]">
                             <div class="p-4 border-b border-gray-50 bg-violet-50/30">
-                                <p class="text-xs text-gray-500 font-semibold">Welcome to Cartivo</p>
-                                {% if user.is_authenticated %}
-                                <div class="border-t border-gray-50 py-2">
-                                <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
-                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
-                                </a>
-                            </div>
-
+                                <p class="text-xs text-gray-500 font-semibold">Welcome back to Cartivo</p>
                             </div>
                             <div class="py-2">
-                                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition font-semibold">
                                     <i class="fa-regular fa-user-circle w-5"></i> My Profile
                                 </a>
-                                <a href="{% url 'wishlist' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-regular fa-heart w-5"></i> Wishlist
                                 </a>
-                                <a href="{% url 'cart' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-solid fa-cart-shopping w-5"></i> My Cart
                                 </a>
-                                <a href="{% url 'myorders' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700 transition">
                                     <i class="fa-solid fa-box w-5"></i> Orders
                                 </a>
-                                {% else %}
-                                <form method="POST" action="{% url 'login' %}">
-                                    {% csrf_token %}
-                                    <button class="mt-2 w-full bg-violet-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-violet-700 transition">Sign In / Register</button>
-                                </form>
-                                {% endif %}
+                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition">
+                                    <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Logout
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <a href="{% url 'cart' %}" class="relative group flex items-center gap-2 sm:gap-3 bg-violet-600 p-2 sm:pr-5 rounded-2xl shadow-lg shadow-violet-200 transition hover:scale-105">
+                    <a href="#" class="relative group flex items-center gap-2 sm:gap-3 bg-violet-600 p-2 sm:pr-5 rounded-2xl shadow-lg shadow-violet-200 transition hover:scale-105">
                         <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-white">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </div>
@@ -117,36 +105,89 @@
             </div>
         </div>
 
-        <div class="lg:hidden px-4 pb-3 max-w-7xl mx-auto sm:px-6">
-            <form method="GET" action="{% url 'product_filter' %}" class="relative">
-                <input type="text" name="q" value="{{ q }}" placeholder="Search products..."
-                    class="w-full bg-violet-50/50 border-2 border-transparent focus:border-violet-400 focus:bg-white rounded-2xl py-2.5 pl-4 pr-12 text-sm outline-none transition">
-                <button type="submit" class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-violet-600 text-white p-2 rounded-xl hover:bg-violet-700 transition" aria-label="Search">
-                    <i class="fa-solid fa-magnifying-glass px-1"></i>
-                </button>
-            </form>
-        </div>
-
         <div class="bg-white/50 border-t border-violet-50">
             <div class="max-w-7xl mx-auto px-4 overflow-x-auto no-scrollbar">
                 <div class="flex items-center gap-8 py-3 whitespace-nowrap text-sm font-semibold text-slate-600">
                     <a href="#" class="text-violet-700 flex items-center gap-2"><i class="fa-solid fa-bolt"></i> Flash Deals</a>
-                    {% for i in cat %}
-                    <a href="{% url 'product_filter' %}?category={{ i.id }}" class="hover:text-violet-600 transition">{{ i.name }}</a>
-                    {% endfor %}
-                    <!-- <a href="#" class="hover:text-violet-600 transition">Electronics</a>
+                    <a href="#" class="hover:text-violet-600 transition">Electronics</a>
                     <a href="#" class="hover:text-violet-600 transition">Men's Fashion</a>
                     <a href="#" class="hover:text-violet-600 transition">Women's Fashion</a>
                     <a href="#" class="hover:text-violet-600 transition">Home & Kitchen</a>
                     <a href="#" class="hover:text-violet-600 transition">Beauty</a>
                     <a href="#" class="hover:text-violet-600 transition">Groceries</a>
-                    <a href="#" class="hover:text-violet-600 transition">Appliances</a> -->
+                    <a href="#" class="hover:text-violet-600 transition">Appliances</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    {% block content %}{% endblock %}
+    <main class="max-w-4xl mx-auto px-4 py-12 sm:py-20 w-full">
+        <!-- Breadcrumb -->
+        <nav class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-8 sm:mb-12">
+            Cart / Delivery / Payment / <span class="text-violet-600">Order Confirmed</span>
+        </nav>
+
+        <div class="text-center">
+            <!-- Success Icon -->
+            <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 sm:mb-12 bg-emerald-100 rounded-3xl flex items-center justify-center animate-bounce-in">
+                <i class="fa-solid fa-check text-5xl sm:text-7xl text-emerald-600 shadow-2xl"></i>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black bg-gradient-to-r from-slate-900 via-slate-800 to-violet-900 bg-clip-text text-transparent mb-6 tracking-tight">
+                Payment Successful!
+            </h1>
+
+            <p class="text-xl sm:text-2xl font-bold text-slate-700 mb-2 max-w-2xl mx-auto leading-relaxed">
+                Your order has been confirmed and is being prepared
+            </p>
+            <p class="text-slate-500 text-lg sm:text-xl max-w-xl mx-auto mb-12 leading-relaxed">
+                Thank you for shopping with Cartivo. Expect delivery within 2-3 business days.
+            </p>
+
+            <!-- Order Summary Card -->
+            <div class="bg-white/70 backdrop-blur-sm rounded-[3rem] border border-violet-100 shadow-2xl max-w-2xl mx-auto p-8 sm:p-12 mb-12">
+                <div class="text-center mb-8">
+                    <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.3em] mb-2">Order Details</h3>
+                    <p class="text-3xl font-black text-violet-900 tracking-tight">#CRT-247891</p>
+                </div>
+                <div class="grid grid-cols-2 gap-6 text-sm sm:text-base">
+                    <div>
+                        <span class="text-slate-500 font-medium block mb-1">Items Ordered</span>
+                        <span class="font-bold text-slate-900">3 Items</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 font-medium block mb-1">Total Amount</span>
+                        <span class="font-black text-2xl text-emerald-600">₹4,999</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 font-medium block mb-1">Payment Method</span>
+                        <span class="font-bold text-slate-900">UPI (Google Pay)</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 font-medium block mb-1">Est. Delivery</span>
+                        <span class="font-bold text-emerald-600">Feb 15-17</span>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-violet-100">
+                    <p class="text-xs font-bold text-emerald-600 text-center uppercase tracking-wider">
+                        Track your order anytime in <a href="#" class="underline hover:text-emerald-700">My Orders</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center max-w-md mx-auto">
+                <a href="#" class="group flex-1 bg-violet-600 text-white py-5 px-8 rounded-2xl font-black text-lg text-center shadow-xl shadow-violet-200 hover:scale-105 transition-all duration-200">
+                    <i class="fa-solid fa-box text-xl group-hover:translate-x-1 transition-transform mr-2"></i>
+                    Track My Order
+                </a>
+                <a href="#" class="group flex-1 bg-white border-2 border-violet-200 text-violet-700 py-5 px-8 rounded-2xl font-black text-lg text-center shadow-lg hover:shadow-xl hover:bg-violet-50 transition-all duration-200">
+                    <i class="fa-solid fa-bolt text-xl group-hover:translate-x-1 transition-transform mr-2"></i>
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+    </main>
 
     <footer class="bg-slate-900 text-white pt-16 sm:pt-24 pb-12 rounded-t-[2rem] sm:rounded-t-[3rem] mt-12 sm:mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12">
@@ -183,6 +224,6 @@
         </div>
     </footer>
 
-    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
+

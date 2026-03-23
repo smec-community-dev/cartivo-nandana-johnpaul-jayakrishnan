@@ -9,11 +9,20 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils import timezone
 from django.conf import settings
+from decimal import Decimal
 from .models import User,Cart,CartItem,Order,OrderItem,Wishlist,WishlistItem
 from User_app.decorators import customer_login_required,customer_required
 from Seller_app.models import Product,ProductImage,ProductVariant,VariantAttributeBridge,Attribute
 from Core_app.models import Address, Category, SubCategory
+from Admin_app.models import Coupon
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
+from django.http import JsonResponse
+import json
 
 # Create your views here.
 
@@ -65,7 +74,7 @@ def user_register(request):
             message,
             getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'no-reply@cartivo.local',
             [data_user.email],
-            fail_silently=True,
+            fail_silently=False,
         )
 
         messages.success(request, "Account created! Please check your email to verify your account before logging in.")
@@ -155,7 +164,7 @@ def user_home(request):
     return render(request,'user/home.html',{'products':products})
 
 @customer_login_required
-def user_product_filter_page(request):
+def user_product_filter(request):
     q = (request.GET.get('q') or '').strip()
     brand = (request.GET.get('brand') or '').strip()
     category_id = (request.GET.get('category') or '').strip()
@@ -318,20 +327,95 @@ def user_product_view(request, id):
     for item in attributebridge:
         attribute = Attribute.objects.get(id=item.option.id)
         attributes.append(attribute)
+    discount=(variant.cost_price*100)/variant.mrp
+    discount_percentage=discount-100
     return render(request, 'user/product_view.html', {
-        'variant': variant,
-        'variants': variants,
-        'user': user,
-        'attribute': attributes
-    })
+                                                        'discount':discount_percentage,
+                                                        'variant': variant,
+                                                        'variants': variants,
+                                                        'user': user,
+                                                        'attribute': attributes
+                                                        })
 
 @customer_login_required
 def user_payment_choice(request):
-    return render(request,'user/payment.html')  
+    user_name = request.user
+    order = Order.objects.filter(user=user_name).first()
+    order_item = OrderItem.objects.filter(order=order)
+
+    if not order or not order_item.exists():
+        messages.error(request, "No items in your order.")
+        return redirect('user_order_display')
+
+    total_discount = Decimal('0')
+    for items in order_item:
+        total_discount += items.discount_price * Decimal(items.quantity)
+
+    handling_fee = Decimal('59')
+    coupon_discount = Decimal('0')
+    applied_coupon_code = ''
+    applied = request.session.get('applied_coupon')
+
+    if order and applied and applied.get('order_id') == order.id:
+        code = applied.get('code', '').strip()
+        if code:
+            now = timezone.now()
+            coupon = Coupon.objects.filter(
+                code__iexact=code,
+                valid_from__lte=now,
+                valid_to__gte=now,
+            ).first()
+
+            if coupon:
+                discount_value = applied.get('discount_value') or coupon.discount_value
+                coupon_discount = Decimal(str(discount_value))
+
+                if coupon_discount < 0:
+                    coupon_discount = Decimal('0')
+                if coupon_discount > order.total_amount:
+                    coupon_discount = order.total_amount
+
+                applied_coupon_code = coupon.code
+            else:
+                request.session.pop('applied_coupon', None)
+
+    amount_payable = (order.total_amount - coupon_discount + handling_fee)
+
+    amount_paise = int(amount_payable * 100)
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+    payment = client.order.create({
+        "amount": amount_paise,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+
+    return render(request, 'user/payment.html', {
+        'order': order,
+        'order_item_count': order_item.count(),
+        'total_discount': total_discount,
+        'coupon_discount': coupon_discount,
+        'handling_fee': handling_fee,
+        'amount_payable': amount_payable,
+
+        'payment': payment,
+        'razorpay_key': settings.RAZORPAY_KEY_ID,
+        'amount': amount_paise,
+        'user':request.user,
+
+        'applied_coupon_code': applied_coupon_code,
+        'f_bag_total': float(order.total_amount),
+        'f_total_discount': float(total_discount),
+        'f_coupon_discount': float(coupon_discount),
+        'f_handling_fee': float(handling_fee),
+        'f_amount_payable': float(amount_payable),
+    })
 
 @customer_login_required
 def user_orders(request):
-    return render(request,'user/myorders.html')
+    orders=Order.objects.filter(order_status='Processing')
+    return render(request,'user/myorders.html',{"orders":orders})
 
 @customer_login_required
 def user_order_confirmation(request,id):
@@ -340,26 +424,44 @@ def user_order_confirmation(request,id):
     order=Order.objects.filter(user=user_name).first()
     product_price=variant.cost_price
     if order:
-        order_item=OrderItem.objects.filter(order=order,variant=variant).first()
+        order_item=OrderItem.objects.filter(order=order).first()
         if order_item:
-            if order_item.quantity < variant.stock_quantity:
-                order_item.quantity += 1
-                order_item.seller=variant.product.seller
-                order_item.save() 
-                order.total_amount+=order_item.price_at_purchase
-                order.save() 
-            else:     
-                messages.error(request,"item stock out")
+            order_item.delete()
+            order.total_amount=0
+            # if order_item.quantity < variant.stock_quantity:
+            #     order_item.quantity += 1
+            #     order_item.seller=variant.product.seller
+            #     order_item.discount_price=variant.mrp-variant.cost_price
+            #     order_item.save() 
+            #     order.total_amount+=order_item.price_at_purchase
+            #     order.save() 
+            # else:     
+            #     messages.error(request,"item stock out")
+            order_item1=OrderItem(order=order,
+                                  variant=variant,
+                                  seller=variant.product.seller,
+                                  discount_price=variant.mrp-variant.cost_price,
+                                  price_at_purchase=product_price)
+            order_item1.save()
+            order.total_amount+=product_price
+            order.save()
         else:
-            order_item1=OrderItem(order=order,variant=variant,seller=variant.product.seller,price_at_purchase=product_price)
+            order_item1=OrderItem(order=order,
+                                  variant=variant,
+                                  seller=variant.product.seller,
+                                  discount_price=variant.mrp-variant.cost_price,
+                                  price_at_purchase=product_price)
             order_item1.save()
             order.total_amount+=product_price
             order.save()
     else:
         order1=Order(user=user_name,total_amount=product_price)
         order1.save()
-        print(order1.total_amount)
-        order_item1=OrderItem(order=order1,variant=variant,seller=variant.product.seller,price_at_purchase=product_price)
+        order_item1=OrderItem(order=order1,
+                              variant=variant,
+                              seller=variant.product.seller,
+                              discount_price=variant.mrp-variant.cost_price,
+                              price_at_purchase=product_price)
         order_item1.save()
     return redirect('user_order_display')
 
@@ -406,7 +508,119 @@ def user_order_display(request):
     user_name=request.user
     order=Order.objects.filter(user=user_name).first()
     order_item=OrderItem.objects.filter(order=order)
-    return render(request,'user/order_confirmation.html',{'order_item':order_item,'order':order})
+    address=Address.objects.get(is_default=True)
+    total_discount=0
+    for items in order_item:
+        total_discount+=items.discount_price*items.quantity
+    
+    handling_fee = Decimal('59')
+    coupon_discount = Decimal('0')
+    applied_coupon_code = ''
+
+    applied = request.session.get('applied_coupon')
+
+    if order and applied and applied.get('order_id') == order.id:
+        code = applied.get('code', '').strip()
+
+        if code:
+            now = timezone.now()
+
+            coupon = Coupon.objects.filter(
+                code__iexact=code,
+                valid_from__lte=now,
+                valid_to__gte=now
+            ).first()
+
+            if coupon:
+                discount_value = applied.get('discount_value') or coupon.discount_value
+                coupon_discount = Decimal(str(discount_value))
+
+                if coupon_discount < 0:
+                    coupon_discount = Decimal('0')
+
+                if coupon_discount > order.total_amount:
+                    coupon_discount = order.total_amount
+
+                applied_coupon_code = coupon.code
+            else:
+                request.session.pop('applied_coupon', None)
+
+    amount_payable = (order.total_amount - coupon_discount + handling_fee) if order else handling_fee
+
+    return render(
+        request,
+        'user/order_confirmation.html',
+        {
+            'order_item': order_item,
+            'total_discount': total_discount,
+            'order': order,
+            'address': address,
+            'user': user_name,
+            'coupon_discount': coupon_discount,
+            'amount_payable': amount_payable,
+            'handling_fee': handling_fee,
+            'applied_coupon_code': applied_coupon_code,
+        }
+    )
+
+@customer_login_required
+def user_apply_coupon(request):
+    if request.method != 'POST':
+        return redirect('user_order_display')
+
+    user_name = request.user
+    order = Order.objects.filter(user=user_name).first()
+    if not order:
+        messages.error(request, "Order not found.")
+        return redirect('user_order_display')
+
+    coupon_code = (request.POST.get('coupon_code') or '').strip()
+    if not coupon_code:
+        messages.error(request, "Please enter a coupon code.")
+        return redirect('user_order_display')
+
+    now = timezone.now()
+    coupon = Coupon.objects.filter(
+        code__iexact=coupon_code,
+        valid_from__lte=now,
+        valid_to__gte=now
+    ).first()
+
+    if not coupon:
+        messages.error(request, "Invalid or expired coupon.")
+        return redirect('user_order_display')
+
+    if coupon.used_count >= coupon.usage_limit:
+        messages.error(request, "This coupon has reached its usage limit.")
+        return redirect('user_order_display')
+
+    prior = request.session.get('applied_coupon') or {}
+    discount = Decimal(str(coupon.discount_value))
+    if discount <= 0:
+        messages.error(request, "This coupon is not applicable.")
+        return redirect('user_order_display')
+
+    if discount > order.total_amount:
+        discount = order.total_amount
+
+    already_applied = (
+        prior.get('order_id') == order.id
+        and (prior.get('code') or '').strip().lower() == coupon.code.strip().lower()
+    )
+
+    if not already_applied:
+        coupon.used_count += 1
+        coupon.save(update_fields=['used_count'])
+
+    request.session['applied_coupon'] = {
+        'order_id': order.id,
+        'code': coupon.code,
+        'discount_value': str(discount),
+    }
+    request.session.modified = True
+
+    messages.success(request, f"Coupon applied: {coupon.code}")
+    return redirect('user_order_display')
 
 @customer_required
 def user_order_cart_confirmation(request,id):
@@ -430,7 +644,10 @@ def user_order_cart_confirmation(request,id):
                     else:     
                         messages.error(request,"item stock out")
                 else:
-                    order_item1=OrderItem(order=order,variant=variant,seller=variant.product.seller,price_at_purchase=product_price)
+                    order_item1=OrderItem(order=order,
+                                          variant=variant,
+                                          seller=variant.product.seller,
+                                          price_at_purchase=product_price)
                     order_item1.save()
                     order.total_amount+=product_price
                     order.save() 
@@ -438,7 +655,10 @@ def user_order_cart_confirmation(request,id):
                 order1=Order(user=user_name,total_amount=product_price)
                 order1.save()
                 print(order1.total_amount)
-                order_item1=OrderItem(order=order1,variant=variant,seller=variant.product.seller,price_at_purchase=product_price)
+                order_item1=OrderItem(order=order1,
+                                      variant=variant,
+                                      seller=variant.product.seller,
+                                      price_at_purchase=product_price)
                 order_item1.save()
     else:
         messages.error(request,'zero items in your cart')
@@ -514,3 +734,59 @@ def user_address_edit(request,id):
         return redirect('address')
 
     return render(request, 'user/edit_address.html', {'address': address})
+
+
+@customer_login_required
+def select_address_default(request,id):
+    user=request.user
+    address=Address.objects.filter(user=user)
+    print("hi")
+    for i in address:
+        if i.id==id:
+            i.is_default=True
+            i.save()
+        elif i.id!=id:
+            i.is_default=False
+            i.save()
+    return redirect('address')
+
+def create_payment(request):
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+    amount = 50000
+
+    payment = client.order.create({
+        "amount": amount,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+
+    return render(request, "payment.html", {
+        "payment": payment,
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "amount": amount
+    })
+
+
+@csrf_exempt
+def razorpay_verify(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        client = razorpay.Client(
+            auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+        )
+
+        try:
+            client.utility.verify_payment_signature({
+                'razorpay_order_id': data['razorpay_order_id'],
+                'razorpay_payment_id': data['razorpay_payment_id'],
+                'razorpay_signature': data['razorpay_signature']
+            })
+
+
+
+            return render(request,"user/payment_success.html")
+
+        except:
+            return JsonResponse({"status": "failed"})

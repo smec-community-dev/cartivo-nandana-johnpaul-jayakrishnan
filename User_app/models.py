@@ -56,5 +56,6 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
+    discount_price = models.DecimalField(max_digits=10,decimal_places=2,default=0)
     quantity = models.IntegerField(default=1)
     price_at_purchase = models.DecimalField(max_digits=10, decimal_places=2)
