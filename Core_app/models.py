@@ -13,6 +13,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='CUSTOMER')
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    gender = models.CharField(max_length=20,choices=(('male','male'),('female','female'),('other','other')),default='male')
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

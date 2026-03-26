@@ -1,0 +1,105 @@
+{% extends "user/base.html" %}
+
+{% block title %}My Wishlist | Cartivo Luxury{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdfaff; }
+        ::-webkit-scrollbar-thumb { background: #ddd6fe; border-radius: 10px; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div class="min-w-0">
+                <nav class="flex flex-wrap text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                    <a href="{% url 'home' %}" class="hover:text-violet-600">Home</a>
+                    <span>/</span>
+                    <a href="{% url 'profile' %}" class="hover:text-violet-600">Profile</a>
+                    <span>/</span>
+                    <span class="text-violet-600">Wishlist</span>
+                </nav>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 break-words">My <span class="text-violet-600">Wishlist</span> <span class="text-base sm:text-lg font-medium text-gray-400 ml-2">(4 Items)</span></h1>
+            </div>
+            <button type="button" class="flex items-center justify-center gap-2 bg-violet-100 text-violet-700 px-6 py-3 rounded-2xl font-bold hover:bg-violet-200 transition w-full sm:w-auto shrink-0">
+                <i class="fa-solid fa-share-nodes"></i> Share Wishlist
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+           {% for i in wishlist_item %}
+                <div class="group relative bg-white rounded-[2.5rem] p-4 shadow-xl shadow-violet-100/50 border border-transparent hover:border-violet-200 transition-all duration-300">
+
+                    <a href="{% url 'wishlist_item_delete' i.variant.id %}">
+                        <button class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/80 backdrop-blur-md text-gray-400 hover:text-rose-500 rounded-full flex items-center justify-center shadow-sm transition">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </a>
+
+                    <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-violet-50 mb-6">
+
+                        {% with img=i.variant.images.first %}
+                            {% if img %}
+                                <img src="{{ img.product_images.url }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            {% endif %}
+                        {% endwith %}
+
+                        <div class="absolute bottom-4 left-4 bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-lg shadow-lg">
+                            Wishlist
+                        </div>
+                    </div>
+
+                    <div class="px-2 pb-2">
+
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="font-bold text-slate-800 text-lg leading-tight">
+                                {{ i.variant.product.name }}
+                            </h3>
+                        </div>
+
+                        <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-tighter">
+                            {{ i.variant.product.category.name }}
+                        </p>
+
+                        <div class="flex items-center gap-3 mb-5">
+                            <span class="text-2xl font-black text-slate-900">
+                                ₹{{ i.variant.cost_price }}
+                            </span>
+                        </div>
+
+                        <a href="{% url 'add_cart' i.variant.id %}">
+                            <button class="w-full violet-gradient text-white py-4 rounded-2xl font-bold shadow-lg shadow-violet-200 hover:scale-[1.02] transition active:scale-95 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </a>
+
+                    </div>
+
+                </div>
+                {% empty %}
+
+                <div class="text-center py-20">
+                    <h2 class="text-xl font-semibold text-gray-500">Your wishlist is empty</h2>
+                </div>
+
+                {% endfor %}
+            </div>
+
+
+        </div>
+
+        <div class="mt-20 p-12 bg-violet-50 rounded-[3rem] border-2 border-dashed border-violet-200 text-center">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-violet-600 text-2xl mx-auto mb-6 shadow-sm">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <h3 class="text-xl font-bold text-violet-900 mb-2">Looking for more?</h3>
+            <p class="text-violet-600/70 mb-8 max-w-md mx-auto">Items stay in your wishlist for 30 days. Add them to your cart before they sell out!</p>
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-violet-700 transition-all shadow-xl shadow-violet-200">
+                Continue Shopping <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+{% endblock %}

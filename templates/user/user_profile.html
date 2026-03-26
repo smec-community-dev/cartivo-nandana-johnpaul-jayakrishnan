@@ -1,0 +1,187 @@
+{% extends "user/base.html" %}
+
+{% block title %}My Profile | Cartivo Elite{% endblock %}
+
+{% block extra_head %}
+    <style>
+        .profile-card { transition: all 0.3s ease; }
+        .profile-card:hover { transform: translateY(-5px); }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="w-full lg:w-1/4 space-y-4">
+                <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-violet-100/50 border border-violet-50">
+                    <div class="flex flex-col items-center text-center mb-8">
+                        <div class="relative">
+                            <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=300{% endif %}" class="w-24 h-24 rounded-3xl object-cover mb-4 border-4 border-violet-100">
+                            <button class="absolute bottom-4 right-0 bg-violet-600 text-white p-2 rounded-lg shadow-lg hover:scale-110 transition">
+                                <i class="fa-solid fa-camera text-xs"></i>
+                            </button>
+                        </div>
+                        <h2 class="text-xl font-extrabold">{{user.username}}</h2>
+                        <span class="text-xs font-bold text-violet-600 bg-violet-50 px-3 py-1 rounded-full uppercase tracking-wider mt-2">Elite Member</span>
+                    </div>
+
+                    <nav class="space-y-2">
+                        <form>
+                           {% csrf_token %}
+                            <a href="{% url 'profile' %}" class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600 text-white font-bold transition">
+                                <i class="fa-solid fa-user-gear"></i> Personal Info
+                            </a>
+                            <a href="{% url 'myorders' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-box"></i> My Orders
+                            </a>
+                            <a href="{% url 'address' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-location-dot"></i> Addresses
+                            </a>
+                            <a href="{% url 'payment_method' %}" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:bg-violet-50 hover:text-violet-700 font-semibold transition">
+                                <i class="fa-solid fa-credit-card"></i> Payment Methods
+                            </a>
+                            <hr class="my-4 border-gray-50">
+                            <a href="{% url 'logout' %}" class="flex items-center gap-4 p-4 rounded-2xl text-rose-500 hover:bg-rose-50 font-semibold transition">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                            </a>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-3/4 space-y-8 min-w-0">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Points</p>
+                            <p class="text-2xl font-black text-slate-800">2,450</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-violet-50 text-violet-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-shopping-bag"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Total Orders</p>
+                            <p class="text-2xl font-black text-slate-800">12</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-violet-50 flex items-center gap-5 profile-card">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl shadow-inner">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase">Cartivo Credit</p>
+                            <p class="text-2xl font-black text-slate-800">₹499</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="POST" action="{% url 'profile' %}">
+                {% csrf_token %}
+                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50">
+                    <div class="flex justify-between items-center mb-10">
+                        <h3 class="text-2xl font-extrabold text-slate-900">Personal Information</h3>
+                        <button class="text-sm font-bold text-violet-600 hover:underline">Edit Details</button>
+                    </div>
+                    <!-- {% if messages %}
+                    {% for message in messages %}
+                    <div class="toast-message {% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %} text-white px-6 py-4 rounded-xl shadow-xl flex items-center gap-3">
+                        <i class="fa-solid {% if message.tags == 'error' %}fa-circle-xmark{% else %}fa-check-circle{% endif %}"></i>
+                        <span class="font-bold">{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                    {% endif %} -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Username</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </span>
+                                <input type="text" value="{{user.username}}" name="username"
+                                    class="w-full bg-gray-50 border border-gray-100 focus:border-violet-400 focus:bg-white rounded-2xl py-4 pl-11 pr-4 transition-all outline-none text-sm shadow-sm">
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Email</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </span>
+                                <input type="text" value="{{user.email}}" name="email"
+                                    class="w-full bg-gray-50 border border-gray-100 focus:border-violet-400 focus:bg-white rounded-2xl py-4 pl-11 pr-4 transition-all outline-none text-sm shadow-sm">
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Phone number</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </span>
+                                <input type="text" value="{{user.phone_number}}" name="phone_number"
+                                    class="w-full bg-gray-50 border border-gray-100 focus:border-violet-400 focus:bg-white rounded-2xl py-4 pl-11 pr-4 transition-all outline-none text-sm shadow-sm">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Gender</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </span>
+                                <div class="relative w-full" x-data="{ open: false, selected: '{{ user.gender|default:'Select Gender' }}' }">
+    
+                                    <button type="button" @click="open = !open" 
+                                            class="w-full flex items-center justify-between bg-white border-2 border-gray-100 hover:border-violet-200 rounded-2xl py-4 px-5 transition-all outline-none text-sm text-slate-700 shadow-sm">
+                                        <span class="flex items-center gap-3">
+                                            <i class="fa-solid fa-venus-mars text-violet-400"></i>
+                                            <span x-text="selected"></span>
+                                        </span>
+                                        <i class="fa-solid fa-chevron-down text-xs text-gray-400" :class="open ? 'rotate-180' : ''"></i>
+                                    </button>
+
+                                    <ul x-show="open" @click.away="open = false" 
+                                        class="absolute z-[100] w-full mt-2 bg-white border border-violet-100 rounded-2xl shadow-2xl shadow-violet-100 overflow-hidden py-1">
+                                        
+                                        <li @click="selected = 'Male'; open = false" class="px-5 py-3 hover:bg-violet-50 hover:text-violet-700 cursor-pointer transition text-sm font-medium">Male</li>
+                                        <li @click="selected = 'Female'; open = false" class="px-5 py-3 hover:bg-violet-50 hover:text-violet-700 cursor-pointer transition text-sm font-medium">Female</li>
+                                        <li @click="selected = 'Other'; open = false" class="px-5 py-3 hover:bg-violet-50 hover:text-violet-700 cursor-pointer transition text-sm font-medium">Other</li>
+                                    </ul>
+
+                                    <input type="hidden" name="gender" :value="selected">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-slate-300">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-3xl">
+                            <i class="fa-solid fa-truck-fast text-violet-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold">Latest Order is on its way!</h4>
+                            <p class="text-slate-400 text-sm">Order #CRT-99201 • Expected Wednesday</p>
+                        </div>
+                    </div>
+                    <button class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-2xl font-bold transition shadow-lg shadow-violet-900/20">
+                        Track Shipment
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock %}

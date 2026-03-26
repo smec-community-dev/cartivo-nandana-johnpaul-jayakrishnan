@@ -1,0 +1,204 @@
+{% extends "user/base.html" %}
+
+{% block title %}Your Cart | Cartivo Luxury{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body { scroll-behavior: smooth; }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdfaff; }
+        ::-webkit-scrollbar-thumb { background: #ddd6fe; border-radius: 10px; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <div class="mb-10">
+            <nav class="flex flex-wrap text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                <a href="{% url 'home' %}" class="hover:text-violet-600">Home</a>
+                <span>/</span>
+                <span class="text-violet-600">Shopping Cart</span>
+            </nav>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Shopping <span class="text-violet-600">Cart</span></h1>
+            <p class="text-gray-500 mt-2 font-medium">You have <span id="item-count" class="text-violet-700 font-bold">2</span> items in your bag.</p>
+        </div>
+
+        <div class="flex flex-col lg:gap-12 lg:flex-row min-w-0">
+            <div id="cart-items" class="w-full lg:w-2/3 space-y-6 min-w-0">
+                
+                {% for item in cart_item %}
+                <div class="product-card bg-white p-6 rounded-[2.5rem] shadow-xl shadow-violet-100/50 border border-violet-50 flex flex-col md:flex-row items-center gap-6 group">
+
+                    <!-- Product Image -->
+                    <div class="w-32 h-40 bg-violet-50 rounded-[2rem] overflow-hidden flex-shrink-0">
+                        {% if item.variant.images.first %}
+                            <img src="{{ item.variant.images.first.product_images.url }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        {% else %}
+                            <img src="/media/default.jpg"
+                                class="w-full h-full object-cover">
+                        {% endif %}
+                    </div>
+
+                    <div class="flex-1 w-full">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <!-- Product Name -->
+                                <h3 class="font-bold text-xl text-slate-800">
+                                    {{ item.variant.product.name }}
+                                </h3>
+
+                                <!-- SKU or variant info -->
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">
+                                    SKU: {{ item.variant.sku_code }}
+                                </p>
+                            </div>
+
+                            <!-- Remove Button -->
+                            <a href="{% url 'delete_cart_item' item.variant.id %}"
+                            class="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:bg-rose-50 hover:text-rose-500 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-8">
+
+                            <!-- Quantity -->
+                            <div class="flex items-center bg-violet-50 rounded-2xl p-1.5 border border-violet-100">
+                                <a href="{% url 'sub_cart_quantity' item.variant.id %}"
+                                class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+
+                                <span class="px-5 font-bold text-slate-800">
+                                    {{ item.quantity }}
+                                </span>
+
+                                <a href="{% url 'add_cart_quantity' item.variant.id %}"
+                                class="w-9 h-9 flex items-center justify-center text-violet-600 hover:bg-white rounded-xl transition shadow-sm">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+
+                            <!-- Total Price -->
+                            <div class="text-2xl font-black text-slate-900">
+                                ₹ {{ item.price_at_time|floatformat:2 }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-20">
+                    <h2 class="text-2xl font-bold text-gray-400">Your Cart is Empty</h2>
+                </div>
+                {% endfor %}
+
+
+                <a href="{% url 'home' %}" class="inline-flex items-center gap-2 text-violet-600 font-bold hover:gap-4 transition-all px-4 py-2">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            <div class="lg:w-1/3">
+                <div class="bg-white p-8 rounded-[3rem] shadow-2xl shadow-violet-200/50 border border-violet-100 sticky top-28">
+                    <h2 class="text-2xl font-extrabold text-slate-900 mb-6">Order Summary</h2>
+                    
+                    <div class="mb-8">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block ml-1">Have a Coupon?</label>
+                        <div class="flex flex-col sm:flex-row gap-2 p-1.5 bg-violet-50 rounded-2xl border border-violet-100">
+                            <input type="text" placeholder="VIOLET20" class="flex-1 min-w-0 bg-transparent px-4 py-2 sm:py-0 outline-none text-sm font-bold uppercase placeholder:text-violet-200">
+                            <button type="button" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs hover:bg-violet-700 transition shadow-lg shrink-0">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-gray-500 font-medium">
+                            <span>Bag Total</span>
+                            <span id="bag-total" class="text-slate-900 font-bold">₹{{cart.total_amount}}</span>
+                        </div>
+                        <div class="flex justify-between text-rose-500 font-medium">
+                            <span>Bag Discount</span>
+                            <span id="bag-discount">-₹498</span>
+                        </div>
+                        <div class="flex justify-between text-gray-500 font-medium">
+                            <span>Delivery Fee</span>
+                            <span class="text-emerald-500 font-bold tracking-tighter uppercase text-xs">Free</span>
+                        </div>
+                        <div class="pt-6 border-t border-dashed border-gray-100 flex justify-between items-center">
+                            <span class="text-lg font-bold text-slate-900">Total Amount</span>
+                            <span id="final-amount" class="text-3xl font-black text-violet-700">₹0</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'user_order_cart_confirm' cart.id %}">
+                    <button class="w-full violet-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95 mb-6">
+                        Proceed to Checkout
+                    </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        function calculateTotals() {
+            let subtotal = 0;
+            const items = document.querySelectorAll('.product-card');
+            
+            items.forEach(item => {
+                const price = parseInt(item.getAttribute('data-price'));
+                const qty = parseInt(item.querySelector('.qty-val').innerText);
+                const itemTotal = price * qty;
+                item.querySelector('.item-total').innerText = itemTotal.toLocaleString();
+                subtotal += itemTotal;
+            });
+
+            const discount = subtotal > 0 ? 498 : 0;
+            const finalTotal = subtotal - discount;
+
+            // Update Sidebar
+            document.getElementById('bag-total').innerText = '₹' + subtotal.toLocaleString();
+            document.getElementById('final-amount').innerText = '₹' + (finalTotal > 0 ? finalTotal : 0).toLocaleString();
+            document.getElementById('item-count').innerText = items.length;
+            document.getElementById('bag-discount').innerText = '-₹' + discount;
+
+            // Update Navigation Header Counters
+            document.getElementById('nav-total').innerText = '₹' + (finalTotal > 0 ? finalTotal : 0).toLocaleString();
+            document.getElementById('nav-count').innerText = items.length;
+        }
+
+        function updateQty(btn, change) {
+            const qtySpan = btn.parentElement.querySelector('.qty-val');
+            let currentQty = parseInt(qtySpan.innerText);
+            if (currentQty + change > 0) {
+                qtySpan.innerText = currentQty + change;
+                calculateTotals();
+            }
+        }
+
+        function removeItem(btn) {
+            const card = btn.closest('.product-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                card.remove();
+                calculateTotals();
+                if (document.querySelectorAll('.product-card').length === 0) {
+                    document.getElementById('cart-items').innerHTML = `
+                        <div class="text-center py-20 bg-white rounded-[2.5rem] border-2 border-dashed border-violet-100">
+                            <i class="fa-solid fa-bag-shopping text-6xl text-violet-100 mb-4"></i>
+                            <h3 class="text-xl font-bold text-slate-800">Your bag is empty</h3>
+                            <a href="index.html" class="inline-block mt-4 bg-violet-600 text-white px-8 py-3 rounded-xl font-bold">Start Shopping</a>
+                        </div>
+                    `;
+                }
+            }, 400);
+        }
+
+        calculateTotals();
+    </script>
+{% endblock %}

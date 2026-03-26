@@ -1,0 +1,199 @@
+{% extends "user/base.html" %}
+
+{% block title %}Checkout | Cartivo Luxury Secure{% endblock %}
+
+{% block extra_head %}
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                    <p class="text-sm font-bold
+                        {% if message.tags == 'error' %}text-rose-600{% elif message.tags == 'success' %}text-emerald-600{% else %}text-slate-700{% endif %}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="flex flex-col lg:flex-row gap-8 min-w-0">
+            
+            <div class="w-full lg:w-2/3 space-y-6 min-w-0">
+                
+                <div class="bg-white rounded-[2rem] border border-violet-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 shadow-sm">
+                    <div class="flex items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+                        <div class="w-10 h-10 shrink-0 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-1"> Account</h3>
+                            <p class="text-sm font-bold text-slate-800 break-words">{{user.username}} <span class="mx-1 sm:mx-2 text-slate-300">|</span> <span class="font-normal text-slate-500">ph: {{user.phone_number}}</span></p>
+                        </div>
+                    </div>
+                    <a href="{% url 'profile' %}" class="shrink-0 self-start sm:self-center">
+                        <button type="button" class="text-violet-600 text-[10px] font-black border-2 border-violet-50 px-5 py-2 rounded-xl hover:bg-violet-50 transition uppercase tracking-widest">Change</button>
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-[2rem] border border-violet-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 shadow-sm">
+                    <div class="flex items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+                        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-1">   Delivery Address</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed font-medium break-words">{{address.house_info}}, {{address.locality}}, {{address.city}}, {{address.state}} - {{address.pincode}}</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'address' %}" class="shrink-0 self-start sm:self-center">
+                        <button type="button" class="text-violet-600 text-[10px] font-black border-2 border-violet-50 px-5 py-2 rounded-xl hover:bg-violet-50 transition uppercase tracking-widest">Modify</button>
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] border-2 border-violet-600 overflow-hidden shadow-2xl shadow-violet-100">
+                    <div class="violet-gradient text-white p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-white text-violet-600 font-black w-8 h-8 rounded-lg flex items-center justify-center text-xs">3</span>
+                            <h2 class="font-black text-sm uppercase tracking-[0.2em]">Order Summary</h2>
+                        </div>
+                        <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full whitespace-nowrap">{{ order_item|length }} item{{ order_item|length|pluralize }} selected</span>
+                    </div>
+                    
+                    {% for items in order_item %}
+                    <a href="{% url 'product_view' items.variant.id %}">
+                    <div class="p-4 sm:p-8 space-y-8">
+                        <div class="flex flex-col md:flex-row gap-6 md:gap-8 group">
+                            <div class="w-full max-w-[8rem] mx-auto md:mx-0 h-32 bg-violet-50 rounded-[2rem] overflow-hidden flex-shrink-0 border border-violet-100 shadow-inner">
+                                <img src="{{items.variant.images.first.product_images.url}}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                                    <div class="min-w-0">
+                                        <h3 class="font-bold text-lg sm:text-xl text-slate-800 break-words">{{items.variant.product.name}}</h3>
+                                        <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Variant: Scarlet Red / UK 9</p>
+                                    </div>
+                                    <div class="text-left sm:text-right shrink-0">
+                                        <p class="text-xl font-black text-slate-900">{{ items.variant.cost_price }}</p>
+                                        <p class="text-xs text-rose-500 font-bold">Save ₹{{items.discount_price}}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 flex items-center gap-6">
+                                    <div class="flex items-center bg-slate-50 rounded-xl p-1 border">
+                                        <a href="{% url 'sub_order_quantity'  items.variant.id %}">
+                                            <button class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition">-</button>
+                                        </a>
+                                        <span class="px-4 font-bold text-sm">{{items.quantity}}</span>
+                                        <a href="{% url 'add_order_quantity' items.variant.id %}">
+                                            <button class="w-8 h-8 flex items-center justify-center hover:bg-white rounded-lg transition">+</button>
+                                        </a>
+                                    </div>
+                                    <a href="{% url 'delete_order_item' items.variant.id %}">
+                                        <button class="text-xs font-black text-rose-500 uppercase tracking-widest hover:underline">Remove Item</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-100">
+
+                    </div>
+                    </a>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            
+            <div class="w-full lg:w-1/3">
+                <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-violet-100 border border-violet-50 overflow-hidden sticky top-4 lg:top-28">
+                    <div class="p-8 border-b border-slate-50">
+                        <h2 class="text-slate-400 font-black text-xs uppercase tracking-[0.2em] mb-6">Price Breakdown</h2>
+                        
+            
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="text-slate-500">Bag Total ({{ order_item|length }} items)</span>
+                                <span>{{ order.total_amount }}</span>
+                            </div>
+                            
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="text-slate-500">Bag Discount</span>
+                                <span class="text-emerald-500">-₹{{total_discount}}</span>
+                            </div>
+
+                            {% if coupon_discount > 0 %}
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="text-slate-500">Coupon Discount</span>
+                                <span class="text-emerald-500">-₹{{ coupon_discount }}</span>
+                            </div>
+                            {% endif %}
+
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="text-slate-500">Handling Fee</span>
+                                <span>₹59</span>
+                            </div>
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="text-slate-500">Delivery</span>
+                                <span class="text-emerald-500 uppercase text-[10px] font-black">Free</span>
+                            </div>
+                            
+                            <div class="pt-6 mt-6 border-t border-slate-100 flex justify-between items-end">
+                                <div>
+                                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Amount Payable</p>
+                                    <p class="text-3xl font-black text-slate-900 tracking-tighter">₹{{ amount_payable }}</p>
+                                </div>
+                                <div class="bg-emerald-50 text-emerald-600 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest">
+                                    Saving ₹{{ total_discount|add:coupon_discount }}
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2">Have a Coupon?</p>
+                                <form method="post" action="{% url 'apply_coupon' %}" class="mt-2 space-y-3">
+                                    {% csrf_token %}
+                                    <div class="flex gap-2">
+                                        <input
+                                            type="text"
+                                            name="coupon_code"
+                                            placeholder="Enter coupon code"
+                                            value="{{ applied_coupon_code }}"
+                                            class="w-full bg-white border border-violet-100 rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-200"
+                                        />
+                                        <button
+                                            type="submit"
+                                            class="bg-violet-600 text-white px-5 py-3 rounded-2xl font-extrabold text-sm hover:bg-violet-700 transition whitespace-nowrap"
+                                        >
+                                            Apply
+                                        </button>
+                                    </div>
+                                    {% if applied_coupon_code and coupon_discount > 0 %}
+                                        <p class="text-xs font-bold text-emerald-600">
+                                            Applied {{ applied_coupon_code }}
+                                        </p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-violet-50/30 space-y-6">
+                        <div class="flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                            <i class="fa-solid fa-shield-check text-2xl text-violet-600"></i>
+                            <p>Safe & Secure Payments<br>100% Authentic Products</p>
+                        </div>
+                        <a href="{% url 'payment_choice' %}">
+                        <button class="w-full violet-gradient text-white py-5 rounded-2xl font-black shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95 uppercase tracking-widest">
+                            Proceed to Payment
+                        </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </main>
+{% endblock %}

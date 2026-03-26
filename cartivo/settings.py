@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'Seller_app',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,10 +58,14 @@ ROOT_URLCONF = 'cartivo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR,"templates"],
+
+
+        'DIRS': [BASE_DIR / 'templates'],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'User_app.context_processors.category_list',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -71,6 +75,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'cartivo.wsgi.application'
+
+AUTHENTICATION_BACKENDS = [
+    ...
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    ...
+]
 
 
 # Database
@@ -120,5 +134,30 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 AUTH_USER_MODEL = 'core.User'
 AUTH_USER_MODEL="Core_app.User"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'user_media'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'hhhgfdhs03@gmail.com'
+EMAIL_HOST_PASSWORD = 'xgbczgxluzoiuccu'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'Core_app.User'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'
+
+RAZORPAY_KEY_ID = "rzp_test_SUO3WrAkaqQAXM"
+RAZORPAY_KEY_SECRET = "lvOAAXzmGxrfMfFnqC83D2ma"
+

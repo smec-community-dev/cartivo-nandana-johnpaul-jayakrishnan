@@ -1,0 +1,310 @@
+{% extends "user/base.html" %}
+
+{% block title %}{{ variant.product.name }} | Cartivo Elite{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body { scroll-behavior: smooth; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .product-thumb.active {
+            border-color: #7c3aed;
+            background: #f5f3ff;
+            transform: scale(1.05);
+        }
+
+        .offer-card {
+            border: 1px solid #f0e7ff;
+            border-radius: 1rem;
+            padding: 1rem;
+            min-width: min(150px, 85vw);
+            flex: 0 0 auto;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .offer-card:hover {
+            border-color: #7c3aed;
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1);
+        }
+
+        .wishlist-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #4a5568;
+        }
+        .heart-icon {
+            fill: none;
+            stroke: #4a5568;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+        .wishlist-btn:hover {
+            border-color: #ff4d4d;
+            background-color: #fff5f5;
+        }
+        .wishlist-btn.active {
+            background-color: #ff4d4d;
+            border-color: #ff4d4d;
+            color: white;
+        }
+        .wishlist-btn.active .heart-icon {
+            fill: white;
+            stroke: white;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        <nav class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 sm:mb-8 break-words leading-relaxed">
+            {{variant.product.subcategory.category.name}} / {{variant.product.subcategory.name}} / <span class="text-violet-600">{{variant.product.name}}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        
+            <div class="lg:col-span-4 space-y-6">
+                <div class="relative aspect-square rounded-[3rem] overflow-hidden bg-white border border-violet-50 shadow-2xl shadow-violet-100/50">
+                    {% if variant.images.first %}
+                    <img id="mainImage" src="{{ variant.images.first.product_images.url }}" 
+                         class="w-full h-full object-cover transition-opacity duration-300">
+                    {% endif %}
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-violet-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">Elite Choice</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                    {% for images in variant.images.all %}
+                    <div onclick="changeImage(this, '{{ images.product_images.url }}')" class="product-thumb active w-20 h-20 shrink-0 rounded-2xl border-2 border-transparent p-1 cursor-pointer transition-all duration-300">
+                        <img src="{{ images.product_images.url }}" class="w-full h-full object-cover rounded-xl">
+                    </div>
+                    {% endfor %} 
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 space-y-6">
+                {% if variant.product %}
+                <div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-2 break-words">{{variant.product.name}}</h1>
+                    <div class="flex items-center gap-3">
+                        <div class="flex text-amber-400 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">(4.8 / 5.0)</span>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-[2rem] bg-white border border-violet-50 shadow-xl shadow-violet-100/20">
+                    <div class="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-2">
+                        <span class="text-3xl sm:text-4xl font-black text-violet-900">₹{{variant.cost_price}}</span>
+                        <span class="text-base sm:text-lg text-gray-400 line-through">₹{{ variant.mrp }}</span>
+                        <span class="text-rose-500 font-bold text-sm">{{discount}}% OFF</span>
+                    </div>
+                    <div class="inline-block bg-rose-50 text-rose-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Limited Time Deal</div>
+                </div>
+                {% endif %}
+                <div class="flex gap-4 overflow-x-auto no-scrollbar">
+                    <div class="offer-card shadow-sm">
+                        <i class="fa-solid fa-building-columns text-violet-600 mb-2"></i>
+                        <h4 class="font-bold text-xs uppercase tracking-tighter">Bank Offer</h4>
+                        <p class="text-[10px] text-gray-500">10% Instant Discount on HDFC Cards</p>
+                    </div>
+                    <div class="offer-card shadow-sm">
+                        <i class="fa-solid fa-truck-fast text-violet-600 mb-2"></i>
+                        <h4 class="font-bold text-xs uppercase tracking-tighter">Express</h4>
+                        <p class="text-[10px] text-gray-500">Free delivery by tomorrow morning</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- <h4 class="font-bold text-sm uppercase tracking-widest text-gray-400">Select Colour: <span id="colorName" class="text-slate-900">Midnight Black</span></h4> -->
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <p class="w-full sm:w-auto text-sm text-slate-600">Total variants: {{ variants|length }}</p>
+                        {% for v in variants %}
+                            <a href="{% url 'product_view' v.id %}"
+                                class="px-6 py-3 rounded-xl border-2 font-bold text-sm transition
+                                {% if v.id == variant.id %}
+                                    border-violet-600 bg-violet-50 text-violet-700
+                                {% else %}
+                                    border-gray-200 bg-white text-slate-600 hover:border-violet-400
+                                {% endif %}">
+                                    <img src="{{v.images.first.product_images.url }}" class="w-10 h-10">
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+            </div>
+            {% if variant.product %}
+            <div class="lg:col-span-3 w-full min-w-0">
+                <div class="lg:sticky lg:top-24 xl:top-28 p-4 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-violet-100 shadow-2xl shadow-violet-200/50 space-y-6">
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter">Subtotal</p>
+                        <p class="text-3xl font-black text-slate-900">₹{{variant.cost_price}}</p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <a href="{% url 'wishlist_add' variant.id %}">
+                        <button class="w-full violet-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95">
+                            <i class="fa-solid fa-heart"></i> Add to wishlist
+                        </button>
+                        </a>
+                        <br><br>
+                        <a href="{% url 'add_cart' variant.id %}">
+                        <button class="w-full violet-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-violet-200 hover:scale-[1.02] transition active:scale-95">
+                            <i class="fa-solid fa-cart-plus mr-2"></i> Add to Cart
+                        </button>
+                        </a>
+                        <br><br>
+                        <a href="{% url 'user_order_confirm' variant.id %}">
+                        <button class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold hover:bg-slate-800 transition shadow-xl shadow-slate-200">
+                            Buy Now
+                        </button>
+                        </a>
+                    </div>
+                    
+                    <div class="pt-6 border-t border-violet-50 space-y-3 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                        <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-violet-600 text-base"></i> 1 Year Warranty</div>
+                        <div class="flex items-center gap-3"><i class="fa-solid fa-rotate-left text-violet-600 text-base"></i> 7 Days Replacement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <section class="mt-20 border-t border-violet-100 pt-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-8 space-y-10">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
+                            <span class="w-2 h-8 violet-gradient rounded-full"></span>
+                            Product Experience
+                        </h2>
+                        <p class="text-slate-600 leading-relaxed text-lg">
+                            <span class="text-violet-600 font-bold">{{variant.product.description}}
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 rounded-[2rem] bg-violet-50 border border-violet-100 hover:shadow-xl hover:shadow-violet-200/40 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-violet-600 mb-4 shadow-sm group-hover:violet-gradient group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-heart-pulse text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 mb-2">Biometric Intelligence</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Advanced 24/7 heart rate monitoring and SpO2 tracking with medical-grade precision sensors.</p>
+                        </div>
+
+                        <div class="p-6 rounded-[2rem] bg-white border border-slate-100 hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 mb-4 shadow-sm group-hover:violet-gradient group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-battery-full text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 mb-2">Endurance Battery</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Stay connected for up to 14 days on a single charge with our proprietary Power-Flow optimization.</p>
+                        </div>
+                    </div>
+
+                   <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white">
+    <h3 class="text-xl font-bold mb-6">Technical Specifications</h3>
+
+    <div class="space-y-4 text-sm">
+
+        {% for attr in attribute %}
+        <div class="flex justify-between border-b border-slate-800 pb-3">
+            <span class="text-slate-400 font-medium">
+                {{ attr.attribute.name }}
+            </span>
+
+            <span class="font-bold text-violet-300">
+                {{ attr.option }}
+            </span>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+                </div>
+
+                <!-- <div class="lg:col-span-4">
+                    <div class="bg-violet-50/50 border border-violet-100 rounded-[2.5rem] p-8">
+                        <h3 class="font-black text-slate-900 uppercase text-xs tracking-[0.2em] mb-6">What's in the Box</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 text-slate-600 text-sm">
+                                <div class="w-2 h-2 rounded-full bg-violet-600"></div>
+                                Elite Smart Watch v4
+                            </li>
+                            <li class="flex items-center gap-4 text-slate-600 text-sm">
+                                <div class="w-2 h-2 rounded-full bg-violet-600"></div>
+                                Milanese Loop Strap (Premium)
+                            </li>
+                            <li class="flex items-center gap-4 text-slate-600 text-sm">
+                                <div class="w-2 h-2 rounded-full bg-violet-600"></div>
+                                Magnetic Super-Fast Charger
+                            </li>
+                            <li class="flex items-center gap-4 text-slate-600 text-sm">
+                                <div class="w-2 h-2 rounded-full bg-violet-600"></div>
+                                Cartivo Elite Warranty Card
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-8 p-4 bg-white rounded-2xl border border-violet-100 flex items-center gap-4">
+                            <i class="fa-solid fa-certificate text-violet-600 text-2xl"></i>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Authentic Product</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-tighter">Verified Cartivo Seller</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        function changeImage(element, newSrc) {
+            const main = document.getElementById('mainImage');
+            if (!main) return;
+
+            main.style.opacity = '0';
+            setTimeout(() => {
+                main.src = newSrc;
+                main.style.opacity = '1';
+            }, 200);
+
+            document.querySelectorAll('.product-thumb').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        function updateVariant(btn, name) {
+            const label = document.getElementById('colorName');
+            if (label) label.innerText = name;
+
+            document.querySelectorAll('.variant-btn').forEach(b => {
+                b.classList.remove('border-violet-600', 'bg-violet-50', 'text-violet-700');
+                b.classList.add('border-transparent', 'bg-white', 'text-slate-600');
+            });
+
+            btn.classList.add('border-violet-600', 'bg-violet-50', 'text-violet-700');
+            btn.classList.remove('border-transparent', 'bg-white', 'text-slate-600');
+        }
+
+        function toggleWishlist(btn) {
+            btn.classList.toggle('active');
+            const text = btn.querySelector('span');
+            if (!text) return;
+            text.innerText = btn.classList.contains('active') ? 'Saved to Wishlist' : 'Add to Wishlist';
+        }
+    </script>
+{% endblock %}

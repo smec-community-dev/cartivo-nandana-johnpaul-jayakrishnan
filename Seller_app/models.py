@@ -15,7 +15,10 @@ class SellerProfile(models.Model):
     rating = models.FloatField(default=0)
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
+    def __str__(self):
+        return self.store_name
+    
 class Product(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="products")
@@ -30,6 +33,9 @@ class Product(models.Model):
     approval_status = models.CharField(max_length=20, choices=(('PENDING', 'Pending'), ('APPROVED', 'Approved'), ('REJECTED', 'Rejected')), default='PENDING')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variants")
@@ -39,28 +45,39 @@ class ProductVariant(models.Model):
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.IntegerField()
     weight = models.FloatField(help_text="Weight in kg")
-    length = models.FloatField(help_text="Length in cm")
-    width = models.FloatField(help_text="Width in cm")
-    height = models.FloatField(help_text="Height in cm")
+    length = models.FloatField(help_text="Length in cm",null=True)
+    width = models.FloatField(help_text="Width in cm",null=True)   
+    height = models.FloatField(help_text="Height in cm",null=True)
     tax_percentage = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.product.name
+
 class ProductImage(models.Model):
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name="images")
-    image_url = models.URLField()
+    product_images = models.ImageField(upload_to='product_images/', null=True, blank=True)
     alt_text = models.CharField(max_length=255, blank=True)
     is_primary = models.BooleanField(default=False)
-
+    
+    
 class Attribute(models.Model):
     name = models.CharField(max_length=100) 
-
+    
+    def __str__(self):
+        return self.name
+    
 class AttributeOption(models.Model):
     attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE, related_name="options")
     value = models.CharField(max_length=100) 
-
+    
+    def __str__(self):
+        return self.value
+    
 class VariantAttributeBridge(models.Model):
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     option = models.ForeignKey(AttributeOption, on_delete=models.CASCADE)
+    
 
 class InventoryLog(models.Model):
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)

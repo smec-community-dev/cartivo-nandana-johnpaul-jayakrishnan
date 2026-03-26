@@ -1,0 +1,223 @@
+{% extends "user/base.html" %}
+
+{% block title %}Manage Addresses | Cartivo Luxury{% endblock %}
+
+{% block extra_head %}
+    <style>
+        body { scroll-behavior: smooth; }
+        .address-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid transparent; }
+        .address-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px -12px rgba(124, 58, 237, 0.15); }
+        .address-card.active { border-color: #7c3aed; background: white; }
+        .modal-animate { animation: modalIn 0.3s ease-out; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:py-12 w-full min-w-0">
+        
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+            <div class="min-w-0 w-full">
+                <nav class="flex flex-wrap text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 gap-2">
+                    <a href="{% url 'user_order_display' %}" class="hover:text-violet-600 transition">Order</a>
+                    <span>/</span>
+                    <a href="{% url 'home' %}" class="hover:text-violet-600 transition">Home</a>
+                    <span>/</span>
+                    <a href="{% url 'profile' %}" class="hover:text-violet-600 transition">Profile</a>
+                    <span>/</span>
+                    <span class="text-violet-600">Addresses</span>
+                </nav>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tighter break-words">Address<span class="text-violet-600"></span></h1>
+                <p class="text-slate-500 font-medium mt-2">Manage your premium delivery locations for a faster checkout.</p>
+            </div>
+            
+            <button type="button" onclick="toggleModal('addressModal')" class="group flex items-center justify-center gap-3 bg-slate-900 text-white px-8 py-4.5 rounded-[2rem] font-bold hover:bg-violet-600 transition shadow-2xl shadow-slate-200 active:scale-95 w-full md:w-auto shrink-0">
+                <i class="fa-solid fa-plus text-xs group-hover:rotate-90 transition-transform"></i> Add New Address
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% for items in user_address %}
+            <div class="address-card bg-white p-8 rounded-[3rem] shadow-xl shadow-violet-100/40 relative">
+                <a href="{% url 'default_address' items.id %}">
+                <!-- Default badge -->
+                {% if items.is_default %}
+                <div class="absolute top-8 right-8 bg-violet-600 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-violet-200">
+                    Default
+                </div>
+                {% endif %}
+
+                <!-- Clickable area -->
+                
+                    <div class="w-14 h-14 bg-violet-50 text-violet-600 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fa-solid fa-briefcase text-2xl"></i>
+                    </div>
+                
+
+                <div class="mb-8">
+                    <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-1">
+                        {{items.address_type}}
+                    </p>
+
+                    <h3 class="text-2xl font-extrabold text-slate-900">
+                        {{items.full_name}}
+                    </h3>
+
+                    <p class="text-slate-500 text-sm font-medium mt-4 leading-relaxed">
+                        {{items.house_info}}, {{items.locality}},<br>
+                        {{items.landmark}}, {{items.city}},<br>
+                        {{items.state}}, {{items.pincode}}
+                    </p>
+
+                    <div class="mt-6 flex items-center gap-3 text-slate-400">
+                        <div class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <span class="font-bold text-slate-700 text-sm">
+                            {{items.phone_number}}
+                        </span>
+                    </div>
+                </div>
+                </a>
+
+                <div class="flex items-center gap-6 pt-8 border-t border-slate-50">
+                    <a href="{% url 'user_address_edit' items.id %}" 
+                    class="text-xs font-black text-violet-600 hover:underline uppercase tracking-widest">
+                    Edit Details
+                    </a>
+
+                    <button onclick="toggleModal('deleteModal')" 
+                            class="text-xs font-black text-gray-300 hover:text-rose-500 transition uppercase tracking-widest">
+                        Remove
+                    </button>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </main>
+
+
+    <div id="addressModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="toggleModal('addressModal')"></div>
+        <div class="relative bg-white w-full max-w-xl rounded-[3rem] shadow-2xl overflow-hidden modal-animate">
+            <div class="violet-gradient p-10 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl font-extrabold mb-1">New Location</h2>
+                        <p class="text-violet-100/70 font-medium">Add a new destination for your deliveries.</p>
+                    </div>
+                    <button onclick="toggleModal('addressModal')" class="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-2xl flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'user_address_add' %}" class="p-5 space-y-3">
+                {% csrf_token %} 
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                        <input type="text" name="full_name" placeholder="Alex Grayson" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                        <input type="text" name="phone_number" placeholder="+91 00000 00000" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">House info</label>
+                        <input type="text" name="house_info" placeholder="House info" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label>
+                        <input type="text" name="locality" placeholder="Street Address" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Landmark ,Country ,State ,City ,Pincode</label>
+                    <input type="text" name="landmark" placeholder="Landmark" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="country" placeholder="Country" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    <input type="text" name="state" placeholder="State" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="city" placeholder="City" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                    <input type="text" name="pincode" placeholder="Pincode" required class="w-full bg-slate-50 border-2 border-transparent focus:border-violet-400 focus:bg-white p-3 rounded-xl outline-none transition font-bold text-xs">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Location Tag</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="address_type" value="HOME" class="hidden peer" checked>
+                            <div class="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-slate-100 peer-checked:border-violet-600 peer-checked:bg-violet-50 peer-checked:text-violet-700 font-extrabold text-[10px] transition">
+                                <i class="fa-solid fa-house"></i> Home
+                            </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="address_type" value="WORK" class="hidden peer">
+                            <div class="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-slate-100 peer-checked:border-violet-600 peer-checked:bg-violet-50 peer-checked:text-violet-700 font-extrabold text-[10px] transition">
+                                <i class="fa-solid fa-briefcase"></i> Work
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full violet-gradient text-white py-3.5 rounded-2xl font-extrabold text-sm shadow-xl shadow-violet-200 hover:shadow-violet-400 transition active:scale-95">
+                    Save Delivery Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="toggleModal('deleteModal')"></div>
+        <div class="relative bg-white w-full max-w-sm rounded-[3rem] p-10 shadow-2xl text-center modal-animate">
+            <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-trash-can text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Delete Address?</h3>
+            <p class="text-slate-500 text-sm font-medium mb-10 leading-relaxed">This destination will be removed from your account permanently.</p>
+            <div class="flex gap-4">
+                <button onclick="toggleModal('deleteModal')" class="flex-1 py-4 rounded-2xl font-bold text-slate-400 hover:bg-slate-50 transition">Keep It</button>
+                <button class="flex-1 py-4 rounded-2xl font-bold bg-rose-500 text-white shadow-xl shadow-rose-100 hover:bg-rose-600 transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+{% endblock %}
