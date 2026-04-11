@@ -10,30 +10,112 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-  
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
 
 body{
     font-family:'Plus Jakarta Sans',sans-serif;
-    background:#f8fafc;
-    color:#0f172a;
+    background:#f8fafc; /* light background */
+    color:#000000; /* main text black */
 }
 
+/* ================= SIDEBAR ================= */
+
 .sidebar-admin{
-    background:#0f172a;
-    border-right:1px solid #1e3a8a;
+    background:#000000; /* black sidebar */
+    border-right:1px solid #262626;
 }
+
+/* Sidebar text white */
+.sidebar-admin,
+.sidebar-admin a,
+.sidebar-admin p,
+.sidebar-admin i,
+.sidebar-admin h1,
+.sidebar-admin span {
+    color:#ffffff !important;
+}
+
+/* Sidebar inactive text */
+.sidebar-admin .text-slate-300{
+    color:#d1d5db !important;
+}
+
+/* Sidebar hover */
+.sidebar-admin a:hover{
+    background:#1a1a1a !important;
+    color:#ffffff !important;
+}
+
+/* ================= CARDS ================= */
 
 .glass-card{
     background:#ffffff;
-    border:1px solid #e2e8f0;
+    border:1px solid #e5e5e5;
+    border-radius:16px;
+    transition:0.3s;
 }
 
+.glass-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(255,122,0,0.2);
+}
+
+/* ================= TEXT COLORS ================= */
+
+/* Force all blue/slate text to black */
+.text-blue-900,
+.text-blue-800,
+.text-blue-400,
+.text-slate-500,
+.text-slate-300{
+    color:#000000 !important;
+}
+
+/* ================= ORANGE THEME ================= */
+
+/* Buttons */
+.bg-blue-800{
+    background:#ff7a00 !important;
+}
+
+.bg-blue-700{
+    background:#e66a00 !important;
+}
+
+.bg-blue-900{
+    background:#cc5c00 !important;
+}
+
+/* Light backgrounds */
+.bg-blue-50{
+    background:#fff3e6 !important;
+}
+
+/* Borders */
+.border-blue-200{
+    border-color:#ffd6b3 !important;
+}
+
+/* ================= HOVER ================= */
+
+.hover\:bg-blue-900:hover{
+    background:#1a1a1a !important;
+}
+
+.hover\:bg-blue-700:hover{
+    background:#e66a00 !important;
+}
+
+/* Table hover */
+tr:hover{
+    background:#fff3e6 !important;
+}
 </style>
 
 </head>
 
 <body class="flex min-h-screen">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <form method="post" class="flex flex-1">
 {% csrf_token %}
@@ -64,6 +146,8 @@ class="flex items-center gap-4 bg-blue-800 text-white p-4 rounded-2xl font-bold 
 Infrastructure
 
 </a>
+
+
 
 
 <a href="{% url 'category' %}"
