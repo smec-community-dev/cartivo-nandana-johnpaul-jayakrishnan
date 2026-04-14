@@ -23,5 +23,9 @@ urlpatterns = [
     path("product_offer_bridge/",views.product_offer_bridge,name="product_offer_bridge"),
     path("category_offer_bridge/",views.category_offer_bridge,name="category_offer_bridge"),
     path("Product_Discount_Bridge/",views.Product_Discount_Bridge,name="Product_Discount_Bridge"),
+    path('pending-sellers/', views.pending_seller, name='pending-sellers'),
+    path('approve-seller/<int:id>/', views.approve_seller, name='approve_seller'),
+    path('reject-seller/<int:id>/', views.reject_seller, name='reject_seller'),
+
     
 ]

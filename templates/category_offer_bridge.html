@@ -10,21 +10,26 @@
 <style>
 
 body{
-    background:#f4f6fb;
+    background:#ffffff;
     font-family:'Segoe UI',sans-serif;
 }
 
+/* Main Card */
+
 .main-card{
-    background:white;
+    background:#ffffff;
     padding:30px;
     border-radius:12px;
     box-shadow:0 4px 20px rgba(0,0,0,0.08);
 }
 
+/* Titles */
+
 .page-title{
     font-size:26px;
     font-weight:600;
     margin-bottom:25px;
+    color:#000;
 }
 
 .section-title{
@@ -32,11 +37,21 @@ body{
     font-weight:600;
     margin-top:30px;
     margin-bottom:15px;
+    color:#000;
 }
+
+/* Form */
 
 .form-select{
     height:45px;
 }
+
+.form-select:focus{
+    border-color:#ff7a00;
+    box-shadow:0 0 0 0.2rem rgba(255,122,0,0.2);
+}
+
+/* Button */
 
 .btn-add{
     height:45px;
@@ -44,8 +59,19 @@ body{
     font-weight:500;
 }
 
+.btn-primary{
+    background:#ff7a00;
+    border:none;
+}
+
+.btn-primary:hover{
+    background:#e66a00;
+}
+
+/* Table */
+
 .table thead{
-    background:#1f2630;
+    background:#000000;
     color:white;
 }
 

@@ -8,6 +8,8 @@ from django.utils.text import slugify
 from .models import Offer,Discount,OfferDiscountBridge,ProductOfferBridge,CategoryOfferBridge,ProductDiscountBridge
 from django.contrib import messages
 from Seller_app.models import Product
+from Seller_app.models import SellerProfile
+
 
 def admin_required(view_func):
     @wraps(view_func)
@@ -323,4 +325,22 @@ def Product_Discount_Bridge(request):
         "bridge": bridge
     })
         
-        
+
+
+
+def pending_seller(request):
+    sellers = SellerProfile.objects.all()
+    return render(request, 'pending_seller.html', {'sellers': sellers})
+
+
+def approve_seller(request, id):
+    seller = SellerProfile.objects.get(id=id)
+    seller.approved = True
+    seller.save()
+    return redirect('pending_seller')
+
+
+def reject_seller(request, id):
+    seller = SellerProfile.objects.get(id=id)
+    seller.delete()
+    return redirect('pending_seller')
