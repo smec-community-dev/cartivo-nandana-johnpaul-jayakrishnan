@@ -9,7 +9,10 @@ from .models import Offer,Discount,OfferDiscountBridge,ProductOfferBridge,Catego
 from django.contrib import messages
 from Seller_app.models import Product
 from Seller_app.models import SellerProfile
+<<<<<<< HEAD
 
+=======
+>>>>>>> jayakrishnan-dev1
 
 def admin_required(view_func):
     @wraps(view_func)
@@ -325,6 +328,7 @@ def Product_Discount_Bridge(request):
         "bridge": bridge
     })
         
+<<<<<<< HEAD
 
 
 
@@ -344,3 +348,10 @@ def reject_seller(request, id):
     seller = SellerProfile.objects.get(id=id)
     seller.delete()
     return redirect('pending_seller')
+=======
+def approve_seller(request,id):
+    sellers = SellerProfile.objects.get(id=id)
+    sellers.approved = True
+    sellers.save()
+    return redirect('pending_seller') 
+>>>>>>> jayakrishnan-dev1
