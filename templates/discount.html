@@ -17,87 +17,112 @@
 <style>
 
 body{
-font-family:'Poppins',sans-serif;
-background:#ffffff;
+    font-family:'Poppins',sans-serif;
+    margin:0;
+    background:#f4f1ff;
 }
 
-/* Sidebar */
-
+/* ===== SIDEBAR ===== */
 .sidebar{
-height:100vh;
-width:250px;
-position:fixed;
-left:0;
-top:0;
-background:#000000;
-padding:20px;
-color:white;
+    width:260px;
+    height:100vh;
+    position:sticky;
+    top:0;
+    background: linear-gradient(180deg,#1a0033,#3b0a75);
+    padding:20px;
+    color:white;
 }
 
 .sidebar h4{
-font-weight:600;
-margin-bottom:30px;
-color:#ff7a00;
+    color:#c084fc;
+    margin-bottom:30px;
 }
 
 .sidebar a{
-display:block;
-color:#dddddd;
-padding:12px;
-border-radius:8px;
-margin-bottom:8px;
-text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#d1c4ff;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:8px;
+    text-decoration:none;
+    transition:0.3s;
 }
 
 .sidebar a:hover,
 .sidebar a.active{
-background:#ff7a00;
-color:white;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    color:white;
 }
 
-/* Main Content */
-
+/* ===== MAIN ===== */
 .main-content{
-margin-left:270px;
-padding:40px;
-color:#000;
+    padding:40px;
+    width:100%;
 }
 
-/* Card */
-
+/* ===== CARD ===== */
 .card{
-border-radius:15px;
-border:none;
-background:#ffffff;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    border-radius:20px;
+    border:none;
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(139,92,246,0.2);
+    box-shadow:0 10px 30px rgba(139,92,246,0.15);
 }
 
-/* Buttons */
-
+/* ===== BUTTONS ===== */
 .btn-primary{
-background:#ff7a00;
-border:none;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    border:none;
 }
 
-.btn-primary:hover{
-background:#e66a00;
+.btn-danger{
+    background:#fee2e2;
+    color:#dc2626;
+    border:none;
 }
 
-/* Badge */
+.btn-danger:hover{
+    background:#fecaca;
+}
+
+/* ===== BADGES ===== */
+.badge{
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12px;
+}
 
 .badge-percentage{
-background:#ff7a00;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    color:white;
 }
 
 .badge-flat{
-background:#000000;
-color:#fff;
+    background:#ede9fe;
+    color:#4c1d95;
 }
 
-/* Table Header */
+/* ===== TABLE ===== */
+.table{
+    border-radius:12px;
+    overflow:hidden;
+}
 
 .table-light{
-background:#f5f5f5 !important;
+    background:linear-gradient(135deg,#4c1d95,#7c3aed) !important;
+    color:white;
+}
+
+.table-hover tbody tr:hover{
+    background:#f3e8ff;
+}
+
+h3{
+    color:#4c1d95;
+    font-weight:700;
 }
 
 </style>
@@ -105,145 +130,183 @@ background:#f5f5f5 !important;
 
 <body>
 
-<!-- Sidebar -->
+<div class="d-flex">
 
-<div class="sidebar">
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar">
 
-<h4>CARTIVO</h4>
+        <h4>CARTIVO</h4>
 
-<a href="{% url 'admin_index' %}">
-<i class="fa fa-home me-2"></i> Infrastructure
-</a>
-
-<a href="{% url 'category' %}">
-<i class="fa-solid fa-layer-group me-2"></i> Categories
-</a>
-
-<a href="{% url 'subcategory' %}">
-<i class="fa-solid fa-sitemap me-2"></i> Sub Categories
-</a>
-
-<a href="{% url 'offer_view' %}">
-<i class="fa-solid fa-tags me-2"></i> Offer Management
-</a>
-
-<a href="{% url 'discount_view' %}" class="active">
-<i class="fa-solid fa-percent me-2"></i> Manage Discount
-</a>
-
-<a href="{% url 'coupon_view' %}">
-<i class="fa-solid fa-ticket me-2"></i> Coupon Management
-</a>
-
-</div>
+       <a href="{% url 'admin_index' %}"
+class="flex items-center gap-4 bg-blue-800 text-white p-4 rounded-2xl font-bold text-sm">
 
 
-<!-- Main Content -->
-
-<div class="main-content">
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-<h3>Discount Management</h3>
-
-<a href="{% url 'add_discount' %}" class="btn btn-primary">
-<i class="fa fa-plus me-1"></i> Add Discount
-</a>
-
-</div>
-
-
-<div class="card p-4">
-
-<table class="table table-hover align-middle">
-
-<thead class="table-light">
-
-<tr>
-
-<th>#</th>
-<th>Name</th>
-<th>Type</th>
-<th>Value</th>
-<th class="text-end">Action</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for discount in discounts %}
-
-<tr>
-
-<td>{{ forloop.counter }}</td>
-
-<td>{{ discount.name }}</td>
-
-<td>
-
-{% if discount.discount_type == "PERCENTAGE" %}
-
-<span class="badge badge-percentage">
-Percentage
-</span>
-
-{% else %}
-
-<span class="badge badge-flat">
-Flat
-</span>
-
-{% endif %}
-
-</td>
-
-<td>
-
-{% if discount.discount_type == "PERCENTAGE" %}
-
-{{ discount.discount_value }} %
-
-{% else %}
-
-₹ {{ discount.discount_value }}
-
-{% endif %}
-
-</td>
-
-<td class="text-end">
-
-<a href="{% url 'discount_delete' discount.id %}"
-class="btn btn-sm btn-danger"
-onclick="return confirm('Delete this discount?')">
-
-<i class="fa fa-trash"></i>
+Infrastructure
 
 </a>
 
-</td>
 
-</tr>
 
-{% empty %}
 
-<tr>
+<a href="{% url 'category' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
-<td colspan="5" class="text-center text-muted">
-No discounts available
-</td>
 
-</tr>
+ManageCategories
 
-{% endfor %}
+</a>
 
-</tbody>
 
-</table>
+<a href="{% url 'subcategory' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
-</div>
+
+Manage Sub Categories
+
+</a>
+
+
+<a href="{% url 'offer_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Discount
+
+</a>
+
+
+<a href="{% url 'discount_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage coupon
+
+</a>
+
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Offer Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+Product Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+CategoryOffer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Product Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Seller Management
+
+</a>
+
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3>Discount Management</h3>
+                <p class="text-muted mb-0">Manage all discounts</p>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card p-4">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th class="text-end">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for discount in discounts %}
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ discount.name }}</td>
+
+                    <td>
+                        {% if discount.discount_type == "PERCENTAGE" %}
+                        <span class="badge badge-percentage">Percentage</span>
+                        {% else %}
+                        <span class="badge badge-flat">Flat</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if discount.discount_type == "PERCENTAGE" %}
+                        {{ discount.discount_value }} %
+                        {% else %}
+                        ₹ {{ discount.discount_value }}
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+                        <a href="{% url 'discount_delete' discount.id %}"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Delete this discount?')">
+                        <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        No discounts available
+                    </td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 

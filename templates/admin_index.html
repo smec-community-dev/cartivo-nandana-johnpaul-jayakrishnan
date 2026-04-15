@@ -4,33 +4,30 @@
 <meta charset="UTF-8">
 <title>Admin Dashboard | Cartivo Central</title>
 
+
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> jayakrishnan-dev1
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
 
 body{
     font-family:'Plus Jakarta Sans',sans-serif;
-    background:#f8fafc; /* light background */
-    color:#000000; /* main text black */
+    background:#f4f1ff;
+    color:#1a1a1a;
 }
 
 /* ================= SIDEBAR ================= */
 
 .sidebar-admin{
-    background:#000000; /* black sidebar */
-    border-right:1px solid #262626;
+    background:linear-gradient(180deg,#1a0033,#3b0a75);
+    border-right:1px solid #4c1d95;
 }
 
-/* Sidebar text white */
+/* Sidebar text */
 .sidebar-admin,
 .sidebar-admin a,
 .sidebar-admin p,
@@ -40,83 +37,102 @@ body{
     color:#ffffff !important;
 }
 
-/* Sidebar inactive text */
+/* Sidebar inactive */
 .sidebar-admin .text-slate-300{
-    color:#d1d5db !important;
+    color:#c4b5fd !important;
 }
 
 /* Sidebar hover */
 .sidebar-admin a:hover{
-    background:#1a1a1a !important;
-    color:#ffffff !important;
+    background:rgba(255,255,255,0.08) !important;
 }
 
 /* ================= CARDS ================= */
 
 .glass-card{
-    background:#ffffff;
-    border:1px solid #e5e5e5;
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(139,92,246,0.2);
     border-radius:16px;
     transition:0.3s;
 }
 
 .glass-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 25px rgba(255,122,0,0.2);
+    transform:translateY(-5px);
+    box-shadow:0 10px 30px rgba(139,92,246,0.3);
 }
 
-/* ================= TEXT COLORS ================= */
+/* ================= TEXT ================= */
 
-/* Force all blue/slate text to black */
-.text-blue-900,
-.text-blue-800,
-.text-blue-400,
-.text-slate-500,
-.text-slate-300{
-    color:#000000 !important;
+.text-blue-900{
+    color:#4c1d95 !important;
 }
 
-/* ================= ORANGE THEME ================= */
+.text-slate-500{
+    color:#6b7280 !important;
+}
+
+/* ================= PURPLE THEME ================= */
 
 /* Buttons */
 .bg-blue-800{
-    background:#ff7a00 !important;
+    background:linear-gradient(135deg,#7c3aed,#a855f7) !important;
 }
 
 .bg-blue-700{
-    background:#e66a00 !important;
+    background:linear-gradient(135deg,#6d28d9,#9333ea) !important;
 }
 
 .bg-blue-900{
-    background:#cc5c00 !important;
+    background:#4c1d95 !important;
 }
 
 /* Light backgrounds */
 .bg-blue-50{
-    background:#fff3e6 !important;
+    background:#f3e8ff !important;
 }
 
 /* Borders */
 .border-blue-200{
-    border-color:#ffd6b3 !important;
+    border-color:#d8b4fe !important;
 }
 
 /* ================= HOVER ================= */
 
 .hover\:bg-blue-900:hover{
-    background:#1a1a1a !important;
+    background:#6d28d9 !important;
 }
 
 .hover\:bg-blue-700:hover{
-    background:#e66a00 !important;
+    background:#9333ea !important;
 }
 
 /* Table hover */
 tr:hover{
-    background:#fff3e6 !important;
+    background:#f3e8ff !important;
+}
+
+/* ================= HEADER PROFILE ================= */
+
+header .bg-blue-50{
+    background:linear-gradient(135deg,#ede9fe,#f3e8ff) !important;
+}
+
+/* Avatar */
+header .bg-blue-800{
+    background:linear-gradient(135deg,#7c3aed,#c084fc) !important;
+}
+
+/* ================= EXTRA GLOW ================= */
+
+button{
+    box-shadow:0 4px 15px rgba(139,92,246,0.2);
+}
+
+button:hover{
+    box-shadow:0 6px 20px rgba(139,92,246,0.35);
 }
 </style>
-
 </head>
 
 <body class="flex min-h-screen">
@@ -159,7 +175,7 @@ Infrastructure
 class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
 <i class="fa-solid fa-layer-group"></i>
-Categories
+ManageCategories
 
 </a>
 
@@ -168,7 +184,7 @@ Categories
 class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
 <i class="fa-solid fa-sitemap"></i>
-Sub Categories
+Manage Sub Categories
 
 </a>
 
@@ -177,7 +193,7 @@ Sub Categories
 class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
 <i class="fa-solid fa-tags"></i>
-Offer Management
+Manage Discount
 
 </a>
 
@@ -186,7 +202,7 @@ Offer Management
 class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
 <i class="fa-solid fa-percent"></i>
-Manage Discount
+Manage coupon
 
 </a>
 
@@ -195,10 +211,48 @@ Manage Discount
 class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
 
 <i class="fa-solid fa-ticket"></i>
-Manage Coupon
+Manage Offer
 
 </a>
 
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+<i class="fa-solid fa-ticket"></i>
+Offer Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+<i class="fa-solid fa-ticket"></i>
+Product Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+<i class="fa-solid fa-ticket"></i>
+CategoryOffer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+<i class="fa-solid fa-ticket"></i>
+Product Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+<i class="fa-solid fa-ticket"></i>
+Seller Management
+
+</a>
 
 
 

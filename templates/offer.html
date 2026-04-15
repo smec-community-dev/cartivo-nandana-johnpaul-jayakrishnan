@@ -18,15 +18,16 @@
 
 body{
 font-family:'Poppins',sans-serif;
-background:#ffffff;
+background:#f4f1ff;
+color:#1a1a1a;
 }
 
-/* Sidebar */
+/* ================= SIDEBAR ================= */
 
 .sidebar{
 height:100vh;
 width:250px;
-background:#000000;
+background:linear-gradient(180deg,#1a0033,#3b0a75);
 position:fixed;
 padding:20px;
 color:white;
@@ -35,64 +36,120 @@ color:white;
 .sidebar h4{
 font-weight:600;
 margin-bottom:30px;
-color:#ff7a00;
+color:#c084fc;
 }
 
 .sidebar a{
 display:block;
-color:#dddddd;
+color:#d1c4ff;
 padding:12px;
-border-radius:8px;
+border-radius:10px;
 margin-bottom:10px;
 text-decoration:none;
+transition:0.3s;
 }
 
 .sidebar a:hover,
 .sidebar a.active{
-background:#ff7a00;
+background:linear-gradient(135deg,#7c3aed,#a855f7);
 color:white;
 }
 
-/* Main Content */
+/* ================= MAIN ================= */
 
 .main-content{
 margin-left:270px;
 padding:40px;
-color:#000;
 }
 
-/* Card */
+/* ================= CARD ================= */
 
 .card-box{
-border-radius:15px;
+border-radius:20px;
 border:none;
-background:#ffffff;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
+background:rgba(255,255,255,0.75);
+backdrop-filter:blur(12px);
+border:1px solid rgba(139,92,246,0.2);
+box-shadow:0 10px 30px rgba(139,92,246,0.15);
 }
 
-/* Button */
+/* ================= BUTTON ================= */
 
 .btn-custom{
-background:#ff7a00;
+background:linear-gradient(135deg,#7c3aed,#a855f7);
 color:white;
 border:none;
+box-shadow:0 5px 15px rgba(139,92,246,0.3);
 }
 
 .btn-custom:hover{
-background:#e66a00;
+background:linear-gradient(135deg,#6d28d9,#9333ea);
 color:white;
 }
 
-/* Table Header */
+/* ================= DELETE BUTTON ================= */
 
-.table thead{
-background:#f5f5f5;
+.btn-danger{
+background:#fee2e2;
+color:#dc2626;
+border:none;
 }
 
-/* Badge */
+.btn-danger:hover{
+background:#fecaca;
+color:#b91c1c;
+}
 
+/* ================= TABLE ================= */
+
+.table{
+border-radius:12px;
+overflow:hidden;
+}
+
+.table thead{
+background:linear-gradient(135deg,#4c1d95,#7c3aed);
+color:white;
+}
+
+.table-hover tbody tr:hover{
+background:#f3e8ff;
+}
+
+/* ================= BADGE ================= */
+
+.badge{
+padding:6px 10px;
+border-radius:8px;
+font-size:12px;
+}
+
+/* Active */
 .badge-active{
-background:#ff7a00;
+background:linear-gradient(135deg,#7c3aed,#a855f7);
+color:white;
+}
+
+/* Inactive */
+.bg-secondary{
+background:#ede9fe !important;
+color:#4c1d95 !important;
+}
+
+/* ================= TEXT ================= */
+
+h2{
+color:#4c1d95;
+font-weight:700;
+}
+
+h5{
+color:#6d28d9;
+font-weight:600;
+}
+
+.text-muted{
+color:#6b7280 !important;
 }
 
 </style>
@@ -106,30 +163,97 @@ background:#ff7a00;
 
 <h4>CARTIVO</h4>
 
-<a href="{% url 'admin_index' %}">
-<i class="fa fa-home me-2"></i> Infrastructure
+<a href="{% url 'admin_index' %}"
+class="flex items-center gap-4 bg-blue-800 text-white p-4 rounded-2xl font-bold text-sm">
+
+
+Infrastructure
+
 </a>
 
-<a href="{% url 'category' %}">
-<i class="fa-solid fa-layer-group me-2"></i> Categories
+
+
+
+<a href="{% url 'category' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+ManageCategories
+
 </a>
 
-<a href="{% url 'subcategory' %}">
-<i class="fa-solid fa-sitemap me-2"></i> Sub Categories
+
+<a href="{% url 'subcategory' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Sub Categories
+
 </a>
 
-<a href="{% url 'offer_view' %}" class="active">
-<i class="fa-solid fa-tags me-2"></i> Offer Management
+
+<a href="{% url 'offer_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+Manage Discount
+
 </a>
 
-<a href="{% url 'discount_view' %}">
-<i class="fa-solid fa-percent me-2"></i> Manage Discount
+
+<a href="{% url 'discount_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage coupon
+
 </a>
 
-<a href="{% url 'coupon_view' %}">
-<i class="fa-solid fa-ticket me-2"></i> Coupon Management
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Offer
+
 </a>
 
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Offer Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+Product Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+CategoryOffer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+Product Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Seller Management
+
+</a>
 </div>
 
 

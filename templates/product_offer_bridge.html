@@ -10,57 +10,104 @@
 <style>
 
 body{
-background:#ffffff;
+background:#f4f1ff;
 font-family:'Segoe UI',sans-serif;
+color:#1a1a1a;
 }
 
-/* Main Card */
+/* ================= CARD ================= */
 
 .main-card{
-background:#ffffff;
+background:rgba(255,255,255,0.75);
 padding:30px;
-border-radius:10px;
-box-shadow:0 4px 20px rgba(0,0,0,0.08);
+border-radius:20px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(139,92,246,0.2);
+box-shadow:0 10px 30px rgba(139,92,246,0.15);
 margin-top:40px;
+transition:0.3s;
 }
 
-/* Title */
+.main-card:hover{
+transform:translateY(-4px);
+}
+
+/* ================= TITLE ================= */
 
 .page-title{
-font-weight:600;
+font-weight:700;
 margin-bottom:20px;
-color:#000;
+color:#4c1d95;
 }
 
-/* Button */
+/* ================= BUTTON ================= */
 
 .btn-primary{
-background:#ff7a00;
+background:linear-gradient(135deg,#7c3aed,#a855f7);
 border:none;
+box-shadow:0 5px 15px rgba(139,92,246,0.3);
 }
 
 .btn-primary:hover{
-background:#e66a00;
+background:linear-gradient(135deg,#6d28d9,#9333ea);
 }
 
-/* Table */
+/* ================= INPUT ================= */
+
+.form-control{
+border-radius:12px;
+border:1px solid #e0d4ff;
+background:#faf7ff;
+}
+
+.form-control:focus{
+border-color:#8b5cf6;
+box-shadow:0 0 0 0.2rem rgba(139,92,246,0.25);
+background:white;
+}
+
+/* ================= TABLE ================= */
 
 .table{
 margin-top:30px;
+border-radius:12px;
+overflow:hidden;
 }
 
-/* Table Header */
-
+/* Header */
 .table-dark{
-background:#000000 !important;
+background:linear-gradient(135deg,#4c1d95,#7c3aed) !important;
 color:#ffffff;
 }
 
-/* Input Focus */
+/* Hover */
+.table-hover tbody tr:hover{
+background:#f3e8ff;
+}
 
-.form-control:focus{
-border-color:#ff7a00;
-box-shadow:0 0 0 0.2rem rgba(255,122,0,0.2);
+/* ================= ALERT ================= */
+
+.alert-success{
+background:#ede9fe;
+border:none;
+color:#4c1d95;
+}
+
+/* ================= TEXT ================= */
+
+h5{
+color:#6d28d9;
+font-weight:600;
+}
+
+.text-center{
+color:#6b7280;
+}
+
+/* ================= HR ================= */
+
+hr{
+border-color:#e9d5ff;
 }
 
 </style>

@@ -9,91 +9,145 @@
 
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 <style>
-body {
-    background: #f5f5f5;
+
+body{
+background:#f4f1ff;
+font-family:'Segoe UI',sans-serif;
+color:#1a1a1a;
 }
 
-/* Sidebar */
-.sidebar {
-    height: 100vh;
-    background: #000;
-    padding: 20px;
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+height:100vh;
+background:linear-gradient(180deg,#1a0033,#3b0a75);
+padding:20px;
 }
 
-.sidebar h2 {
-    color: #ff7a00;
-    font-weight: bold;
+.sidebar h2{
+color:#c084fc;
+font-weight:bold;
 }
 
-.sidebar a {
-    display: block;
-    color: #ccc;
-    padding: 12px;
-    margin: 10px 0;
-    text-decoration: none;
-    border-radius: 10px;
+.sidebar a{
+display:block;
+color:#d1c4ff;
+padding:12px;
+margin:10px 0;
+text-decoration:none;
+border-radius:10px;
+transition:0.3s;
 }
 
 .sidebar a:hover,
-.sidebar .active {
-    background: #ff7a00;
-    color: #fff;
+.sidebar .active{
+background:linear-gradient(135deg,#7c3aed,#a855f7);
+color:#fff;
 }
 
-/* Main */
-.main-content {
-    padding: 30px;
+/* ================= MAIN ================= */
+
+.main-content{
+padding:30px;
 }
 
-/* Card */
-.card-box {
-    background: #fff;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+/* ================= CARD ================= */
+
+.card-box{
+background:rgba(255,255,255,0.75);
+border-radius:20px;
+padding:20px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(139,92,246,0.2);
+box-shadow:0 10px 30px rgba(139,92,246,0.15);
 }
 
-/* Table */
-.table th {
-    font-weight: 600;
+/* ================= TABLE ================= */
+
+.table{
+border-radius:12px;
+overflow:hidden;
 }
 
-.table td {
-    vertical-align: middle;
+.table thead{
+background:linear-gradient(135deg,#4c1d95,#7c3aed);
+color:white;
 }
 
-/* Status */
-.badge-active {
-    background: #198754;
+.table-hover tbody tr:hover{
+background:#f3e8ff;
 }
 
-.badge-pending {
-    background: #ffc107;
-    color: #000;
+.table td{
+vertical-align:middle;
 }
 
-/* Buttons */
-.btn-dark-custom {
-    background: #000;
-    color: #fff;
-    border-radius: 8px;
+/* ================= BADGES ================= */
+
+.badge{
+padding:6px 10px;
+border-radius:8px;
+font-size:12px;
 }
 
-.btn-dark-custom:hover {
-    background: #333;
+/* Active */
+.badge-active{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
 }
 
-.btn-orange {
-    background: #ff7a00;
-    color: white;
-    border-radius: 8px;
+/* Pending */
+.badge-pending{
+background:#fde68a;
+color:#92400e;
 }
 
-.btn-orange:hover {
-    background: #e66a00;
+/* ================= BUTTONS ================= */
+
+.btn-success{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+border:none;
 }
+
+.btn-success:hover{
+background:linear-gradient(135deg,#16a34a,#15803d);
+}
+
+/* Reject button */
+.btn-dark-custom{
+background:#fee2e2;
+color:#dc2626;
+border:none;
+}
+
+.btn-dark-custom:hover{
+background:#fecaca;
+color:#b91c1c;
+}
+
+/* Optional orange button (if used later) */
+.btn-orange{
+background:linear-gradient(135deg,#7c3aed,#a855f7);
+color:white;
+border:none;
+}
+
+.btn-orange:hover{
+background:linear-gradient(135deg,#6d28d9,#9333ea);
+}
+
+/* ================= TEXT ================= */
+
+h2{
+color:#4c1d95;
+font-weight:700;
+}
+
+.text-muted{
+color:#6b7280 !important;
+}
+
 </style>
 </head>
 
@@ -105,11 +159,99 @@ body {
     <!-- Sidebar -->
     <div class="col-md-2 sidebar">
         <h2>CARTIVO.</h2>
-        <a href="#">Dashboard</a>
-        <a href="#">Categories</a>
-        <a href="#" class="active">Pending Sellers</a>
-        <a href="#">Offers</a>
-        <a href="#">Coupons</a>
+        <a href="{% url 'admin_index' %}"
+class="flex items-center gap-4 bg-blue-800 text-white p-4 rounded-2xl font-bold text-sm">
+
+
+Infrastructure
+
+</a>
+
+
+
+
+<a href="{% url 'category' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+ManageCategories
+
+</a>
+
+
+<a href="{% url 'subcategory' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Sub Categories
+
+</a>
+
+
+<a href="{% url 'offer_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Discount
+
+</a>
+
+
+<a href="{% url 'discount_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage coupon
+
+</a>
+
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Manage Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Offer Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+Product Offer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+CategoryOffer
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Product Discount
+
+</a>
+
+<a href="{% url 'coupon_view' %}"
+class="flex items-center gap-4 hover:bg-blue-900 p-4 rounded-2xl font-bold text-sm text-slate-300 transition">
+
+
+Seller Management
+
+</a>
     </div>
 
     <!-- Main -->

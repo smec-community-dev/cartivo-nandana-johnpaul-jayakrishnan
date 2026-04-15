@@ -7,12 +7,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .admin-gradient { background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); }
-        .blue-glow { box-shadow: 0 0 20px rgba(249, 115, 22, 0.15); }
-        .input-focus:focus { border-color: #f97316 !important; outline: none; background: white !important; }
-    </style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background:#f4f1ff;
+}
+
+/* LEFT PANEL (Purple Gradient) */
+.admin-gradient { 
+    background: linear-gradient(135deg, #2e1065 0%, #6d28d9 50%, #a855f7 100%);
+}
+
+/* Glow Effect */
+.blue-glow { 
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
+}
+
+/* Input Focus */
+.input-focus:focus { 
+    border-color: #8b5cf6 !important; 
+    outline: none; 
+    background: white !important; 
+}
+
+/* ICON ACTIVE COLOR */
+.group:focus-within i{
+    color:#8b5cf6 !important;
+}
+
+/* BUTTON THEME */
+button{
+    background: linear-gradient(135deg,#7c3aed,#a855f7) !important;
+    box-shadow:0 10px 25px rgba(139,92,246,0.3);
+}
+
+button:hover{
+    background: linear-gradient(135deg,#6d28d9,#9333ea) !important;
+    box-shadow:0 15px 35px rgba(139,92,246,0.4);
+}
+
+/* LABEL + TEXT COLORS */
+.text-orange-500{
+    color:#a855f7 !important;
+}
+
+.border-orange-500{
+    border-color:#a855f7 !important;
+}
+
+/* LEFT CARD ICON BG */
+.bg-orange-500\/20{
+    background:rgba(168,85,247,0.2) !important;
+}
+
+/* INPUT ICON ACTIVE */
+.group-focus-within\:text-orange-500{
+    color:#8b5cf6 !important;
+}
+
+/* CHECKBOX */
+input[type="checkbox"]:checked{
+    background-color:#8b5cf6 !important;
+    border-color:#8b5cf6 !important;
+}
+
+/* SOFT PURPLE BG ELEMENT */
+.bg-orange-500\/5{
+    background:rgba(139,92,246,0.1) !important;
+}
+</style>
 </head>
 
 <body class="bg-white min-h-screen flex items-center justify-center p-4">
